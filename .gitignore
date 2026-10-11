@@ -4,7 +4,7 @@ __pycache__/
 .env
 # db.sqlite3 is tracked so pre-seeded demo database deploys to Vercel
 # *.sqlite3
-staticfiles/
+# staticfiles/ tracked so Vercel distDir is always available
 media/
 .pytest_cache/
 .DS_Store

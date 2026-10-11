@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} — CreatorOps{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <div style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 0.25rem;">
+            <a href="{% url 'campaigns:list' %}" style="color: var(--text-muted); text-decoration: none;">&larr; Back to Campaigns</a>
+        </div>
+        <h1 class="page-title">{{ title }}</h1>
+    </div>
+</div>
+
+<div class="card" style="max-width: 800px;">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="form-label" for="client_id">Client Account *</label>
+            <select id="client_id" name="client_id" class="form-control" required>
+                <option value="">Select a Client Brand</option>
+                {% for c in clients %}
+                <option value="{{ c.id }}" {% if campaign.client_id == c.id %}selected{% endif %}>{{ c.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="title">Campaign Title *</label>
+            <input type="text" id="title" name="title" class="form-control" value="{{ campaign.title|default:'' }}" placeholder="e.g. Summer Glow 2026 Launch" required>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="objective">Campaign Objective & Core Strategy *</label>
+            <textarea id="objective" name="objective" class="form-control" rows="3" placeholder="What is the goal? e.g. Drive 10,000 product trial signups, highlight cruelty-free skincare benefits..." required>{{ campaign.objective|default:'' }}</textarea>
+        </div>
+
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label" for="target_audience">Target Audience</label>
+                <input type="text" id="target_audience" name="target_audience" class="form-control" value="{{ campaign.target_audience|default:'' }}" placeholder="e.g. Gen Z skincare enthusiasts 18-28">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="budget">Allocated Budget ($ USD)</label>
+                <input type="number" step="0.01" id="budget" name="budget" class="form-control" value="{{ campaign.budget|default:'5000.00' }}">
+            </div>
+        </div>
+
+        <div class="grid-3">
+            <div class="form-group">
+                <label class="form-label" for="status">Campaign Status</label>
+                <select id="status" name="status" class="form-control">
+                    {% for s_val, s_label in statuses %}
+                    <option value="{{ s_val }}" {% if campaign.status == s_val %}selected{% endif %}>{{ s_label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="start_date">Start Date</label>
+                <input type="date" id="start_date" name="start_date" class="form-control" value="{{ campaign.start_date|date:'Y-m-d'|default:'' }}">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="end_date">End Date</label>
+                <input type="date" id="end_date" name="end_date" class="form-control" value="{{ campaign.end_date|date:'Y-m-d'|default:'' }}">
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+            <button type="submit" class="btn btn-primary">Save Campaign</button>
+            <a href="{% url 'campaigns:list' %}" class="btn btn-secondary">Cancel</a>
+            {% if campaign and user_role == 'ADMIN' %}
+            <a href="{% url 'campaigns:delete' campaign.id %}" class="btn btn-danger" style="margin-left: auto;">Delete Campaign</a>
+            {% endif %}
+        </div>
+    </form>
+</div>
+{% endblock %}

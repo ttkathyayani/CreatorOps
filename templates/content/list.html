@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Content Pipeline — CreatorOps{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Content Deliverables Matrix</h1>
+        <p class="page-subtitle">Multi-platform scripts, video storyboards, captions, and publishing status.</p>
+    </div>
+    <div style="display: flex; gap: 0.75rem;">
+        <a href="{% url 'content:calendar' %}" class="btn btn-secondary">
+            <span>📅 Calendar View</span>
+        </a>
+        <a href="{% url 'content:create' %}" class="btn btn-primary">
+            <span>+ Draft New Script</span>
+        </a>
+    </div>
+</div>
+
+<!-- Filters Bar -->
+<div class="card" style="margin-bottom: 1.5rem; padding: 1rem 1.25rem;">
+    <form method="GET" style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+        <div style="font-size: 0.8125rem; font-weight: 600; color: var(--text-muted);">Filter by:</div>
+        <select name="status" class="form-control" style="width: auto; padding: 0.4rem 0.75rem;" onchange="this.form.submit()">
+            <option value="">All Workflow Stages</option>
+            {% for s_val, s_label in statuses %}
+            <option value="{{ s_val }}" {% if selected_status == s_val %}selected{% endif %}>{{ s_label }}</option>
+            {% endfor %}
+        </select>
+
+        <select name="platform" class="form-control" style="width: auto; padding: 0.4rem 0.75rem;" onchange="this.form.submit()">
+            <option value="">All Platforms</option>
+            {% for p_val, p_label in platforms %}
+            <option value="{{ p_val }}" {% if selected_platform == p_val %}selected{% endif %}>{{ p_label }}</option>
+            {% endfor %}
+        </select>
+
+        <select name="campaign" class="form-control" style="width: auto; padding: 0.4rem 0.75rem;" onchange="this.form.submit()">
+            <option value="">All Campaigns</option>
+            {% for c in campaigns %}
+            <option value="{{ c.id }}" {% if selected_campaign == c.id|stringformat:"s" %}selected{% endif %}>{{ c.title }}</option>
+            {% endfor %}
+        </select>
+
+        {% if selected_status or selected_platform or selected_campaign %}
+        <a href="{% url 'content:list' %}" style="color: var(--text-muted); font-size: 0.8125rem; text-decoration: none;">Reset Filters</a>
+        {% endif %}
+    </form>
+</div>
+
+<!-- Content Items Table -->
+<div class="card">
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Deliverable Title</th>
+                    <th>Platform</th>
+                    <th>Campaign & Client</th>
+                    <th>Creator</th>
+                    <th>Workflow Stage</th>
+                    <th>Due Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>
+                        <a href="{% url 'content:detail' item.id %}" style="font-weight: 600; color: #fff; text-decoration: none; font-size: 0.9375rem;">
+                            {{ item.title }}
+                        </a>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">
+                            {{ item.script_body|truncatechars:70|default:"No script body added" }}
+                        </div>
+                    </td>
+                    <td>
+                        <span class="platform-pill platform-{{ item.platform|slugify }}">{{ item.platform }}</span>
+                    </td>
+                    <td>
+                        <div style="color: var(--text-main); font-size: 0.875rem;">{{ item.campaign.title }}</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">{{ item.campaign.client.name }}</div>
+                    </td>
+                    <td>
+                        <span style="font-size: 0.8125rem; color: var(--text-muted);">{{ item.creator.username|default:"Unassigned" }}</span>
+                    </td>
+                    <td>
+                        <span class="badge badge-{{ item.status }}">{{ item.get_status_display }}</span>
+                    </td>
+                    <td>
+                        <span style="font-size: 0.8125rem; color: var(--text-muted);">{{ item.due_date|default:"TBD" }}</span>
+                    </td>
+                    <td>
+                        <a href="{% url 'content:detail' item.id %}" class="btn btn-secondary btn-sm">Inspect &rarr;</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" style="text-align: center; padding: 3rem; color: var(--text-dim);">
+                        No content deliverables match the current filters. <a href="{% url 'content:create' %}" style="color:var(--primary);">Create a new deliverable</a>.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

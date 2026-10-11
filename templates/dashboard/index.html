@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard — CreatorOps{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Operational Overview</h1>
+        <p class="page-subtitle">Unified content lifecycle management across {{ counts.clients }} clients and {{ counts.campaigns }} campaigns.</p>
+    </div>
+    <div style="display: flex; gap: 0.75rem;">
+        <a href="{% url 'content:create' %}" class="btn btn-primary">
+            <span>+ Draft Script</span>
+        </a>
+        <a href="{% url 'campaigns:create' %}" class="btn btn-secondary">
+            <span>+ New Campaign</span>
+        </a>
+    </div>
+</div>
+
+<!-- Role Perspective Alert -->
+<div class="card" style="margin-bottom: 2rem; background: #1C1C1C; border: 1px solid rgba(250, 204, 21, 0.25);">
+    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <div style="width: 36px; height: 36px; border-radius: var(--radius-sm); background: #FACC15; color: #111111; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem;">
+                {% if user_role == 'ADMIN' %}👑{% elif user_role == 'MANAGER' %}📋{% elif user_role == 'CREATOR' %}✍️{% else %}👁️{% endif %}
+            </div>
+            <div>
+                <div style="font-weight: 700; color: #fff; font-size: 0.95rem;">
+                    Active Perspective: <span class="role-tag {{ user_role }}">{{ user_role_label }}</span>
+                </div>
+                <div style="font-size: 0.8125rem; color: var(--text-muted); margin-top: 2px;">
+                    {% if user_role == 'CREATOR' %}
+                        You can create scripts, upload media, revise drafts, and submit to Managers for review.
+                    {% elif user_role == 'MANAGER' %}
+                        You have {{ counts.pending_manager }} item(s) awaiting internal review before sending to clients.
+                    {% elif user_role == 'CLIENT_REVIEWER' %}
+                        You have {{ counts.pending_client }} deliverable(s) pending your formal sign-off.
+                    {% else %}
+                        Full administrative access: oversee client accounts, team permissions, approval bottlenecks, and campaigns.
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div>
+            <a href="{% url 'approvals:queue' %}" class="btn btn-secondary btn-sm">
+                <span>View My Queue ({{ pending_for_role|length }})</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Workflow Metrics Grid -->
+<div class="grid-4" style="margin-bottom: 2rem;">
+    <div class="metric-card">
+        <div>
+            <div class="metric-value">{{ counts.total_content }}</div>
+            <div class="metric-label">Total Deliverables</div>
+        </div>
+        <span class="badge badge-draft">{{ counts.draft }} Draft</span>
+    </div>
+
+    <div class="metric-card accent-manager">
+        <div>
+            <div class="metric-value">{{ counts.pending_manager }}</div>
+            <div class="metric-label">Internal Manager Review</div>
+        </div>
+        <span class="badge badge-pending_manager">Pending</span>
+    </div>
+
+    <div class="metric-card accent-client">
+        <div>
+            <div class="metric-value">{{ counts.pending_client }}</div>
+            <div class="metric-label">Client Approval Stage</div>
+        </div>
+        <span class="badge badge-pending_client">Action Req.</span>
+    </div>
+
+    <div class="metric-card accent-approved">
+        <div>
+            <div class="metric-value">{{ counts.approved }}</div>
+            <div class="metric-label">Approved & Ready</div>
+        </div>
+        <span class="badge badge-approved">{{ counts.published }} Published</span>
+    </div>
+</div>
+
+<!-- Main Content Grid -->
+<div class="grid-2" style="margin-bottom: 2rem;">
+    <!-- Pending Approvals for Role -->
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">Pending Action Items</h2>
+            <a href="{% url 'approvals:queue' %}" style="color: var(--primary); font-size: 0.8125rem; text-decoration: none; font-weight: 600;">View All Queue &rarr;</a>
+        </div>
+
+        {% if pending_for_role %}
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            {% for item in pending_for_role %}
+            <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.875rem 1rem; display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                        <span class="platform-pill platform-{{ item.platform|slugify }}">{{ item.platform }}</span>
+                        <a href="{% url 'content:detail' item.id %}" style="color: #fff; font-weight: 600; text-decoration: none; font-size: 0.875rem;">
+                            {{ item.title }}
+                        </a>
+                    </div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">
+                        Campaign: {{ item.campaign.title }} &bull; Client: {{ item.campaign.client.name }}
+                    </div>
+                </div>
+                <div>
+                    <a href="{% url 'content:detail' item.id %}" class="btn btn-secondary btn-sm">
+                        Review Now &rarr;
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div style="text-align: center; padding: 2.5rem 1rem; color: var(--text-dim);">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎉</div>
+            <div style="font-weight: 600; color: var(--text-muted);">No pending reviews for your role</div>
+            <div style="font-size: 0.8125rem; margin-top: 0.25rem;">Everything in your workflow queue is up to date.</div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Active Campaigns -->
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">Active Campaigns</h2>
+            <a href="{% url 'campaigns:list' %}" style="color: var(--primary); font-size: 0.8125rem; text-decoration: none; font-weight: 600;">All Campaigns &rarr;</a>
+        </div>
+
+        {% if campaigns %}
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            {% for camp in campaigns %}
+            <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.875rem 1rem;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.35rem;">
+                    <div>
+                        <a href="{% url 'campaigns:detail' camp.id %}" style="color: #fff; font-weight: 600; text-decoration: none; font-size: 0.9rem;">
+                            {{ camp.title }}
+                        </a>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">Client: {{ camp.client.name }} &bull; Budget: ${{ camp.budget|floatformat:0 }}</div>
+                    </div>
+                    <span class="badge badge-scheduled">{{ camp.get_status_display }}</span>
+                </div>
+                <!-- Progress stats -->
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-dim); margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.05);">
+                    <span>Total Content: <strong style="color:var(--text-main);">{{ camp.total_content_items }}</strong></span>
+                    <span>Published: <strong style="color: var(--primary);">{{ camp.published_count }}</strong></span>
+                    <span>Pending: <strong style="color: var(--text-muted);">{{ camp.pending_count }}</strong></span>
+                    <a href="{% url 'analytics:campaign_report' camp.id %}" style="color: var(--primary); text-decoration: none; font-weight: 600;">AI Report &rarr;</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div style="text-align: center; padding: 2rem 1rem; color: var(--text-dim);">
+            <div>No campaigns yet.</div>
+            <a href="{% url 'campaigns:create' %}" class="btn btn-primary btn-sm" style="margin-top: 0.75rem;">Create First Campaign</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Recent Deliverables Pipeline Table -->
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Recent Content Items Across Pipeline</h2>
+        <a href="{% url 'content:list' %}" style="color: var(--primary); font-size: 0.8125rem; text-decoration: none; font-weight: 600;">Full Content Matrix &rarr;</a>
+    </div>
+
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title & Platform</th>
+                    <th>Campaign & Client</th>
+                    <th>Creator</th>
+                    <th>Status</th>
+                    <th>Due Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in recent_items %}
+                <tr>
+                    <td>
+                        <div style="font-weight: 600; color: #fff;">{{ item.title }}</div>
+                        <span class="platform-pill platform-{{ item.platform|slugify }}">{{ item.platform }}</span>
+                    </td>
+                    <td>
+                        <div style="color: var(--text-main);">{{ item.campaign.title }}</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">{{ item.campaign.client.name }}</div>
+                    </td>
+                    <td>
+                        <span style="font-size: 0.8125rem; color: var(--text-muted);">{{ item.creator.username|default:"Unassigned" }}</span>
+                    </td>
+                    <td>
+                        <span class="badge badge-{{ item.status }}">{{ item.get_status_display }}</span>
+                    </td>
+                    <td>
+                        <span style="font-size: 0.8125rem; color: var(--text-muted);">{{ item.due_date|default:"Not set" }}</span>
+                    </td>
+                    <td>
+                        <a href="{% url 'content:detail' item.id %}" class="btn btn-secondary btn-sm">Inspect &rarr;</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-dim);">
+                        No content created yet. <a href="{% url 'content:create' %}" style="color: var(--primary);">Draft your first piece</a>.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

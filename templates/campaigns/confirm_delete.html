@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Delete Campaign — CreatorOps{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 550px; margin: 3rem auto; text-align: center;">
+    <div style="font-size: 3rem; margin-bottom: 1rem;">⚠️</div>
+    <h1 class="page-title" style="font-size: 1.5rem; margin-bottom: 0.5rem;">Delete Campaign?</h1>
+    <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1.5rem;">
+        Are you sure you want to permanently delete <strong>{{ campaign.title }}</strong>? All content drafts, version logs, and asset uploads within this campaign will be removed.
+    </p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div style="display: flex; justify-content: center; gap: 1rem;">
+            <button type="submit" class="btn btn-danger">Confirm Delete</button>
+            <a href="{% url 'campaigns:detail' campaign.id %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

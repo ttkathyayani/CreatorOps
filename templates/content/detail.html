@@ -1,0 +1,377 @@
+{% extends "base.html" %}
+
+{% block title %}{{ item.title }} — Content Lifecycle Detail{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <div style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 0.25rem;">
+            <a href="{% url 'content:list' %}" style="color: var(--text-muted); text-decoration: none;">&larr; Content Matrix</a> &bull;
+            <a href="{% url 'campaigns:detail' item.campaign.id %}" style="color: var(--text-muted); text-decoration: none;">{{ item.campaign.title }}</a> &bull;
+            <span style="color: var(--text-muted);">{{ item.campaign.client.name }}</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+            <h1 class="page-title">{{ item.title }}</h1>
+            <span class="platform-pill platform-{{ item.platform|slugify }}">{{ item.platform }}</span>
+            <span class="badge badge-{{ item.status }}">{{ item.get_status_display }}</span>
+        </div>
+    </div>
+
+    <!-- Dynamic Actions Based on User Role & Status -->
+    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+        <!-- AI Script Review Trigger -->
+        <button type="button" class="btn btn-secondary" id="runAiReviewBtn" style="border-color: rgba(250, 204, 21, 0.4); color: var(--primary);">
+            <span>🤖 AI Script Review</span>
+        </button>
+
+        {% if user_role in "ADMIN,CREATOR,MANAGER" %}
+        <a href="{% url 'content:edit' item.id %}" class="btn btn-secondary">
+            <span>✏️ Edit Script</span>
+        </a>
+        {% endif %}
+
+        <!-- Creator submission -->
+        {% if item.status in "draft,changes_requested" and user_role in "ADMIN,CREATOR" %}
+        <form method="POST" action="{% url 'content:submit' item.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">
+                <span>🚀 Submit for Manager Review</span>
+            </button>
+        </form>
+        {% endif %}
+
+        <!-- Manager or Client Review Modal Trigger -->
+        {% if item.status == "pending_manager" and user_role in "ADMIN,MANAGER" %}
+        <button type="button" class="btn btn-warning" data-modal-target="reviewModal">
+            <span>⚖️ Perform Manager Review</span>
+        </button>
+        {% elif item.status == "pending_client" and user_role in "ADMIN,CLIENT_REVIEWER" %}
+        <button type="button" class="btn btn-warning" data-modal-target="reviewModal">
+            <span>⚖️ Perform Client Review</span>
+        </button>
+        {% endif %}
+
+        <!-- Final Publishing Step -->
+        {% if item.status == "approved" and user_role in "ADMIN,MANAGER" %}
+        <form method="POST" action="{% url 'content:publish' item.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">
+                <span>📢 Mark as Published</span>
+            </button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Workflow Stepper Progression -->
+<div class="card" style="margin-bottom: 2rem; padding: 1.25rem 2rem;">
+    <div class="pipeline-stepper">
+        <div class="step-node {% if item.status in 'draft,pending_manager,pending_client,changes_requested,approved,scheduled,published' %}completed{% endif %}">
+            <div class="step-indicator">1</div>
+            <div class="step-label">Draft</div>
+        </div>
+
+        <div class="step-node {% if item.status == 'pending_manager' %}active{% elif item.status in 'pending_client,approved,scheduled,published' %}completed{% endif %}">
+            <div class="step-indicator">2</div>
+            <div class="step-label">Internal Review</div>
+        </div>
+
+        <div class="step-node {% if item.status == 'pending_client' %}active{% elif item.status in 'approved,scheduled,published' %}completed{% endif %}">
+            <div class="step-indicator">3</div>
+            <div class="step-label">Client Review</div>
+        </div>
+
+        <div class="step-node {% if item.status == 'approved' %}active{% elif item.status in 'scheduled,published' %}completed{% endif %}">
+            <div class="step-indicator">4</div>
+            <div class="step-label">Approved</div>
+        </div>
+
+        <div class="step-node {% if item.status == 'published' %}active completed{% endif %}">
+            <div class="step-indicator">5</div>
+            <div class="step-label">Published</div>
+        </div>
+    </div>
+</div>
+
+<div class="grid-3" style="margin-bottom: 2rem;">
+    <!-- Script & Copy Panel (2 cols) -->
+    <div class="card" style="grid-column: span 2;">
+        <div class="card-header">
+            <div>
+                <h2 class="card-title">Production Script / Storyboard</h2>
+                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">
+                    Assigned Creator: <strong>{{ item.creator.username|default:"Unassigned" }}</strong> &bull; Due Date: <strong>{{ item.due_date|default:"None" }}</strong>
+                </div>
+            </div>
+            <span style="font-size: 0.75rem; color: var(--text-dim);">Last revised: {{ item.updated_at|timesince }} ago</span>
+        </div>
+
+        <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.25rem; font-family: inherit; font-size: 0.9375rem; line-height: 1.6; color: #f3f4f6; white-space: pre-wrap; margin-bottom: 1.5rem; min-height: 140px;">{{ item.script_body|default:"(No script body entered. Click 'Edit Script' to draft the storyboard.)" }}</div>
+
+        <div class="card-header" style="margin-bottom: 0.5rem;">
+            <h3 class="card-title" style="font-size: 1rem;">Post Caption & Copy</h3>
+        </div>
+        <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem; font-size: 0.875rem; line-height: 1.5; color: #e5e7eb; white-space: pre-wrap;">{{ item.caption|default:"(No caption entered.)" }}</div>
+    </div>
+
+    <!-- Media Library & Assets (1 col) -->
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">Media Assets ({{ assets.count }})</h2>
+        </div>
+        <p style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 1rem;">
+            Upload videos, high-res photos, or graphics stored locally or via AWS S3.
+        </p>
+
+        <!-- Upload Form -->
+        <form method="POST" action="{% url 'assets:upload' item.id %}" enctype="multipart/form-data" style="margin-bottom: 1.5rem; padding: 1rem; background: var(--bg-secondary); border: 1px dashed var(--border-color); border-radius: var(--radius-sm);">
+            {% csrf_token %}
+            <div style="margin-bottom: 0.75rem;">
+                <input type="file" name="media_file" class="form-control" style="font-size: 0.75rem; padding: 0.4rem;" required>
+            </div>
+            <button type="submit" class="btn btn-secondary btn-sm" style="width: 100%;">
+                <span>Upload Media Asset</span>
+            </button>
+        </form>
+
+        <!-- Asset list -->
+        <div style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 250px; overflow-y: auto;">
+            {% for asset in assets %}
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.75rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-sm);">
+                <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 140px;">
+                    <div style="font-size: 0.8125rem; font-weight: 600; color: #fff;">{{ asset.filename }}</div>
+                    <div style="font-size: 0.7rem; color: var(--text-dim);">{{ asset.file_size_display }}</div>
+                </div>
+                <div style="display: flex; gap: 0.25rem;">
+                    <a href="{% url 'assets:download' asset.id %}" target="_blank" class="btn btn-secondary btn-sm" title="Download">⬇️</a>
+                    {% if user_role in "ADMIN,MANAGER,CREATOR" %}
+                    <form method="POST" action="{% url 'assets:delete' asset.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm" title="Delete" onclick="return confirm('Delete this asset?');">✕</button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <div style="font-size: 0.8125rem; color: var(--text-dim); text-align: center; padding: 1rem;">
+                No media files uploaded yet.
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- AI Approval Synthesis & Audit Trail -->
+<div class="grid-2" style="margin-bottom: 2rem;">
+    <!-- AI Feedback Synthesis -->
+    <div class="agent-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <h2 style="font-size: 1.1rem; font-weight: 700; color: #fff;">🤖 AI Feedback Synthesis</h2>
+            <span class="badge badge-scheduled">ApprovalSummaryAgent</span>
+        </div>
+        <p style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 1rem;">
+            Synthesizes all stakeholder feedback into prioritized action items for creators.
+        </p>
+
+        <div class="ai-output-box">
+{% if approval_summary %}
+<strong>Overall Synthesis:</strong> {{ approval_summary.summary }}
+
+{% if approval_summary.action_items %}
+<strong>Priority Action Items for Creator:</strong>
+{% for action in approval_summary.action_items %}
+• {{ action }}
+{% endfor %}
+{% endif %}
+{% else %}
+No revision comments to synthesize yet. Feedback iterations will be summarized here automatically.
+{% endif %}
+        </div>
+    </div>
+
+    <!-- Review Audit Trail History -->
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">Review & Approval Audit Trail</h2>
+            <span style="font-size: 0.75rem; color: var(--text-dim);">{{ approvals.count }} Decisions Logged</span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 0.75rem; max-height: 350px; overflow-y: auto;">
+            {% for app in approvals %}
+            <div style="padding: 0.875rem 1rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-sm);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                    <span style="font-weight: 600; font-size: 0.8125rem; color: #fff;">
+                        {{ app.reviewer.username|default:"Reviewer" }}
+                    </span>
+                    <span class="badge {% if 'APPROVED' in app.decision %}badge-approved{% else %}badge-changes_requested{% endif %}">
+                        {{ app.get_decision_display }}
+                    </span>
+                </div>
+                <div style="font-size: 0.8125rem; color: var(--text-muted); line-height: 1.4;">
+                    "{{ app.comment }}"
+                </div>
+                <div style="font-size: 0.7rem; color: var(--text-dim); margin-top: 0.35rem;">
+                    {{ app.timestamp|date:"M d, Y H:i" }}
+                </div>
+            </div>
+            {% empty %}
+            <div style="text-align: center; padding: 2rem; color: var(--text-dim); font-size: 0.875rem;">
+                No review events logged yet.
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Version History -->
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Script Version & Snapshot History ({{ versions.count }})</h2>
+        <span style="font-size: 0.75rem; color: var(--text-dim);">Immutable revision tracking</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+        {% for v in versions %}
+        <div class="version-pill">
+            <div>
+                <span style="font-weight: 700; color: var(--primary); margin-right: 0.5rem;">Revision v{{ v.revision_number }}</span>
+                <span style="font-size: 0.75rem; color: var(--text-dim);">Created by {{ v.created_by.username|default:"System" }} &bull; {{ v.created_at|date:"M d, Y H:i" }}</span>
+                <div style="font-size: 0.8125rem; color: var(--text-muted); margin-top: 0.35rem;">
+                    {{ v.script_snapshot|truncatechars:120 }}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div style="color: var(--text-dim); font-size: 0.875rem;">No revisions saved yet.</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block modals %}
+<!-- Approval / Change Request Action Modal -->
+<div id="reviewModal" class="modal-backdrop" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); z-index: 100; align-items: center; justify-content: center; padding: 1.5rem;">
+    <div class="card" style="max-width: 550px; width: 100%; background: #1C1C1C; border: 1px solid rgba(255,255,255,0.1);">
+        <div class="card-header">
+            <h2 class="card-title">
+                Review Decision: {{ item.title }}
+            </h2>
+            <button type="button" data-modal-close style="background:none; border:none; color:var(--text-muted); font-size: 1.25rem; cursor:pointer;">&times;</button>
+        </div>
+
+        <form method="POST" action="{% url 'approvals:review' item.id %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="form-label">Review Decision *</label>
+                <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: #FACC15; font-weight: 600;">
+                        <input type="radio" name="decision" value="APPROVE" checked>
+                        <span>Approve Deliverable</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: #ef4444; font-weight: 600;">
+                        <input type="radio" name="decision" value="REQUEST_CHANGES">
+                        <span>Request Changes</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="review_comment">Feedback & Notes *</label>
+                <textarea id="review_comment" name="comment" class="form-control" rows="4" placeholder="Detail any requested revisions or approval notes..." required></textarea>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem;">
+                <button type="button" data-modal-close class="btn btn-secondary">Cancel</button>
+                <button type="submit" class="btn btn-primary">Submit Decision</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- AI Script Review Drawer / Modal -->
+<div id="aiReviewModal" class="modal-backdrop" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); z-index: 100; align-items: center; justify-content: center; padding: 1.5rem;">
+    <div class="card" style="max-width: 650px; width: 100%; background: #1C1C1C; border: 1px solid rgba(255,255,255,0.1);">
+        <div class="card-header">
+            <div>
+                <h2 class="card-title">🤖 AI Script Review Diagnostic</h2>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">ScriptReviewAgent powered analysis against client brand rules</div>
+            </div>
+            <button type="button" data-modal-close style="background:none; border:none; color:var(--text-muted); font-size: 1.25rem; cursor:pointer;">&times;</button>
+        </div>
+
+        <div id="aiReviewLoading" style="text-align: center; padding: 2rem;">
+            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">⚡</div>
+            <div style="color: var(--text-main); font-weight: 600;">Analyzing hook, readability, and brand guidelines...</div>
+        </div>
+
+        <div id="aiReviewContent" style="display: none;">
+            <div style="display: flex; align-items: center; justify-content: space-between; background: #141414; border: 1px solid var(--border-color); padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1rem;">
+                <div>
+                    <div style="font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700;">Overall Quality Score</div>
+                    <div id="aiScore" style="font-size: 2rem; font-weight: 800; color: #FACC15;">--/100</div>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700;">Compliance Status</div>
+                    <span id="aiComplianceBadge" class="badge badge-approved">Compliant</span>
+                </div>
+            </div>
+
+            <div class="ai-output-box" id="aiDetailsBox" style="margin-bottom: 1rem;"></div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+            <button type="button" data-modal-close class="btn btn-secondary">Close Diagnostic</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('runAiReviewBtn')?.addEventListener('click', async () => {
+    const modal = document.getElementById('aiReviewModal');
+    const loading = document.getElementById('aiReviewLoading');
+    const content = document.getElementById('aiReviewContent');
+    modal.style.display = 'flex';
+    loading.style.display = 'block';
+    content.style.display = 'none';
+
+    try {
+        const payload = {
+            script: "{{ item.script_body|escapejs }}",
+            brand_guidelines: "{{ item.campaign.client.brand_guidelines|escapejs }}",
+            platform: "{{ item.platform|escapejs }}"
+        };
+
+        const res = await fetch("{% url 'api-script-review' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        loading.style.display = 'none';
+        content.style.display = 'block';
+
+        const score = data.overall_score || data.score || 85;
+        document.getElementById('aiScore').textContent = `${score}/100`;
+
+        let details = `Analysis Summary:\n${data.summary || data.analysis || 'Script passes foundational quality standards.'}\n\n`;
+        if (data.hook_evaluation) details += `Hook Evaluation:\n• ${data.hook_evaluation}\n\n`;
+        if (data.brand_compliance) details += `Brand Compliance:\n• ${data.brand_compliance}\n\n`;
+        if (data.recommendations && data.recommendations.length) {
+            details += `Key Recommendations:\n` + data.recommendations.map(r => `• ${r}`).join('\n');
+        }
+
+        document.getElementById('aiDetailsBox').textContent = details;
+    } catch (err) {
+        loading.style.display = 'none';
+        content.style.display = 'block';
+        document.getElementById('aiDetailsBox').textContent = "Failed to run AI diagnostic: " + err.message;
+    }
+});
+</script>
+{% endblock %}

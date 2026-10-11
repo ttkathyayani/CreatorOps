@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} — CreatorOps{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <div style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 0.25rem;">
+            <a href="{% url 'content:list' %}" style="color: var(--text-muted); text-decoration: none;">&larr; Back to Content Pipeline</a>
+        </div>
+        <h1 class="page-title">{{ title }}</h1>
+    </div>
+</div>
+
+<div class="card" style="max-width: 850px;">
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label" for="campaign_id">Campaign *</label>
+                <select id="campaign_id" name="campaign_id" class="form-control" {% if item %}disabled{% else %}required{% endif %}>
+                    <option value="">Select Target Campaign</option>
+                    {% for c in campaigns %}
+                    <option value="{{ c.id }}" {% if item.campaign_id == c.id or request.GET.campaign == c.id|stringformat:"s" %}selected{% endif %}>
+                        {{ c.title }} ({{ c.client.name }})
+                    </option>
+                    {% endfor %}
+                </select>
+                {% if item %}
+                <div class="form-help">Campaign cannot be changed after creation.</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="platform">Destination Platform *</label>
+                <select id="platform" name="platform" class="form-control" required>
+                    {% for p_val, p_label in platforms %}
+                    <option value="{{ p_val }}" {% if item.platform == p_val %}selected{% endif %}>{{ p_label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="title">Deliverable Title / Headline *</label>
+            <input type="text" id="title" name="title" class="form-control" value="{{ item.title|default:'' }}" placeholder="e.g. 3 Common Skincare Mistakes You're Making" required>
+        </div>
+
+        <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                <label class="form-label" for="script_body" style="margin-bottom: 0;">Script / Video Storyboard Body</label>
+                <span style="font-size: 0.75rem; color: var(--text-dim);">Saving changes automatically logs a version snapshot</span>
+            </div>
+            <textarea id="script_body" name="script_body" class="form-control" rows="8" placeholder="[00:00 - 00:03] Hook: Stop putting that on your face!&#10;[00:03 - 00:15] Problem breakdown: Most cleansers strip your natural barrier...&#10;[00:15 - 00:30] Solution & CTA: Switch to gentle hydration. Link in bio!">{{ item.script_body|default:'' }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="caption">Post Caption, Copy & Hashtags</label>
+            <textarea id="caption" name="caption" class="form-control" rows="4" placeholder="Your skin deserves better than harsh chemicals ✨ Try our all-natural routine today. #CleanBeauty #SkinCareEssentials">{{ item.caption|default:'' }}</textarea>
+        </div>
+
+        <div class="form-group" style="max-width: 300px;">
+            <label class="form-label" for="due_date">Publishing Due Date</label>
+            <input type="date" id="due_date" name="due_date" class="form-control" value="{{ item.due_date|date:'Y-m-d'|default:'' }}">
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+            <button type="submit" class="btn btn-primary">Save Deliverable</button>
+            <a href="{% if item %}{% url 'content:detail' item.id %}{% else %}{% url 'content:list' %}{% endif %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

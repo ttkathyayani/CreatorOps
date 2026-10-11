@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Content Calendar — CreatorOps{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Content Publishing Calendar</h1>
+        <p class="page-subtitle">Scheduled deliverables by deadline, platform, and workflow status.</p>
+    </div>
+    <div style="display: flex; gap: 0.75rem;">
+        <a href="{% url 'content:list' %}" class="btn btn-secondary">
+            <span>Matrix Table View</span>
+        </a>
+        <a href="{% url 'content:create' %}" class="btn btn-primary">
+            <span>+ Schedule Deliverable</span>
+        </a>
+    </div>
+</div>
+
+<!-- Scheduled Timeline Feed -->
+<div class="card" style="margin-bottom: 2rem;">
+    <div class="card-header">
+        <h2 class="card-title">Upcoming Scheduled Deliverables ({{ items.count }})</h2>
+        <span style="font-size: 0.8125rem; color: var(--text-muted);">Organized by Due Date</span>
+    </div>
+
+    {% if items %}
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem;">
+        {% for item in items %}
+        <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                    <span class="platform-pill platform-{{ item.platform|slugify }}">{{ item.platform }}</span>
+                    <span class="badge badge-{{ item.status }}">{{ item.get_status_display }}</span>
+                </div>
+
+                <a href="{% url 'content:detail' item.id %}" style="font-weight: 700; color: #fff; text-decoration: none; font-size: 1rem; display: block; margin-bottom: 0.35rem;">
+                    {{ item.title }}
+                </a>
+
+                <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+                    {{ item.campaign.title }} &bull; <strong>{{ item.campaign.client.name }}</strong>
+                </div>
+
+                <p style="font-size: 0.8125rem; color: var(--text-dim); line-height: 1.4;">
+                    {{ item.script_body|truncatechars:90|default:"No storyboard added" }}
+                </p>
+            </div>
+
+            <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center;">
+                <div style="font-size: 0.75rem; color: var(--text-muted);">
+                    📅 <strong style="color: #fff;">{{ item.due_date|date:"M d, Y" }}</strong>
+                </div>
+                <a href="{% url 'content:detail' item.id %}" class="btn btn-secondary btn-sm">Inspect &rarr;</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div style="text-align: center; padding: 3rem; color: var(--text-dim);">
+        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📅</div>
+        <h3 style="color: #fff; margin-bottom: 0.5rem;">No deliverables have due dates scheduled</h3>
+        <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1.5rem;">Assign due dates to content items to track them in this calendar.</p>
+        <a href="{% url 'content:create' %}" class="btn btn-primary">Create Deliverable</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

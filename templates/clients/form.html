@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} — CreatorOps{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <div style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 0.25rem;">
+            <a href="{% url 'clients:list' %}" style="color: var(--text-muted); text-decoration: none;">&larr; Back to Clients</a>
+        </div>
+        <h1 class="page-title">{{ title }}</h1>
+    </div>
+</div>
+
+<div class="card" style="max-width: 800px;">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="form-label" for="name">Client Brand Name *</label>
+            <input type="text" id="name" name="name" class="form-control" value="{{ client.name|default:'' }}" placeholder="e.g. Aura Skincare" required>
+        </div>
+
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label" for="contact_email">Primary Contact Email</label>
+                <input type="email" id="contact_email" name="contact_email" class="form-control" value="{{ client.contact_email|default:'' }}" placeholder="marketing@auraskincare.com">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="industry">Industry / Sector</label>
+                <input type="text" id="industry" name="industry" class="form-control" value="{{ client.industry|default:'' }}" placeholder="e.g. Beauty & Wellness, D2C, SaaS">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="company_notes">Company Overview & Background Notes</label>
+            <textarea id="company_notes" name="company_notes" class="form-control" rows="3" placeholder="High-level background about the client, goals, target demographics...">{{ client.company_notes|default:'' }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="brand_guidelines">
+                Brand Guidelines, Tone & Compliance Rules (Used by AI Agents)
+            </label>
+            <textarea id="brand_guidelines" name="brand_guidelines" class="form-control" rows="5" placeholder="Specify required hashtags (e.g. #AuraGlow, #CleanBeauty), tone (e.g. confident, uplifting, informative), forbidden words/claims, and visual guidelines.">{{ client.brand_guidelines|default:'' }}</textarea>
+            <div class="form-help">The AI Script Review Agent verifies creators' scripts against these rules automatically.</div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+            <button type="submit" class="btn btn-primary">Save Client Profile</button>
+            <a href="{% url 'clients:list' %}" class="btn btn-secondary">Cancel</a>
+            {% if client and user_role == 'ADMIN' %}
+            <a href="{% url 'clients:delete' client.id %}" class="btn btn-danger" style="margin-left: auto;">Delete Client</a>
+            {% endif %}
+        </div>
+    </form>
+</div>
+{% endblock %}

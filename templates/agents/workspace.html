@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+
+{% block title %}AI Studio (4 Agents) — CreatorOps{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">CreatorOps AI Agent Studio</h1>
+        <p class="page-subtitle">Interactive autonomous testing suite for all four specialized domain agents.</p>
+    </div>
+</div>
+
+<div class="grid-2" style="margin-bottom: 2rem;">
+    <!-- Agent 1: Content Ideas Agent -->
+    <div class="agent-card">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+            <div>
+                <span class="badge badge-published" style="margin-bottom: 0.35rem;">Agent 1</span>
+                <h2 style="font-size: 1.15rem; font-weight: 700; color: #fff;">ContentIdeasAgent</h2>
+            </div>
+            <span style="font-size: 1.5rem;">💡</span>
+        </div>
+        <p style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 1rem;">
+            Generates high-performing, platform-tailored content concepts from brand identity and campaign goals.
+        </p>
+
+        <form id="contentIdeasForm">
+            <div class="form-group">
+                <label class="form-label">Client Brand Context</label>
+                <select id="ideaClient" class="form-control">
+                    {% for c in clients %}
+                    <option value="{{ c.id }}" data-brand="{{ c.brand_guidelines|escapejs }}">{{ c.name }} ({{ c.industry }})</option>
+                    {% empty %}
+                    <option value="">Aura Skincare</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Goal / Focus Topic</label>
+                <input type="text" id="ideaTopic" class="form-control" value="Product Launch: All-natural brightening serum" placeholder="e.g. Black Friday Sale, Product Launch...">
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" onclick="runAgent('content-ideas')">
+                <span>Run Ideas Agent ⚡</span>
+            </button>
+        </form>
+
+        <div style="margin-top: 1rem;">
+            <div style="font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; margin-bottom: 0.35rem;">Agent Output:</div>
+            <div class="ai-output-box" id="contentIdeasOutput" style="min-height: 120px;">Ready to generate ideas...</div>
+        </div>
+    </div>
+
+    <!-- Agent 2: Script Review Agent -->
+    <div class="agent-card">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+            <div>
+                <span class="badge badge-scheduled" style="margin-bottom: 0.35rem;">Agent 2</span>
+                <h2 style="font-size: 1.15rem; font-weight: 700; color: #fff;">ScriptReviewAgent</h2>
+            </div>
+            <span style="font-size: 1.5rem;">🔍</span>
+        </div>
+        <p style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 1rem;">
+            Audits video scripts for hook retention, clarity, tone consistency, and client brand guideline compliance.
+        </p>
+
+        <form id="scriptReviewForm">
+            <div class="form-group">
+                <label class="form-label">Draft Script</label>
+                <textarea id="reviewScript" class="form-control" rows="3" placeholder="Enter script to analyze...">Stop using harsh chemical cleansers! If your face feels tight after washing, your skin barrier is damaged. Here is what you should do instead...</textarea>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" onclick="runAgent('script-review')">
+                <span>Run Script Review Agent ⚡</span>
+            </button>
+        </form>
+
+        <div style="margin-top: 1rem;">
+            <div style="font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; margin-bottom: 0.35rem;">Diagnostic Output:</div>
+            <div class="ai-output-box" id="scriptReviewOutput" style="min-height: 120px;">Ready to review script...</div>
+        </div>
+    </div>
+</div>
+
+<div class="grid-2">
+    <!-- Agent 3: Approval Summary Agent -->
+    <div class="agent-card">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+            <div>
+                <span class="badge badge-approved" style="margin-bottom: 0.35rem;">Agent 3</span>
+                <h2 style="font-size: 1.15rem; font-weight: 700; color: #fff;">ApprovalSummaryAgent</h2>
+            </div>
+            <span style="font-size: 1.5rem;">📝</span>
+        </div>
+        <p style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 1rem;">
+            Consolidates disjointed feedback from managers and clients into clear, prioritized creator tasks.
+        </p>
+
+        <form id="approvalSummaryForm">
+            <div class="form-group">
+                <label class="form-label">Sample Feedback Thread</label>
+                <textarea id="summaryFeedback" class="form-control" rows="3">Manager: Cut the intro to 3 seconds. The hook takes too long.
+Client: Make sure to clearly show the bottle dropper and mention #AuraGlow.</textarea>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" onclick="runAgent('approval-summary')">
+                <span>Run Summary Agent ⚡</span>
+            </button>
+        </form>
+
+        <div style="margin-top: 1rem;">
+            <div style="font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; margin-bottom: 0.35rem;">Synthesized Action Items:</div>
+            <div class="ai-output-box" id="approvalSummaryOutput" style="min-height: 120px;">Ready to synthesize feedback...</div>
+        </div>
+    </div>
+
+    <!-- Agent 4: Campaign Report Agent -->
+    <div class="agent-card">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+            <div>
+                <span class="badge badge-pending_manager" style="margin-bottom: 0.35rem;">Agent 4</span>
+                <h2 style="font-size: 1.15rem; font-weight: 700; color: #fff;">CampaignReportAgent</h2>
+            </div>
+            <span style="font-size: 1.5rem;">📊</span>
+        </div>
+        <p style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 1rem;">
+            Synthesizes campaign deliverable health, timeline velocity, and ROI into executive reports.
+        </p>
+
+        <form id="campaignReportForm">
+            <div class="form-group">
+                <label class="form-label">Select Campaign</label>
+                <select id="reportCampaign" class="form-control">
+                    {% for camp in campaigns %}
+                    <option value="{{ camp.id }}">{{ camp.title }} ({{ camp.client.name }})</option>
+                    {% empty %}
+                    <option value="">Summer Glow 2026</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" onclick="runAgent('campaign-report')">
+                <span>Run Report Agent ⚡</span>
+            </button>
+        </form>
+
+        <div style="margin-top: 1rem;">
+            <div style="font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; margin-bottom: 0.35rem;">Executive Brief:</div>
+            <div class="ai-output-box" id="campaignReportOutput" style="min-height: 120px;">Ready to compile report...</div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+async function runAgent(agentType) {
+    let payload = {};
+    let outputEl = null;
+
+    if (agentType === 'content-ideas') {
+        outputEl = document.getElementById('contentIdeasOutput');
+        const sel = document.getElementById('ideaClient');
+        const opt = sel.options[sel.selectedIndex];
+        payload = {
+            brand_guidelines: opt ? opt.getAttribute('data-brand') : 'Clean and empowering beauty brand',
+            topic: document.getElementById('ideaTopic').value,
+            platform: 'Instagram'
+        };
+    } else if (agentType === 'script-review') {
+        outputEl = document.getElementById('scriptReviewOutput');
+        payload = {
+            script: document.getElementById('reviewScript').value,
+            platform: 'TikTok',
+            brand_guidelines: 'Clean, supportive, required tag #AuraGlow'
+        };
+    } else if (agentType === 'approval-summary') {
+        outputEl = document.getElementById('approvalSummaryOutput');
+        const text = document.getElementById('summaryFeedback').value;
+        payload = {
+            content_title: 'Summer Launch Reel',
+            approvals: [
+                { reviewer: 'manager', decision: 'REQUEST_CHANGES', comment: text }
+            ]
+        };
+    } else if (agentType === 'campaign-report') {
+        outputEl = document.getElementById('campaignReportOutput');
+        payload = {
+            title: 'Summer Launch',
+            client_name: 'Aura Skincare',
+            status: 'ACTIVE',
+            budget: 8000,
+            total_content: 8,
+            published_content: 4,
+            pending_content: 2,
+            metrics: [
+                { metric_name: 'Impressions', metric_value: 125000 },
+                { metric_name: 'Clicks', metric_value: 4800 }
+            ]
+        };
+    }
+
+    outputEl.textContent = '⚡ Running agent reasoning...';
+
+    try {
+        const res = await fetch(`/api/agents/${agentType}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        outputEl.textContent = JSON.stringify(data, null, 2);
+    } catch (err) {
+        outputEl.textContent = 'Agent execution error: ' + err.message;
+    }
+}
+</script>
+{% endblock %}

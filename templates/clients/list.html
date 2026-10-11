@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Clients — CreatorOps{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Client Accounts</h1>
+        <p class="page-subtitle">Multi-client tenancy with custom brand voices, guidelines, and scoped campaign access.</p>
+    </div>
+    {% if user_role in "ADMIN,MANAGER" %}
+    <a href="{% url 'clients:create' %}" class="btn btn-primary">
+        <span>+ Add New Client</span>
+    </a>
+    {% endif %}
+</div>
+
+<div class="grid-3">
+    {% for client in clients %}
+    <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+                <div>
+                    <h2 style="font-size: 1.25rem; font-weight: 700; color: #fff;">{{ client.name }}</h2>
+                    <span style="font-size: 0.75rem; color: var(--primary); font-weight: 600; text-transform: uppercase;">{{ client.industry|default:"General Brand" }}</span>
+                </div>
+                <span class="badge badge-scheduled">{{ client.campaigns.count }} Campaigns</span>
+            </div>
+
+            <p style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.4;">
+                {{ client.company_notes|truncatewords:20|default:"No company notes recorded." }}
+            </p>
+
+            {% if client.brand_guidelines %}
+            <div style="background: rgba(250, 204, 21, 0.05); border: 1px solid rgba(250, 204, 21, 0.2); border-radius: var(--radius-sm); padding: 0.6rem 0.75rem; margin-bottom: 1rem;">
+                <div style="font-size: 0.7rem; font-weight: 700; color: #FACC15; text-transform: uppercase; margin-bottom: 2px;">
+                    🛡️ AI Brand Guidelines Configured
+                </div>
+                <div style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.3;">
+                    {{ client.brand_guidelines|truncatechars:100 }}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+            <span style="font-size: 0.75rem; color: var(--text-dim);">{{ client.contact_email|default:"No email" }}</span>
+            <div style="display: flex; gap: 0.5rem;">
+                <a href="{% url 'clients:detail' client.id %}" class="btn btn-secondary btn-sm">Manage &rarr;</a>
+                {% if user_role == 'ADMIN' %}
+                <a href="{% url 'clients:update' client.id %}" class="btn btn-secondary btn-sm">Edit</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="card" style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+        <h3 style="color: #fff; margin-bottom: 0.5rem;">No clients added yet</h3>
+        <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1.5rem;">Add your first client brand to organize campaigns and brand guidelines.</p>
+        <a href="{% url 'clients:create' %}" class="btn btn-primary">Add Client</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

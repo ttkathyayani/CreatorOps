@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}Team & RBAC Roles — CreatorOps{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Team & Role-Based Access Control (RBAC)</h1>
+        <p class="page-subtitle">Configure permissions and assign granular roles inside <strong>{{ workspace.name }}</strong>.</p>
+    </div>
+    {% if user_role == 'ADMIN' %}
+    <button type="button" class="btn btn-primary" data-modal-target="inviteModal">
+        <span>+ Add Team Member</span>
+    </button>
+    {% endif %}
+</div>
+
+<!-- RBAC Permissions Matrix Overview -->
+<div class="grid-4" style="margin-bottom: 2rem;">
+    <div class="metric-card">
+        <div>
+            <div style="font-weight: 700; color: #FACC15; font-size: 0.9rem;">ADMIN</div>
+            <div class="metric-label" style="font-size: 0.75rem;">Full configuration, add/delete clients & campaigns, manage team roles.</div>
+        </div>
+    </div>
+    <div class="metric-card">
+        <div>
+            <div style="font-weight: 700; color: #FACC15; font-size: 0.9rem;">MANAGER</div>
+            <div class="metric-label" style="font-size: 0.75rem;">Internal review step, advance drafts to client, mark content as published.</div>
+        </div>
+    </div>
+    <div class="metric-card">
+        <div>
+            <div style="font-weight: 700; color: #FACC15; font-size: 0.9rem;">CREATOR</div>
+            <div class="metric-label" style="font-size: 0.75rem;">Draft storyboards & scripts, upload media, submit for manager review.</div>
+        </div>
+    </div>
+    <div class="metric-card">
+        <div>
+            <div style="font-weight: 700; color: #FACC15; font-size: 0.9rem;">CLIENT REVIEWER</div>
+            <div class="metric-label" style="font-size: 0.75rem;">Scoped client portal access: review and approve submitted deliverables.</div>
+        </div>
+    </div>
+</div>
+
+<!-- Team Members Table -->
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Active Members ({{ members.count }})</h2>
+        <span style="font-size: 0.8125rem; color: var(--text-dim);">Workspace: {{ workspace.name }}</span>
+    </div>
+
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Email</th>
+                    <th>Active Role</th>
+                    <th>Joined</th>
+                    {% if user_role == 'ADMIN' %}
+                    <th>Change Role</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in members %}
+                <tr>
+                    <td>
+                        <div style="font-weight: 600; color: #fff;">{{ m.user.username }}</div>
+                        {% if m.user == request.user %}
+                        <span style="font-size: 0.7rem; color: var(--primary); font-weight: 700;">(You)</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span style="color: var(--text-muted); font-size: 0.8125rem;">{{ m.user.email|default:"No email set" }}</span>
+                    </td>
+                    <td>
+                        <span class="role-tag {{ m.role }}">{{ m.get_role_display }}</span>
+                    </td>
+                    <td>
+                        <span style="color: var(--text-dim); font-size: 0.75rem;">{{ m.created_at|date:"M d, Y" }}</span>
+                    </td>
+                    {% if user_role == 'ADMIN' %}
+                    <td>
+                        <form method="POST" style="display: flex; gap: 0.5rem; align-items: center;">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="update_role">
+                            <input type="hidden" name="member_id" value="{{ m.id }}">
+                            <select name="new_role" class="form-control" style="width: auto; padding: 0.25rem 0.5rem; font-size: 0.75rem;">
+                                {% for r_val, r_label in roles %}
+                                <option value="{{ r_val }}" {% if m.role == r_val %}selected{% endif %}>{{ r_label }}</option>
+                                {% endfor %}
+                            </select>
+                            <button type="submit" class="btn btn-secondary btn-sm">Update</button>
+                        </form>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block modals %}
+<!-- Modal: Add Team Member -->
+<div id="inviteModal" class="modal-backdrop" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(4px); z-index: 100; align-items: center; justify-content: center; padding: 1.5rem;">
+    <div class="card" style="max-width: 500px; width: 100%; background: #1C1C1C; border: 1px solid rgba(255,255,255,0.1);">
+        <div class="card-header">
+            <h2 class="card-title">Add Workspace Member</h2>
+            <button type="button" data-modal-close style="background:none; border:none; color:var(--text-muted); font-size: 1.25rem; cursor:pointer;">&times;</button>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="invite">
+
+            <div class="form-group">
+                <label class="form-label" for="username">Username *</label>
+                <input type="text" id="username" name="username" class="form-control" placeholder="e.g. jessica_creator" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="email">Email *</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="jessica@agency.com" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="role">Assigned Role *</label>
+                <select id="role" name="role" class="form-control" required>
+                    {% for r_val, r_label in roles %}
+                    <option value="{{ r_val }}">{{ r_label }}</option>
+                    {% endfor %}
+                </select>
+                <div class="form-help">Default password for new users will be set to: <code>pass123</code></div>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem;">
+                <button type="button" data-modal-close class="btn btn-secondary">Cancel</button>
+                <button type="submit" class="btn btn-primary">Add Member</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

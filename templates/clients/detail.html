@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}{{ client.name }} — CreatorOps{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <div style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 0.25rem;">
+            <a href="{% url 'clients:list' %}" style="color: var(--text-muted); text-decoration: none;">&larr; Clients</a>
+        </div>
+        <h1 class="page-title">{{ client.name }}</h1>
+        <p class="page-subtitle">{{ client.industry|default:"Client Brand Account" }} &bull; Contact: {{ client.contact_email|default:"None" }}</p>
+    </div>
+    <div style="display: flex; gap: 0.75rem;">
+        <a href="{% url 'campaigns:create' %}" class="btn btn-primary">
+            <span>+ New Campaign</span>
+        </a>
+        {% if user_role in "ADMIN,MANAGER" %}
+        <a href="{% url 'clients:update' client.id %}" class="btn btn-secondary">
+            <span>Edit Profile</span>
+        </a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="grid-3" style="margin-bottom: 2rem;">
+    <!-- Brand Guidelines Card (Used by AI Agents) -->
+    <div class="card" style="grid-column: span 2;">
+        <div class="card-header">
+            <h2 class="card-title">🤖 Brand Guidelines & AI Agent Rules</h2>
+            <span class="badge badge-published">Active System Context</span>
+        </div>
+        <p style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 1rem;">
+            These instructions are passed to the <strong>AI Script Review Agent</strong> and <strong>AI Content Ideas Agent</strong> to verify tone, mandatory keywords, and brand safety compliance.
+        </p>
+        <div class="ai-output-box">
+{{ client.brand_guidelines|default:"No specific brand guidelines defined yet. You can add required hashtags, tone of voice, forbidden claims, and product messaging by editing this client." }}
+        </div>
+    </div>
+
+    <!-- Client Info Card -->
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">Account Details</h2>
+        </div>
+        <div style="font-size: 0.875rem; display: flex; flex-direction: column; gap: 0.75rem;">
+            <div>
+                <div style="color: var(--text-dim); font-size: 0.75rem;">Industry</div>
+                <div style="font-weight: 600; color: #fff;">{{ client.industry|default:"N/A" }}</div>
+            </div>
+            <div>
+                <div style="color: var(--text-dim); font-size: 0.75rem;">Primary Contact Email</div>
+                <div style="font-weight: 600; color: #fff;">{{ client.contact_email|default:"N/A" }}</div>
+            </div>
+            <div>
+                <div style="color: var(--text-dim); font-size: 0.75rem;">Created On</div>
+                <div style="color: var(--text-muted);">{{ client.created_at|date:"M d, Y" }}</div>
+            </div>
+            <div>
+                <div style="color: var(--text-dim); font-size: 0.75rem;">Internal Agency Notes</div>
+                <div style="color: var(--text-muted); font-size: 0.8125rem;">{{ client.company_notes|default:"None" }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Campaigns for this client -->
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Client Campaigns ({{ campaigns.count }})</h2>
+        <a href="{% url 'campaigns:create' %}" class="btn btn-secondary btn-sm">+ Launch Campaign</a>
+    </div>
+
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Campaign Title</th>
+                    <th>Status</th>
+                    <th>Budget</th>
+                    <th>Timeline</th>
+                    <th>Deliverables</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for camp in campaigns %}
+                <tr>
+                    <td>
+                        <a href="{% url 'campaigns:detail' camp.id %}" style="font-weight: 600; color: #fff; text-decoration: none;">
+                            {{ camp.title }}
+                        </a>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">{{ camp.objective|truncatechars:60 }}</div>
+                    </td>
+                    <td>
+                        <span class="badge badge-scheduled">{{ camp.get_status_display }}</span>
+                    </td>
+                    <td>${{ camp.budget|floatformat:0 }}</td>
+                    <td>
+                        <span style="font-size: 0.8125rem; color: var(--text-muted);">
+                            {{ camp.start_date|default:"TBD" }} &rarr; {{ camp.end_date|default:"TBD" }}
+                        </span>
+                    </td>
+                    <td>
+                        <span style="font-weight: 600;">{{ camp.total_content_items }} items</span>
+                        <span style="font-size: 0.75rem; color: var(--success); margin-left: 4px;">({{ camp.published_count }} live)</span>
+                    </td>
+                    <td>
+                        <a href="{% url 'campaigns:detail' camp.id %}" class="btn btn-secondary btn-sm">View Campaign &rarr;</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-dim);">
+                        No campaigns created for this client yet.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

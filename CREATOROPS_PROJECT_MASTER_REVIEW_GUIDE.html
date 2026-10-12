@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CreatorOps — Master Project Review & Viva Defense Guide</title>
+  <style>
+    :root {
+      --bg: #0F172A;
+      --card-bg: #1E293B;
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --border: #334155;
+      --yellow: #FACC15;
+      --yellow-hover: #EAB308;
+      --green: #10B981;
+      --red: #EF4444;
+      --blue: #38BDF8;
+      --purple: #A855F7;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #0B0F19;
+      color: #E2E8F0;
+      line-height: 1.65;
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: #111827;
+      border: 1px solid #1F2937;
+      border-radius: 12px;
+      padding: 48px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #374151;
+      padding-bottom: 24px;
+      margin-bottom: 32px;
+    }
+    .btn-print {
+      background: #FACC15;
+      color: #000;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+    .btn-print:hover { background: #EAB308; }
+    h1 { font-size: 32px; color: #FACC15; margin-bottom: 8px; font-weight: 800; letter-spacing: -0.5px; }
+    h2 { font-size: 22px; color: #F1F5F9; margin-top: 36px; margin-bottom: 16px; border-bottom: 1px solid #374151; padding-bottom: 8px; }
+    h3 { font-size: 18px; color: #FACC15; margin-top: 24px; margin-bottom: 8px; }
+    p { margin-bottom: 14px; font-size: 15px; color: #CBD5E1; }
+    ul, ol { margin-left: 24px; margin-bottom: 16px; }
+    li { margin-bottom: 8px; font-size: 15px; }
+    strong { color: #F8FAFC; }
+    code {
+      background: #1F2937;
+      color: #FACC15;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    pre {
+      background: #030712;
+      border: 1px solid #1F2937;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-bottom: 18px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      color: #38BDF8;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid #374151;
+      padding: 10px 14px;
+      text-align: left;
+    }
+    th {
+      background: #1F2937;
+      color: #FACC15;
+      font-weight: 700;
+    }
+    tr:nth-child(even) { background: rgba(255, 255, 255, 0.02); }
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .badge-yellow { background: rgba(250, 204, 21, 0.15); color: #FACC15; border: 1px solid rgba(250, 204, 21, 0.3); }
+    .badge-green { background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-blue { background: rgba(56, 189, 248, 0.15); color: #38BDF8; border: 1px solid rgba(56, 189, 248, 0.3); }
+    .callout {
+      background: rgba(30, 41, 59, 0.7);
+      border-left: 4px solid #FACC15;
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 20px;
+    }
+    .toc {
+      background: #1F2937;
+      padding: 20px 24px;
+      border-radius: 8px;
+      margin-bottom: 32px;
+      border: 1px solid #374151;
+    }
+    .toc ul { list-style: none; margin-left: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .toc a { color: #38BDF8; text-decoration: none; font-size: 14px; }
+    .toc a:hover { text-decoration: underline; color: #FACC15; }
+    .qa-box {
+      background: #1A2234;
+      border: 1px solid #2A374E;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 16px;
+    }
+    .qa-box .q {
+      font-weight: 700;
+      color: #FACC15;
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+    .qa-box .a {
+      color: #CBD5E1;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    @media print {
+      body { background: #fff; color: #000; padding: 0; }
+      .container { background: #fff; border: none; box-shadow: none; padding: 0; max-width: 100%; }
+      .btn-print, .header-bar .btn-print { display: none; }
+      h1, h2, h3 { color: #000; }
+      p, li, .qa-box .a { color: #222; }
+      .qa-box { border: 1px solid #ccc; background: #fafafa; }
+      pre, code { background: #f0f0f0; color: #000; border: 1px solid #ddd; }
+      th { background: #eee; color: #000; }
+      td, th { border: 1px solid #ccc; color: #000; }
+      .callout { border-left-color: #000; background: #f9f9f9; }
+      .badge { border: 1px solid #999; color: #000; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header-bar">
+    <div>
+      <h1>CreatorOps — Project Master Review Guide</h1>
+      <p style="margin: 0; color: var(--text-muted);">Scalable Multi-Tenant Creator Campaign Management & Content Production Cloud SaaS</p>
+    </div>
+    <button class="btn-print" onclick="window.print()">🖨️ Print / Save as PDF</button>
+  </div>
+
+  <div class="callout">
+    <strong>Live Cloud URL:</strong> <a href="https://creatorops-rho.vercel.app" target="_blank" style="color: #FACC15;">https://creatorops-rho.vercel.app</a><br>
+    <strong>GitHub Repository:</strong> <a href="https://github.com/ttkathyayani/CreatorOps" target="_blank" style="color: #38BDF8;">https://github.com/ttkathyayani/CreatorOps</a><br>
+    <strong>Course Reference:</strong> Cloud Computing & Full-Stack Application Development (BCSE408L)
+  </div>
+
+  <div class="toc">
+    <strong style="color: #F8FAFC; margin-bottom: 12px; display: block;">📑 Document Navigation</strong>
+    <ul>
+      <li><a href="#summary">1. Executive Summary & Problem</a></li>
+      <li><a href="#techstack">2. Technology Stack</a></li>
+      <li><a href="#erd">3. Database Schema (ERD)</a></li>
+      <li><a href="#statemachine">4. Content Workflow State Machine</a></li>
+      <li><a href="#rbac">5. Role-Based Access Control (RBAC)</a></li>
+      <li><a href="#agents">6. AI Agent Framework</a></li>
+      <li><a href="#screens">7. Screen-by-Screen Walkthrough (All 18 Pages)</a></li>
+      <li><a href="#demo">8. 5-Minute Live Review Demo Script</a></li>
+      <li><a href="#viva">9. Top 20 Viva & Defense Q&A</a></li>
+      <li><a href="#credentials">10. Pre-Seeded Demo Logins</a></li>
+    </ul>
+  </div>
+
+  <!-- SECTION 1 -->
+  <h2 id="summary">1. Executive Summary & Problem Statement</h2>
+  <p><strong>The Industry Problem:</strong> In digital marketing, creator operations are broken across unorganized channels (WhatsApp, Slack, Google Drive). Creators miss brand guidelines, client approvals cause critical scheduling delays, and agencies lack structured version auditing.</p>
+  <p><strong>The CreatorOps Solution:</strong> CreatorOps provides a centralized, multi-tenant cloud SaaS with:</p>
+  <ul>
+    <li><strong>Client & Campaign Portfolios:</strong> Centralized budgeting, deliverables tracking, and client management.</li>
+    <li><strong>7-Stage Content Production State Machine:</strong> Strict gating from Draft to Final Publishing.</li>
+    <li><strong>Two-Tier Approvals:</strong> Internal agency manager review followed by external brand client sign-off.</li>
+    <li><strong>Embedded AI Agents:</strong> Autonomous script audits, concept brainstorming, feedback clustering, and executive reports.</li>
+    <li><strong>Zero-Trust Multi-Tenancy:</strong> Complete row-level tenant isolation per Workspace.</li>
+  </ul>
+
+  <!-- SECTION 2 -->
+  <h2 id="techstack">2. Technology Stack & Architectural Decisions</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Layer</th>
+        <th>Technology</th>
+        <th>Rationale & Benefit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Backend</strong></td>
+        <td>Django 6.1 (Python 3.12)</td>
+        <td>Enterprise ORM, built-in session auth, migrations, and administrative capabilities.</td>
+      </tr>
+      <tr>
+        <td><strong>REST API</strong></td>
+        <td>Django REST Framework (DRF 3.18)</td>
+        <td>ModelViewSets, JSON serialization, and programmatic endpoints for AI agents.</td>
+      </tr>
+      <tr>
+        <td><strong>Frontend</strong></td>
+        <td>Django Dynamic Templates + Vanilla JS</td>
+        <td>Fast server-side rendering, zero heavy npm dependencies, SEO-optimized.</td>
+      </tr>
+      <tr>
+        <td><strong>Design System</strong></td>
+        <td>Custom Black-and-Yellow CSS</td>
+        <td>Strict dark mode (<code>#111111</code>, <code>#1C1C1C</code>) with vibrant yellow accents (<code>#FACC15</code>).</td>
+      </tr>
+      <tr>
+        <td><strong>Database</strong></td>
+        <td>SQLite / Cloud PostgreSQL</td>
+        <td>Dual-mode adapter supporting <code>DATABASE_URL</code> and Vercel <code>/tmp</code> writeable copy.</td>
+      </tr>
+      <tr>
+        <td><strong>Static Assets</strong></td>
+        <td>WhiteNoise 6.12</td>
+        <td>Compressed, cache-optimized static asset delivery directly from WSGI.</td>
+      </tr>
+      <tr>
+        <td><strong>Media Storage</strong></td>
+        <td>Dual Mode (AWS S3 + Local)</td>
+        <td>AWS S3 support via Boto3 with local media fallback.</td>
+      </tr>
+      <tr>
+        <td><strong>Hosting</strong></td>
+        <td>Vercel Python Serverless</td>
+        <td>Zero-config cloud serverless deployment with global Edge routing and SSL.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION 3 -->
+  <h2 id="erd">3. Database Schema & Models Breakdown</h2>
+  <p>CreatorOps models are organized into 9 relational entities enforcing foreign key integrity:</p>
+  <pre>
+[Workspace] 1 ── ∞ [Membership] ∞ ── 1 [User]
+     │
+     └── 1 ── ∞ [Client]
+                  │
+                  └── 1 ── ∞ [Campaign] 1 ── ∞ [CampaignMetric]
+                                  │
+                                  └── 1 ── ∞ [ContentItem]
+                                                  ├── 1 ── ∞ [ContentVersion]
+                                                  ├── 1 ── ∞ [Approval]
+                                                  └── 1 ── ∞ [Asset]
+  </pre>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Model</th>
+        <th>Key Fields & Constraints</th>
+        <th>Business Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>Workspace</code></td>
+        <td><code>name</code>, <code>slug</code> (unique), <code>description</code></td>
+        <td>Represents an isolated organization/agency tenant boundary.</td>
+      </tr>
+      <tr>
+        <td><code>Membership</code></td>
+        <td><code>user</code>, <code>workspace</code>, <code>role</code> (Admin, Manager, Creator, Client)</td>
+        <td>Role-Based Access Control link. Enforces <code>unique_together = ("user", "workspace")</code>.</td>
+      </tr>
+      <tr>
+        <td><code>Client</code></td>
+        <td><code>workspace</code>, <code>name</code>, <code>contact_email</code>, <code>brand_guidelines</code></td>
+        <td>Brand client account. Stores guidelines ingested by AI Script Review.</td>
+      </tr>
+      <tr>
+        <td><code>Campaign</code></td>
+        <td><code>client</code>, <code>title</code>, <code>budget</code>, <code>status</code>, <code>start_date</code>, <code>end_date</code></td>
+        <td>Marketing initiative grouping deliverables and financial budget.</td>
+      </tr>
+      <tr>
+        <td><code>ContentItem</code></td>
+        <td><code>campaign</code>, <code>creator</code>, <code>platform</code>, <code>script_body</code>, <code>caption</code>, <code>status</code></td>
+        <td>Core deliverable undergoing the 7-stage production workflow.</td>
+      </tr>
+      <tr>
+        <td><code>ContentVersion</code></td>
+        <td><code>content_item</code>, <code>revision_number</code>, <code>script_snapshot</code>, <code>created_by</code></td>
+        <td>Immutable version snapshot providing historical audit trails.</td>
+      </tr>
+      <tr>
+        <td><code>Approval</code></td>
+        <td><code>content_item</code>, <code>reviewer</code>, <code>decision</code>, <code>comment</code>, <code>timestamp</code></td>
+        <td>Audit record of manager or client sign-off or change requests.</td>
+      </tr>
+      <tr>
+        <td><code>Asset</code></td>
+        <td><code>content_item</code>, <code>file</code>, <code>filename</code>, <code>s3_object_key</code>, <code>size_bytes</code></td>
+        <td>Media files (videos, thumbnails, storyboards) uploaded to deliverable.</td>
+      </tr>
+      <tr>
+        <td><code>CampaignMetric</code></td>
+        <td><code>campaign</code>, <code>metric_name</code>, <code>metric_value</code>, <code>recorded_date</code></td>
+        <td>Numerical telemetry (Impressions, Clicks, Conversions, Engagement).</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION 4 -->
+  <h2 id="statemachine">4. 7-Stage Content Production State Machine</h2>
+  <pre>
+[1. DRAFT] (Creator writing)
+      │
+      ▼
+[2. PENDING MANAGER REVIEW] (Internal QA check)
+      ├── Manager Requests Changes ──> [5. CHANGES REQUESTED] ──> (Creator edits & re-submits)
+      └── Manager Approves
+             │
+             ▼
+[3. PENDING CLIENT APPROVAL] (External Brand Sign-Off)
+      ├── Client Requests Changes ───> [5. CHANGES REQUESTED]
+      └── Client Approves
+             │
+             ▼
+[4. APPROVED] ──> [6. SCHEDULED] ──> [7. PUBLISHED]
+  </pre>
+
+  <!-- SECTION 5 -->
+  <h2 id="rbac">5. Role-Based Access Control (RBAC) Matrix</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Action</th>
+        <th>Admin</th>
+        <th>Manager</th>
+        <th>Creator</th>
+        <th>Client</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Workspace & Member Management</td>
+        <td><span class="badge badge-green">Allowed</span></td>
+        <td><span class="badge badge-yellow">Denied</span></td>
+        <td><span class="badge badge-yellow">Denied</span></td>
+        <td><span class="badge badge-yellow">Denied</span></td>
+      </tr>
+      <tr>
+        <td>Create / Edit Clients & Campaigns</td>
+        <td><span class="badge badge-green">Allowed</span></td>
+        <td><span class="badge badge-green">Allowed</span></td>
+        <td><span class="badge badge-yellow">Denied</span></td>
+        <td><span class="badge badge-yellow">Denied</span></td>
+      </tr>
+      <tr>
+        <td>Draft Content & Upload Media</td>
+        <td><span class="badge badge-green">Allowed</span></td>
+        <td><span class="badge badge-green">Allowed</span></td>
+        <td><span class="badge badge-green">Allowed</span></td>
+        <td><span class="badge badge-yellow">Denied</span></td>
+      </tr>
+      <tr>
+        <td>Run AI Script Review Agent</td>
+        <td><span class="badge badge-green">Allowed</span></td>
+        <td><span class="badge badge-green">Allowed</span></td>
+        <td><span class="badge badge-green">Allowed</span></td>
+        <td><span class="badge badge-yellow">Denied</span></td>
+      </tr>
+      <tr>
+        <td>Manager Internal Approval Sign-Off</td>
+        <td><span class="badge badge-green">Allowed</span></td>
+        <td><span class="badge badge-green">Allowed</span></td>
+        <td><span class="badge badge-yellow">Denied</span></td>
+        <td><span class="badge badge-yellow">Denied</span></td>
+      </tr>
+      <tr>
+        <td>Client External Approval Sign-Off</td>
+        <td><span class="badge badge-yellow">Denied</span></td>
+        <td><span class="badge badge-yellow">Denied</span></td>
+        <td><span class="badge badge-yellow">Denied</span></td>
+        <td><span class="badge badge-green">Allowed</span></td>
+      </tr>
+      <tr>
+        <td>Record Analytics & View Reports</td>
+        <td><span class="badge badge-green">Allowed</span></td>
+        <td><span class="badge badge-green">Allowed</span></td>
+        <td><span class="badge badge-blue">View Only</span></td>
+        <td><span class="badge badge-blue">View Only</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION 6 -->
+  <h2 id="agents">6. AI Agent Framework & Mathematical Heuristics</h2>
+  <div class="callout">
+    <strong>Architecture:</strong> All agents inherit from <code>agents/base.py:BaseAgent</code> and implement a standardized <code>run(data) -> dict</code> interface. This decouples the agent logic from the web views.
+  </div>
+
+  <p><strong>1. Script Review Agent (<code>ScriptReviewAgent</code>):</strong></p>
+  <ul>
+    <li><strong>Speaking Rate Pacing:</strong> <code>duration_seconds = round((word_count / 130) * 60)</code>. Flags short-form scripts > 150 words (-15 pts).</li>
+    <li><strong>Call-to-Action (CTA) Audit:</strong> Checks presence of keywords (<code>subscribe</code>, <code>link in bio</code>, <code>save</code>, <code>comment</code>). Missing CTA = -20 pts.</li>
+    <li><strong>Opening Hook Audit:</strong> Inspects first 20 words for curiosity drivers (<code>why</code>, <code>stop</code>, <code>secret</code>, <code>how</code>, <code>?</code>). Missing hook = -15 pts.</li>
+    <li><strong>Brand Compliance:</strong> Parses client brand guidelines and penalizes forbidden words (-15 pts each).</li>
+  </ul>
+
+  <p><strong>2. Content Ideas Agent (<code>ContentIdeasAgent</code>):</strong></p>
+  <ul>
+    <li>Generates platform-tailored creative concepts, hooks, and formats based on target audience, industry, and campaign goal.</li>
+  </ul>
+
+  <p><strong>3. Approval Summary Agent (<code>ApprovalSummaryAgent</code>):</strong></p>
+  <ul>
+    <li>Clusters disparate feedback comments into 5 operational categories (Hook & Pacing, CTA, Visuals, Branding, Copywriting) and creates a prioritized revision checklist.</li>
+  </ul>
+
+  <p><strong>4. Campaign Report Agent (<code>CampaignReportAgent</code>):</strong></p>
+  <ul>
+    <li>Calculates Completion Rate %, Average Engagement Rate %, and Cost Per Acquisition (CPA = Budget / Conversions), outputting an executive narrative summary.</li>
+  </ul>
+
+  <!-- SECTION 7 -->
+  <h2 id="screens">7. Screen-by-Screen Walkthrough (All 18 Web Pages)</h2>
+
+  <div class="qa-box">
+    <div class="q">Screen 1: User Login (`/accounts/login/`)</div>
+    <div class="a">
+      <strong>Purpose:</strong> Secure entry point into the SaaS.<br>
+      <strong>Elements on Screen:</strong> CreatorOps logo, Username/Password inputs, "Sign In" button, Quick Demo Credentials banner, and "Create Account" link.<br>
+      <strong>Roles:</strong> Anyone (Unauthenticated).
+    </div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Screen 2: User Registration (`/accounts/register/`)</div>
+    <div class="a">
+      <strong>Purpose:</strong> Self-service tenant signup.<br>
+      <strong>Elements on Screen:</strong> Username, Email, Password, Agency Name, Role dropdown, "Create Account" button.<br>
+      <strong>Action:</strong> Creates User, new Workspace, and binds Admin Membership.
+    </div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Screen 3: Executive Dashboard (`/dashboard/`)</div>
+    <div class="a">
+      <strong>Purpose:</strong> Command central showing real-time production telemetry.<br>
+      <strong>Elements on Screen:</strong> 4 KPI Stat Cards (Clients, Campaigns, Content, Published), Production Pipeline Progress Bar, Role-Specific Pending Approvals Box, Recent Deliverables Table, Active Campaigns Grid.<br>
+      <strong>Roles:</strong> All authenticated roles.
+    </div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Screen 4: Client Brands Portfolio (`/clients/`)</div>
+    <div class="a">
+      <strong>Purpose:</strong> Directory of all brand accounts managed by the agency.<br>
+      <strong>Elements on Screen:</strong> "+ Add Client" button, Client Card Grid with industry tags, campaign counts, brand voice snippets, and "View Portfolio" buttons.<br>
+      <strong>Roles:</strong> All members.
+    </div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Screen 5: Client Detail & Brand Guidelines (`/clients/<id>/`)</div>
+    <div class="a">
+      <strong>Purpose:</strong> Deep dive into a brand's guidelines and linked campaigns.<br>
+      <strong>Elements on Screen:</strong> Brand Guidelines card (required hashtags, voice rules), Associated Campaigns table, "Edit Guidelines" & "+ New Campaign" buttons.<br>
+      <strong>Roles:</strong> All members.
+    </div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Screen 6: Client Form (`/clients/create/`, `/clients/<id>/edit/`)</div>
+    <div class="a">
+      <strong>Purpose:</strong> Creating and editing client brand profiles.<br>
+      <strong>Elements on Screen:</strong> Name, Contact Email, Industry, and Brand Guidelines textarea.<br>
+      <strong>Roles:</strong> Admin, Manager.
+    </div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Screen 7: Client Delete Confirmation (`/clients/<id>/delete/`)</div>
+    <div class="a">
+      <strong>Purpose:</strong> Guardrail against accidental data loss.<br>
+      <strong>Elements on Screen:</strong> Cascade deletion warning, "Yes, Delete" and "Cancel" buttons.<br>
+      <strong>Roles:</strong> Admin.
+    </div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Screen 8: Campaigns Directory (`/campaigns/`)</div>
+    <div class="a">
+      <strong>Purpose:</strong> High-level view of all marketing campaigns.<br>
+      <strong>Elements on Screen:</strong> "+ Create Campaign" button, Campaign cards with status badges (Planning, Active, Paused, Completed), budget counters, date ranges, and completion bars.<br>
+      <strong>Roles:</strong> All members.
+    </div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Screen 9: Campaign Command Center (`/campaigns/<id>/`)</div>
+    <div class="a">
+      <strong>Purpose:</strong> Detailed campaign control room.<br>
+      <strong>Elements on Screen:</strong> Objective banner, target audience, budget, Content Funnel Bar, linked Content Deliverables Matrix, "+ Add Deliverable", and "Generate AI Report" button.<br>
+      <strong>Roles:</strong> All members.
+    </div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Screen 10: Campaign Form (`/campaigns/create/`, `/campaigns/<id>/edit/`)</div>
+    <div class="a">
+      <strong>Purpose:</strong> Provisioning new campaigns.<br>
+      <strong>Elements on Screen:</strong> Client selector, Title, Objective, Target Audience, Budget ($), Status, Start/End date pickers.<br>
+      <strong>Roles:</strong> Admin, Manager.
+    </div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Screen 11: Content Deliverables Matrix (`/content/`)</div>
+    <div class="a">
+      <strong>Purpose:</strong> Global tracking grid of all social media assets.<br>
+      <strong>Elements on Screen:</strong> Multi-filter toolbar (Status, Platform, Campaign), "+ New Deliverable" button, deliverables table with platform icons, due dates, statuses, and "Open Workspace" buttons.<br>
+      <strong>Roles:</strong> All members.
+    </div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Screen 12: Content Item Workspace & Versioning (`/content/<id>/`)</div>
+    <div class="a">
+      <strong>Purpose:</strong> Creator drafting and collaboration workspace.<br>
+      <strong>Elements on Screen:</strong> 7-stage workflow bar, Script editor, Caption box, "Run AI Script Review" diagnostic card, Media gallery, Upload form, AI Feedback Summary card, Approval history log, and Immutable Version History table.<br>
+      <strong>Roles:</strong> All members.
+    </div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Screen 13: Content Creation Form (`/content/create/`)</div>
+    <div class="a">
+      <strong>Purpose:</strong> Adding a new content deliverable.<br>
+      <strong>Elements on Screen:</strong> Campaign dropdown, Title, Social Platform selector, Due Date picker, Script Body textarea, Caption textarea, Initial Status.<br>
+      <strong>Roles:</strong> Admin, Manager, Creator.
+    </div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Screen 14: Editorial Content Calendar (`/content/calendar/`)</div>
+    <div class="a">
+      <strong>Purpose:</strong> Time-based visualization of publishing deadlines.<br>
+      <strong>Elements on Screen:</strong> Chronological calendar grid, deliverable cards tagged by platform and status, quick links.<br>
+      <strong>Roles:</strong> All members.
+    </div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Screen 15: Two-Tier Approval Queue (`/approvals/`)</div>
+    <div class="a">
+      <strong>Purpose:</strong> Role-filtered approval gate for managers and clients.<br>
+      <strong>Elements on Screen:</strong> Role-aware indicator (Manager queue vs Client queue), Deliverable preview cards, Decision buttons (Approve / Request Changes), Comment feedback textarea.<br>
+      <strong>Roles:</strong> Manager, Client Reviewer, Admin.
+    </div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Screen 16: AI Executive Campaign Report (`/analytics/campaigns/<id>/report/`)</div>
+    <div class="a">
+      <strong>Purpose:</strong> Performance analytics and automated reporting for client presentations.<br>
+      <strong>Elements on Screen:</strong> AI narrative summary, Health badge, KPI cards (Impressions, Clicks, Conversions, Engagement Rate), AI recommendations, Telemetry entry form, and "Print / Export" button.<br>
+      <strong>Roles:</strong> All members.
+    </div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Screen 17: AI Agent Studio (`/analytics/agents/`)</div>
+    <div class="a">
+      <strong>Purpose:</strong> Interactive testing workbench for the 4 autonomous agents.<br>
+      <strong>Elements on Screen:</strong> Tabbed interface to test Script Review, Content Ideas, Approval Summary, and Campaign Report agents on demand with live JSON inspection.<br>
+      <strong>Roles:</strong> All members.
+    </div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Screen 18: Team & RBAC Management (`/workspaces/members/`)</div>
+    <div class="a">
+      <strong>Purpose:</strong> Agency team administration.<br>
+      <strong>Elements on Screen:</strong> Workspace details, Active Members table with role badges, Role update dropdowns, "Invite New Member" form.<br>
+      <strong>Roles:</strong> Admin.
+    </div>
+  </div>
+
+  <!-- SECTION 8 -->
+  <h2 id="demo">8. 5-Minute Live Review Demo Script</h2>
+  <ol>
+    <li><strong>Open Live URL:</strong> Navigate to <a href="https://creatorops-rho.vercel.app" target="_blank" style="color: #FACC15;">https://creatorops-rho.vercel.app</a>. Explain that the app is running on Vercel Serverless with global SSL.</li>
+    <li><strong>Log in as Admin:</strong> Use <code>admin / admin123</code>. Walk through the <strong>Dashboard</strong> metrics, production bar, and active campaigns.</li>
+    <li><strong>Show Clients & Campaigns:</strong> Open <strong>Clients</strong> (show brand voice for GlowSkin Organics) and <strong>Campaigns</strong> (show Summer Glow Launch 2026).</li>
+    <li><strong>Content Studio & AI Audit:</strong> Open deliverable <em>"5 Morning Skincare Mistakes"</em> under Content. Click <strong>"Run AI Script Review"</strong> to demonstrate automated hook, CTA, and brand compliance scoring. Point to the <strong>Version History</strong> table.</li>
+    <li><strong>Approval Queue:</strong> Open <strong>Approvals</strong>. Show how deliverables transition between Manager Review and Client Sign-off.</li>
+    <li><strong>Executive Report:</strong> Open <strong>AI Campaign Report</strong> to display automated narrative analysis and ROI calculations.</li>
+  </ol>
+
+  <!-- SECTION 9 -->
+  <h2 id="viva">9. Top 20 Review & Viva Defense Questions & Answers</h2>
+
+  <div class="qa-box">
+    <div class="q">Q1: What architectural pattern does CreatorOps follow?</div>
+    <div class="a">CreatorOps implements the <strong>Model-View-Template (MVT)</strong> pattern in Django alongside <strong>Domain-Driven Design (DDD)</strong>, cleanly partitioning logic across 9 independent modules.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Q2: How is Multi-Tenancy implemented and secured?</div>
+    <div class="a">We use <strong>Row-Level Tenant Isolation</strong> centered on the <code>Workspace</code> model. Every query is filtered by <code>request.workspace</code> via our <code>@workspace_required</code> decorator, preventing cross-tenant leakage.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Q3: What are the 4 user roles in your RBAC system?</div>
+    <div class="a"><code>ADMIN</code> (full agency control), <code>MANAGER</code> (campaigns, internal reviews), <code>CREATOR</code> (scripts, drafts, AI checks), and <code>CLIENT_REVIEWER</code> (external client portal sign-off).</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Q4: How does your Content Production State Machine work?</div>
+    <div class="a">Content moves through 7 strict states: <code>draft</code> &rarr; <code>pending_manager</code> &rarr; <code>pending_client</code> &rarr; <code>approved</code> &rarr; <code>scheduled</code> &rarr; <code>published</code>. Rejections transition items to <code>changes_requested</code>.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Q5: How does content versioning prevent tampering?</div>
+    <div class="a">Whenever copy changes, <code>ContentItem.create_version()</code> creates an immutable <code>ContentVersion</code> snapshot with an incremented revision number and timestamp. Old versions are never edited.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Q6: Are your AI agents using external APIs or local logic?</div>
+    <div class="a">They currently use <strong>deterministic heuristic and NLP rule engines</strong> inheriting from an extensible <code>BaseAgent</code>. They can be connected to OpenAI, Gemini, or Claude by simply updating the <code>run()</code> method.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Q7: Why did you choose WhiteNoise for static files?</div>
+    <div class="a">Django's default static handler is insecure for production. WhiteNoise serves compressed, hash-fingerprinted static assets directly through the WSGI layer with high-performance cache headers.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Q8: How did you handle Vercel's read-only filesystem with SQLite?</div>
+    <div class="a">In <code>config/settings.py</code>, when <code>VERCEL</code> is detected, Django automatically copies the bundled <code>db.sqlite3</code> to the writable <code>/tmp/db.sqlite3</code> path, preventing read-only database crash errors.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Q9: What happens when a brand client requests changes?</div>
+    <div class="a">The status changes to <code>changes_requested</code>, an <code>Approval</code> record is logged, and the <code>ApprovalSummaryAgent</code> extracts the revision feedback into a prioritized action checklist for the creator.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Q10: How are media uploads handled?</div>
+    <div class="a">Through a dual-storage abstraction in <code>assets/storage.py</code>: when configured, files upload directly to AWS S3 using Boto3; otherwise, they store in Django's local media directory.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Q11: What is the purpose of your custom Context Processor?</div>
+    <div class="a"><code>workspaces/context_processors.py</code> injects <code>active_workspace</code>, <code>user_role</code>, and memberships into every template automatically, eliminating repetitive queries in views.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Q12: Why is CSRF configuration needed for Vercel?</div>
+    <div class="a">Django blocks cross-origin POST requests by default. Adding <code>https://*.vercel.app</code> to <code>CSRF_TRUSTED_ORIGINS</code> allows legitimate Vercel form submissions while protecting against CSRF attacks.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Q13: How does your Workspace model handle duplicate names?</div>
+    <div class="a">In <code>Workspace.save()</code>, a slug generation loop checks for existing slugs and automatically appends an incremental counter (e.g. <code>agency-1</code>, <code>agency-2</code>).</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Q14: How are REST APIs structured alongside template views?</div>
+    <div class="a">DRF's <code>DefaultRouter</code> manages API endpoints under <code>/api/</code> (returning JSON for clients, campaigns, and content), while Django template views render HTML on main URL paths.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Q15: How does the calendar view work?</div>
+    <div class="a">It queries deliverables where <code>due_date__isnull=False</code>, ordering them chronologically and displaying color-coded platform and status badges on an editorial timeline.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Q16: What database constraints protect data integrity?</div>
+    <div class="a">We use <code>unique_together</code> on <code>Client</code> (workspace + name) and <code>Membership</code> (user + workspace) to prevent duplicate clients or dual memberships.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Q17: What speaking speed formula does your Script Review Agent use?</div>
+    <div class="a">It assumes a standard conversational speed of 130 words per minute: <code>duration = (words / 130) * 60</code>, flagging short-form scripts over 150 words.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Q18: How does your CSS design system adapt to mobile?</div>
+    <div class="a"><code>static/css/style.css</code> uses responsive CSS Grid and Flexbox with a breakpoint at 768px, collapsing the 260px sidebar into a stacked mobile layout.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Q19: How do you seed test data?</div>
+    <div class="a">Via custom command <code>python manage.py seed_demo_data</code>, which creates 4 distinct user accounts, 3 clients, 3 campaigns, 5 deliverables, and metrics in an atomic script.</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="q">Q20: What are potential future enhancements?</div>
+    <div class="a">Direct social media publishing via Meta Graph & YouTube APIs, LLM-powered script auto-rewriting, and Stripe subscription billing tiers.</div>
+  </div>
+
+  <!-- SECTION 10 -->
+  <h2 id="credentials">10. Pre-Seeded Demo Logins Reference</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Role</th>
+        <th>Username</th>
+        <th>Password</th>
+        <th>Primary Responsibility</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Agency Admin</strong></td>
+        <td><code>admin</code></td>
+        <td><code>admin123</code></td>
+        <td>Full agency management, member invites, billing, settings.</td>
+      </tr>
+      <tr>
+        <td><strong>Campaign Manager</strong></td>
+        <td><code>manager</code></td>
+        <td><code>admin123</code></td>
+        <td>Campaign creation, deliverables assignment, internal sign-offs.</td>
+      </tr>
+      <tr>
+        <td><strong>Content Creator</strong></td>
+        <td><code>creator</code></td>
+        <td><code>admin123</code></td>
+        <td>Drafting scripts, uploading video clips, running AI audits.</td>
+      </tr>
+      <tr>
+        <td><strong>Client Brand</strong></td>
+        <td><code>client</code></td>
+        <td><code>admin123</code></td>
+        <td>Brand portal review, client approvals, revision requests.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="text-align: center; margin-top: 48px; padding-top: 24px; border-top: 1px solid #374151; color: var(--text-muted); font-size: 13px;">
+    CreatorOps &bull; B.Tech CSE Project Review & Viva Defense Guide &bull; Live on Vercel
+  </div>
+</div>
+
+</body>
+</html>

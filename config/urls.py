@@ -17,6 +17,15 @@ router.register(r"clients", ClientViewSet, basename="api-clients")
 router.register(r"campaigns", CampaignViewSet, basename="api-campaigns")
 router.register(r"content", ContentItemViewSet, basename="api-content")
 
+from django.http import HttpResponse
+
+def review_guide_view(request):
+    guide_path = settings.BASE_DIR / "CREATOROPS_PROJECT_MASTER_REVIEW_GUIDE.html"
+    if guide_path.exists():
+        with open(guide_path, "r", encoding="utf-8") as f:
+            return HttpResponse(f.read(), content_type="text/html")
+    return HttpResponse("Guide not found", status=404)
+
 def root_redirect(request):
     if request.user.is_authenticated:
         return redirect("dashboard")
@@ -25,6 +34,7 @@ def root_redirect(request):
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", root_redirect, name="root"),
+    path("guide/", review_guide_view, name="review-guide"),
     path("dashboard/", dashboard_view, name="dashboard"),
 
     # Application URLs (HTML Templates)

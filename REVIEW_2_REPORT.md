@@ -10,7 +10,7 @@
 ---
 
 ## Executive Summary
-This document fulfills all mandatory deliverables for **Review 2** of the course **BCSE408L**. It details the **System Architecture**, **Cloud Deployment Architecture**, **Database Schema & ER Diagram**, **Modular Software Design**, **REST API Specifications**, **Authentication & Multi-Tenant Role-Based Access Control (RBAC)**, and **Initial Cloud Deployment Verification**.
+**Review 2** of the course **BCSE408L**. It details the **System Architecture**, **Cloud Deployment Architecture**, **Database Schema & ER Diagram**, **Modular Software Design**, **REST API Specifications**, **Authentication & Multi-Tenant Role-Based Access Control (RBAC)**, and **Initial Cloud Deployment Verification**.
 
 ---
 

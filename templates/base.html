@@ -70,6 +70,7 @@
                     <span>Approval Queue</span>
                 </a>
 
+                {% if user_role in "ADMIN,MANAGER,CREATOR" %}
                 <div class="nav-section-title">AI Automation</div>
                 <a href="{% url 'analytics:agents' %}" class="nav-link {% if 'agents' in request.path %}active{% endif %}">
                     <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -77,7 +78,9 @@
                     </svg>
                     <span>AI Studio (4 Agents)</span>
                 </a>
+                {% endif %}
 
+                {% if user_role == 'ADMIN' %}
                 <div class="nav-section-title">Settings</div>
                 <a href="{% url 'workspaces:members' %}" class="nav-link {% if 'members' in request.path %}active{% endif %}">
                     <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -85,6 +88,7 @@
                     </svg>
                     <span>Team & RBAC</span>
                 </a>
+                {% endif %}
 
                 <div class="nav-section-title">Review Deliverables</div>
                 <a href="/reports/review2/" target="_blank" class="nav-link">
@@ -128,22 +132,19 @@
                     </div>
                     {% endif %}
 
-                    <!-- Live Role Switcher for RBAC evaluation -->
-                    <div class="role-switcher-banner">
-                        <span style="color:var(--text-muted); font-weight:600;">Active Role:</span>
+                    <!-- User Role Badge (Role fixed upon login) -->
+                    <div class="role-switcher-banner" style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); padding: 0.35rem 0.75rem; border-radius: var(--radius-sm);">
+                        <span style="color:var(--text-muted); font-weight:600; font-size:0.8125rem;">Role:</span>
                         <span class="role-tag {{ user_role }}">{{ user_role_label|default:user_role }}</span>
-                        <span style="color:var(--text-dim); margin:0 4px;">| Switch:</span>
-                        <a href="{% url 'workspaces:quick_role' 'ADMIN' %}" class="role-pill-btn {% if user_role == 'ADMIN' %}active{% endif %}">Admin</a>
-                        <a href="{% url 'workspaces:quick_role' 'MANAGER' %}" class="role-pill-btn {% if user_role == 'MANAGER' %}active{% endif %}">Manager</a>
-                        <a href="{% url 'workspaces:quick_role' 'CREATOR' %}" class="role-pill-btn {% if user_role == 'CREATOR' %}active{% endif %}">Creator</a>
-                        <a href="{% url 'workspaces:quick_role' 'CLIENT_REVIEWER' %}" class="role-pill-btn {% if user_role == 'CLIENT_REVIEWER' %}active{% endif %}">Client</a>
                     </div>
                 </div>
 
                 <div class="topbar-right">
+                    {% if user_role in "ADMIN,MANAGER,CREATOR" %}
                     <a href="{% url 'content:create' %}" class="btn btn-primary btn-sm">
                         <span>+ New Script</span>
                     </a>
+                    {% endif %}
                     <a href="/api/" target="_blank" class="btn btn-secondary btn-sm" title="Explore DRF REST APIs">
                         <span>REST API ↗</span>
                     </a>

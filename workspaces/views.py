@@ -20,19 +20,9 @@ def switch_workspace(request, workspace_id):
 @login_required
 def quick_role_switch(request, role):
     """
-    Demo/evaluation convenience feature: Allows switching between
-    ADMIN, CREATOR, MANAGER, CLIENT_REVIEWER in the current workspace
-    for testing role-based access control.
+    Direct role switching is disabled. Access is strictly determined by account authentication.
     """
-    ws = get_active_workspace(request)
-    if not ws:
-        return redirect("dashboard")
-
-    membership = get_membership(request.user, ws)
-    if membership and role in Membership.Role.values:
-        membership.role = role
-        membership.save()
-        messages.info(request, f"Role switched to {membership.get_role_display()} for live evaluation testing.")
+    messages.error(request, "Direct role switching is disabled. Your role is determined by your user account. To switch roles, please logout and sign in as that user.")
     return redirect(request.META.get("HTTP_REFERER", "dashboard"))
 
 
@@ -53,6 +43,7 @@ def create_workspace(request):
 
 
 @workspace_required
+@role_required([Membership.Role.ADMIN])
 def workspace_members(request):
     ws = request.workspace
     members = Membership.objects.filter(workspace=ws).select_related("user")

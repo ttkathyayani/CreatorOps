@@ -4,7 +4,8 @@ from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
-from workspaces.permissions import workspace_required, IsWorkspaceMember
+from workspaces.permissions import workspace_required, role_required, IsWorkspaceMember
+from workspaces.models import Membership
 from clients.models import Client
 from campaigns.models import Campaign
 from content.models import ContentItem
@@ -69,6 +70,10 @@ def campaign_report_view(request, campaign_id):
     )
 
     if request.method == "POST":
+        if not request.membership or request.membership.role not in [Membership.Role.ADMIN, Membership.Role.MANAGER]:
+            messages.error(request, "Permission Denied: Only Managers and Admins can record campaign telemetry metrics.")
+            return redirect("analytics:campaign_report", campaign_id=campaign.id)
+
         metric_name = request.POST.get("metric_name", "").strip()
         metric_value = request.POST.get("metric_value", "").strip()
         recorded_date = request.POST.get("recorded_date")
@@ -118,6 +123,7 @@ def campaign_report_view(request, campaign_id):
 
 
 @workspace_required
+@role_required([Membership.Role.ADMIN, Membership.Role.MANAGER, Membership.Role.CREATOR])
 def agent_workspace_view(request):
     """Interactive AI Agent studio for all 4 agents."""
     clients = Client.objects.filter(workspace=request.workspace)
@@ -173,6 +179,10 @@ def api_run_agent(request, agent_type):
         data = json.loads(request.body)
     except Exception:
         data = request.POST.dict()
+
+    if request.user.is_authenticated and hasattr(request, "membership") and request.membership:
+        if request.membership.role == Membership.Role.CLIENT_REVIEWER and agent_type in ["content-ideas", "script-review"]:
+            return JsonResponse({"error": "Permission denied: Internal agency AI agent."}, status=403)
 
     if agent_type == "content-ideas":
         res = ContentIdeasAgent().run(data)

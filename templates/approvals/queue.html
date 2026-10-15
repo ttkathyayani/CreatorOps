@@ -7,13 +7,6 @@
     <div>
         <h1 class="page-title">Approval & Review Queue</h1>
         <p class="page-subtitle">Scoped by your role: <span class="role-tag {{ user_role }}">{{ user_role_label }}</span>. Approve or request changes with full audit trails.</p>
-    </div>
-    <div class="role-switcher-banner">
-        <span>Test as another role:</span>
-        <a href="{% url 'workspaces:quick_role' 'MANAGER' %}" class="role-pill-btn {% if user_role == 'MANAGER' %}active{% endif %}">Manager</a>
-        <a href="{% url 'workspaces:quick_role' 'CLIENT_REVIEWER' %}" class="role-pill-btn {% if user_role == 'CLIENT_REVIEWER' %}active{% endif %}">Client Reviewer</a>
-        <a href="{% url 'workspaces:quick_role' 'ADMIN' %}" class="role-pill-btn {% if user_role == 'ADMIN' %}active{% endif %}">Admin</a>
-    </div>
 </div>
 
 <!-- Queue Items Table -->

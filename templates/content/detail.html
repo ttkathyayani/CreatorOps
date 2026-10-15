@@ -20,9 +20,11 @@
     <!-- Dynamic Actions Based on User Role & Status -->
     <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
         <!-- AI Script Review Trigger -->
+        {% if user_role in "ADMIN,CREATOR,MANAGER" %}
         <button type="button" class="btn btn-secondary" id="runAiReviewBtn" style="border-color: rgba(250, 204, 21, 0.4); color: var(--primary);">
             <span>🤖 AI Script Review</span>
         </button>
+        {% endif %}
 
         {% if user_role in "ADMIN,CREATOR,MANAGER" %}
         <a href="{% url 'content:edit' item.id %}" class="btn btn-secondary">
@@ -124,6 +126,7 @@
         </p>
 
         <!-- Upload Form -->
+        {% if user_role in "ADMIN,CREATOR,MANAGER" %}
         <form method="POST" action="{% url 'assets:upload' item.id %}" enctype="multipart/form-data" style="margin-bottom: 1.5rem; padding: 1rem; background: var(--bg-secondary); border: 1px dashed var(--border-color); border-radius: var(--radius-sm);">
             {% csrf_token %}
             <div style="margin-bottom: 0.75rem;">
@@ -133,6 +136,7 @@
                 <span>Upload Media Asset</span>
             </button>
         </form>
+        {% endif %}
 
         <!-- Asset list -->
         <div style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 250px; overflow-y: auto;">

@@ -3,13 +3,15 @@ import uuid
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
-from workspaces.permissions import workspace_required
+from workspaces.permissions import workspace_required, role_required
+from workspaces.models import Membership
 from content.models import ContentItem
 from .models import Asset
 from .storage import cloud_storage
 
 
 @workspace_required
+@role_required([Membership.Role.ADMIN, Membership.Role.MANAGER, Membership.Role.CREATOR])
 def upload_asset(request, content_id):
     item = get_object_or_404(
         ContentItem,
@@ -70,6 +72,7 @@ def download_asset(request, pk):
 
 
 @workspace_required
+@role_required([Membership.Role.ADMIN, Membership.Role.MANAGER, Membership.Role.CREATOR])
 def delete_asset(request, pk):
     asset = get_object_or_404(
         Asset,

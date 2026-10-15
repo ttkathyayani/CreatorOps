@@ -8,9 +8,11 @@
         <h1 class="page-title">Marketing Campaigns</h1>
         <p class="page-subtitle">Track objectives, deadlines, budgets, and content execution across all active client accounts.</p>
     </div>
+    {% if user_role in "ADMIN,MANAGER" %}
     <a href="{% url 'campaigns:create' %}" class="btn btn-primary">
         <span>+ New Campaign</span>
     </a>
+    {% endif %}
 </div>
 
 <!-- Filters bar -->

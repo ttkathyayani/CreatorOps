@@ -12,9 +12,11 @@
         <a href="{% url 'content:calendar' %}" class="btn btn-secondary">
             <span>📅 Calendar View</span>
         </a>
+        {% if user_role in "ADMIN,CREATOR,MANAGER" %}
         <a href="{% url 'content:create' %}" class="btn btn-primary">
             <span>+ Draft New Script</span>
         </a>
+        {% endif %}
     </div>
 </div>
 

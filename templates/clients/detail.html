@@ -12,9 +12,11 @@
         <p class="page-subtitle">{{ client.industry|default:"Client Brand Account" }} &bull; Contact: {{ client.contact_email|default:"None" }}</p>
     </div>
     <div style="display: flex; gap: 0.75rem;">
+        {% if user_role in "ADMIN,MANAGER" %}
         <a href="{% url 'campaigns:create' %}" class="btn btn-primary">
             <span>+ New Campaign</span>
         </a>
+        {% endif %}
         {% if user_role in "ADMIN,MANAGER" %}
         <a href="{% url 'clients:update' client.id %}" class="btn btn-secondary">
             <span>Edit Profile</span>

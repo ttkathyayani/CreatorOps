@@ -9,12 +9,16 @@
         <p class="page-subtitle">Unified content lifecycle management across {{ counts.clients }} clients and {{ counts.campaigns }} campaigns.</p>
     </div>
     <div style="display: flex; gap: 0.75rem;">
+        {% if user_role in "ADMIN,MANAGER,CREATOR" %}
         <a href="{% url 'content:create' %}" class="btn btn-primary">
             <span>+ Draft Script</span>
         </a>
+        {% endif %}
+        {% if user_role in "ADMIN,MANAGER" %}
         <a href="{% url 'campaigns:create' %}" class="btn btn-secondary">
             <span>+ New Campaign</span>
         </a>
+        {% endif %}
     </div>
 </div>
 

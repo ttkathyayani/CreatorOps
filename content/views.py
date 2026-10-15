@@ -20,6 +20,16 @@ def content_list(request):
         campaign__client__workspace=request.workspace
     ).select_related("campaign", "campaign__client", "creator").order_by("-updated_at")
 
+    user_role = request.membership.role if request.membership else None
+    if user_role == Membership.Role.CLIENT_REVIEWER:
+        # Client Reviewer only sees deliverables that have advanced to client review or later
+        items = items.filter(status__in=[
+            ContentItem.Status.PENDING_CLIENT,
+            ContentItem.Status.APPROVED,
+            ContentItem.Status.SCHEDULED,
+            ContentItem.Status.PUBLISHED,
+        ])
+
     status_filter = request.GET.get("status")
     platform_filter = request.GET.get("platform")
     campaign_filter = request.GET.get("campaign")
@@ -51,6 +61,15 @@ def calendar_view(request):
         due_date__isnull=False
     ).select_related("campaign", "campaign__client")
 
+    user_role = request.membership.role if request.membership else None
+    if user_role == Membership.Role.CLIENT_REVIEWER:
+        items = items.filter(status__in=[
+            ContentItem.Status.PENDING_CLIENT,
+            ContentItem.Status.APPROVED,
+            ContentItem.Status.SCHEDULED,
+            ContentItem.Status.PUBLISHED,
+        ])
+
     return render(request, "calendar/index.html", {
         "items": items,
     })
@@ -63,6 +82,12 @@ def content_detail(request, pk):
         pk=pk,
         campaign__client__workspace=request.workspace
     )
+
+    user_role = request.membership.role if request.membership else None
+    if user_role == Membership.Role.CLIENT_REVIEWER:
+        if item.status in [ContentItem.Status.DRAFT, ContentItem.Status.PENDING_MANAGER]:
+            messages.warning(request, "This deliverable is currently in internal drafting or manager review and has not yet been submitted for client review.")
+            return redirect("content:list")
     versions = item.versions.all().select_related("created_by")
     approvals = item.approvals.all().select_related("reviewer").order_by("-timestamp")
     assets = item.assets.all().select_related("uploaded_by")
@@ -222,6 +247,13 @@ from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 def api_script_review(request):
     if request.method == "POST":
+        if request.user.is_authenticated:
+            from workspaces.permissions import get_active_workspace, get_membership
+            ws = get_active_workspace(request)
+            mem = get_membership(request.user, ws)
+            if mem and mem.role == Membership.Role.CLIENT_REVIEWER:
+                return JsonResponse({"error": "Permission denied: Script Review is an internal agency feature."}, status=403)
+
         import json
         try:
             data = json.loads(request.body)

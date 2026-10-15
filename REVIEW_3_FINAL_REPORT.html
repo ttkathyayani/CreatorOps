@@ -1,32 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CreatorOps — Review 3 Final Project Report (BCSE408L)</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
-    rel="stylesheet">
+  <title>Final Project Report — CreatorOps (BCSE408L)</title>
   <style>
-    :root {
-      --bg: #0B0F19;
-      --card-bg: #111827;
-      --card-inner: #1F2937;
-      --text: #F8FAFC;
-      --text-muted: #94A3B8;
-      --border: #374151;
-      --primary: #FACC15;
-      --primary-hover: #EAB308;
-      --accent-blue: #38BDF8;
-      --accent-green: #10B981;
-      --accent-purple: #C084FC;
-      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
-    }
-
     * {
       box-sizing: border-box;
       margin: 0;
@@ -34,930 +12,617 @@
     }
 
     body {
-      font-family: var(--font-sans);
-      background-color: var(--bg);
-      color: var(--text);
-      font-size: 17px;
-      line-height: 1.8;
-      padding: 30px 20px;
+      font-family: "Times New Roman", Times, Georgia, serif;
+      background-color: #f1f5f9;
+      color: #111827;
+      line-height: 1.6;
+      font-size: 15px;
+      padding: 24px 16px;
     }
 
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 48px;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    }
-
-    /* Action Bar (Screen Only) */
-    .action-bar {
+    /* Minimal Screen Toolbar */
+    .toolbar {
+      max-width: 900px;
+      margin: 0 auto 18px auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 12px;
-      background: #1e293b;
-      padding: 16px 22px;
-      border-radius: 10px;
-      margin-bottom: 32px;
-      border: 1px solid #334155;
+      gap: 10px;
+      background: #ffffff;
+      padding: 10px 18px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     }
 
-    .action-bar .left-group,
-    .action-bar .right-group {
+    .toolbar-group {
       display: flex;
-      gap: 12px;
+      gap: 8px;
       align-items: center;
       flex-wrap: wrap;
     }
 
     .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 18px;
-      border-radius: 7px;
-      font-size: 14px;
+      padding: 6px 14px;
+      font-size: 13px;
       font-weight: 600;
+      border-radius: 4px;
       text-decoration: none;
       cursor: pointer;
-      transition: all 0.2s ease;
-      border: 1px solid transparent;
+      border: 1px solid #94a3b8;
+      background: #f8fafc;
+      color: #1e293b;
+      transition: background 0.15s ease;
+    }
+
+    .btn:hover {
+      background: #e2e8f0;
     }
 
     .btn-primary {
-      background: var(--primary);
-      color: #000;
-      border-color: var(--primary);
+      background: #0f172a;
+      color: #ffffff;
+      border-color: #0f172a;
     }
 
     .btn-primary:hover {
-      background: var(--primary-hover);
-      transform: translateY(-1px);
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: #F8FAFC;
-      border-color: #475569;
-    }
-
-    .btn-outline:hover {
       background: #334155;
-      border-color: #64748B;
     }
 
-    /* Cover / Header section */
-    .report-header {
-      border-bottom: 2px solid var(--border);
-      padding-bottom: 28px;
-      margin-bottom: 36px;
+    /* Paper Page Container */
+    .paper {
+      max-width: 900px;
+      margin: 0 auto 40px auto;
+      background: #ffffff;
+      border: 1px solid #d1d5db;
+      padding: 64px 72px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
     }
 
-    .badge {
-      display: inline-block;
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      background: rgba(250, 204, 21, 0.15);
-      color: var(--primary);
-      border: 1px solid rgba(250, 204, 21, 0.3);
-      margin-bottom: 14px;
+    /* Academic Header Block */
+    .report-title-block {
+      text-align: center;
+      border-bottom: 2px solid #111827;
+      padding-bottom: 20px;
+      margin-bottom: 28px;
     }
 
-    h1 {
-      font-size: 38px;
-      color: var(--primary);
-      font-weight: 800;
-      line-height: 1.25;
-      margin-bottom: 14px;
-    }
-
-    .meta-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 16px;
-      margin-top: 20px;
-      background: #0F172A;
-      padding: 20px 24px;
-      border-radius: 8px;
-      border: 1px solid #1E293B;
+    .institution-header {
       font-size: 15px;
-    }
-
-    .meta-item strong {
-      color: var(--primary);
-      display: block;
-      font-size: 13px;
+      font-weight: bold;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      margin-bottom: 3px;
+      color: #1e293b;
+      margin-bottom: 4px;
     }
 
-    .meta-item a {
-      color: var(--accent-blue);
-      text-decoration: none;
-      word-break: break-all;
+    .department-sub {
+      font-size: 13.5px;
+      color: #475569;
+      margin-bottom: 16px;
     }
 
-    .meta-item a:hover {
+    .report-title-block h1 {
+      font-size: 24px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      color: #000000;
+    }
+
+    .report-title-block h2 {
+      font-size: 15px;
+      font-weight: normal;
+      color: #374151;
+      margin-bottom: 16px;
+    }
+
+    .metadata-table {
+      width: 100%;
+      margin: 16px 0;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .metadata-table td {
+      padding: 4px 8px;
+      border: none;
+      vertical-align: top;
+    }
+
+    .metadata-table td.label {
+      font-weight: bold;
+      width: 25%;
+      color: #111827;
+    }
+
+    .metadata-table td.value {
+      width: 75%;
+      color: #374151;
+    }
+
+    .metadata-table td.value a {
+      color: #1d4ed8;
       text-decoration: underline;
     }
 
-    /* Section Typography */
-    h2 {
-      font-size: 26px;
-      color: #F1F5F9;
-      margin-top: 46px;
-      margin-bottom: 20px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    h2 .section-num {
-      background: var(--primary);
-      color: #000;
-      padding: 3px 10px;
-      border-radius: 6px;
-      font-size: 16px;
-      font-weight: 800;
-    }
-
-    h3 {
-      font-size: 20px;
-      color: var(--primary);
-      margin-top: 28px;
+    /* Section Headings */
+    h2.section-heading {
+      font-size: 17px;
+      font-weight: bold;
+      text-transform: uppercase;
+      border-bottom: 1px solid #111827;
+      padding-bottom: 4px;
+      margin-top: 32px;
       margin-bottom: 12px;
-      font-weight: 700;
+      color: #000000;
+    }
+
+    h3.sub-heading {
+      font-size: 15px;
+      font-weight: bold;
+      margin-top: 18px;
+      margin-bottom: 6px;
+      color: #111827;
     }
 
     p {
-      margin-bottom: 16px;
-      color: #CBD5E1;
-      font-size: 16.5px;
-      line-height: 1.8;
+      text-align: justify;
+      margin-bottom: 12px;
+      color: #1f2937;
     }
 
-    ul,
-    ol {
+    ul, ol {
       margin-left: 28px;
-      margin-bottom: 18px;
-      color: #CBD5E1;
-      font-size: 16.5px;
-      line-height: 1.8;
+      margin-bottom: 12px;
+      color: #1f2937;
     }
 
     li {
-      margin-bottom: 8px;
+      margin-bottom: 4px;
     }
 
-    /* Tables */
-    table {
+    /* Standard Academic Tables */
+    table.data-table {
       width: 100%;
       border-collapse: collapse;
-      margin: 22px 0 32px 0;
-      font-size: 15px;
-      background: #0F172A;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid var(--border);
+      margin: 16px 0 20px 0;
+      font-size: 13.5px;
     }
 
-    th,
-    td {
-      padding: 14px 16px;
+    table.data-table th,
+    table.data-table td {
+      border: 1px solid #cbd5e1;
+      padding: 8px 10px;
       text-align: left;
-      border-bottom: 1px solid #1F2937;
     }
 
-    th {
-      background: #1E293B;
-      color: var(--primary);
-      font-weight: 700;
+    table.data-table th {
+      background-color: #f8fafc;
+      color: #000000;
+      font-weight: bold;
+    }
+
+    table.data-table tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+
+    /* Table of Contents */
+    .toc-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0 24px 0;
       font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
 
-    tr:last-child td {
-      border-bottom: none;
+    .toc-table td {
+      padding: 4px 6px;
+      border-bottom: 1px dotted #cbd5e1;
     }
 
-    tr:hover td {
-      background: rgba(255, 255, 255, 0.02);
+    .toc-table td a {
+      color: #111827;
+      text-decoration: none;
     }
 
-    /* Diagrams & Images */
-    .diagram-card {
-      background: #0B0F19;
-      border: 1px solid #334155;
-      border-radius: 10px;
-      padding: 18px;
-      margin: 24px 0 32px 0;
+    .toc-table td a:hover {
+      text-decoration: underline;
+      color: #1d4ed8;
+    }
+
+    /* Figure Box */
+    .figure-container {
+      margin: 20px 0;
       text-align: center;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      page-break-inside: avoid;
     }
 
-    .diagram-card img {
-      max-width: 100%;
+    .figure-container img {
+      max-width: 96%;
       height: auto;
-      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      padding: 4px;
+      background: #ffffff;
       display: block;
       margin: 0 auto;
-      background: #0F172A;
     }
 
-    .diagram-caption {
-      margin-top: 12px;
-      font-size: 14.5px;
-      color: var(--text-muted);
-      font-style: italic;
-    }
-
-    /* Code blocks */
-    pre,
-    code {
-      font-family: var(--font-mono);
-      font-size: 14px;
-    }
-
-    code {
-      background: #1E293B;
-      padding: 3px 8px;
-      border-radius: 5px;
-      color: #FACC15;
-    }
-
-    pre {
-      background: #0B0F19;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 18px;
-      overflow-x: auto;
-      margin-bottom: 20px;
-    }
-
-    pre code {
-      background: none;
-      padding: 0;
-      color: #E2E8F0;
-      font-size: 14px;
-    }
-
-    /* Callout Boxes */
-    .callout {
-      background: rgba(56, 189, 248, 0.08);
-      border-left: 4px solid var(--accent-blue);
-      padding: 16px 22px;
-      border-radius: 0 8px 8px 0;
-      margin: 20px 0;
-      color: #E0F2FE;
-      font-size: 16px;
-      line-height: 1.8;
-    }
-
-    .callout-success {
-      background: rgba(16, 185, 129, 0.08);
-      border-left-color: var(--accent-green);
-      color: #D1FAE5;
-    }
-
-    .toc-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 12px;
-      margin: 22px 0 32px 0;
-      background: #0F172A;
-      padding: 24px;
-      border-radius: 8px;
-      border: 1px solid #1E293B;
-    }
-
-    .toc-item a {
-      color: #94A3B8;
-      text-decoration: none;
-      font-size: 15.5px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .toc-item a:hover {
-      color: var(--primary);
-      text-decoration: underline;
-    }
-
-    .toc-num {
-      color: var(--primary);
-      font-weight: 700;
-      font-size: 14px;
-      width: 24px;
+    .figure-caption {
+      margin-top: 8px;
+      font-size: 13.5px;
+      font-weight: bold;
+      color: #374151;
     }
 
     /* Print Styles */
     @media print {
       body {
         background: #ffffff !important;
-        color: #111827 !important;
         padding: 0 !important;
-        font-size: 13pt !important;
-        line-height: 1.6 !important;
-      }
-
-      .action-bar {
-        display: none !important;
-      }
-
-      .container {
-        max-width: 100% !important;
-        border: none !important;
-        padding: 0 !important;
-        box-shadow: none !important;
-        background: #ffffff !important;
-      }
-
-      h1 {
-        color: #000000 !important;
-        font-size: 28pt !important;
-      }
-
-      h2 {
-        color: #000000 !important;
-        font-size: 18pt !important;
-        border-bottom: 1px solid #9ca3af !important;
-        margin-top: 24pt !important;
-        page-break-after: avoid;
-      }
-
-      h2 .section-num {
-        background: #000 !important;
-        color: #fff !important;
-        font-size: 13pt !important;
-      }
-
-      h3 {
-        color: #1e3a8a !important;
-        font-size: 15pt !important;
-        page-break-after: avoid;
-      }
-
-      p,
-      li {
-        color: #1f2937 !important;
-        font-size: 12.5pt !important;
-      }
-
-      .meta-grid,
-      .toc-grid {
-        background: #f3f4f6 !important;
-        border: 1px solid #d1d5db !important;
-        color: #111827 !important;
-        font-size: 11pt !important;
-      }
-
-      .meta-item strong {
-        color: #000000 !important;
-        font-size: 10pt !important;
-      }
-
-      .meta-item a,
-      .toc-item a {
-        color: #1d4ed8 !important;
-      }
-
-      table {
-        background: #ffffff !important;
-        border: 1px solid #d1d5db !important;
-        color: #111827 !important;
-        font-size: 11pt !important;
-        page-break-inside: avoid;
-      }
-
-      th {
-        background: #f3f4f6 !important;
-        color: #000000 !important;
-        font-size: 11.5pt !important;
-        border-bottom: 2px solid #9ca3af !important;
-      }
-
-      td {
-        border-bottom: 1px solid #e5e7eb !important;
-        font-size: 11pt !important;
-      }
-
-      .diagram-card {
-        background: #ffffff !important;
-        border: 1px solid #cbd5e1 !important;
-        page-break-inside: avoid;
-        box-shadow: none !important;
-      }
-
-      pre {
-        background: #f8fafc !important;
-        border: 1px solid #cbd5e1 !important;
-        color: #0f172a !important;
-        font-size: 10.5pt !important;
-        page-break-inside: avoid;
-      }
-
-      pre code {
-        color: #0f172a !important;
-        font-size: 10.5pt !important;
-      }
-
-      .callout {
-        background: #f0fdf4 !important;
-        border-left-color: #15803d !important;
-        color: #166534 !important;
         font-size: 12pt !important;
       }
 
-      .page-break {
-        page-break-before: always;
+      .toolbar {
+        display: none !important;
+      }
+
+      .paper {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        max-width: 100% !important;
+      }
+
+      h2.section-heading {
+        page-break-after: avoid;
+        margin-top: 20pt !important;
+      }
+
+      .figure-container {
+        page-break-inside: avoid;
+      }
+
+      table.data-table {
+        page-break-inside: avoid;
+        font-size: 10pt !important;
+      }
+
+      p {
+        font-size: 11pt !important;
       }
     }
   </style>
 </head>
-
 <body>
 
-  <div class="container">
-
-    <!-- Top Action Bar -->
-    <div class="action-bar">
-      <div class="left-group">
-        <button class="btn btn-primary" onclick="window.print()">
-          🖨️ Print / Save as PDF
-        </button>
-        <a href="/reports/review3/download/" class="btn btn-outline" download="REVIEW_3_FINAL_REPORT.md">
-          📥 Download Markdown (.md)
-        </a>
-        <button class="btn btn-outline" onclick="downloadCurrentHTML()">
-          💾 Download HTML
-        </button>
-      </div>
-      <div class="right-group">
-        <a href="/reports/review2/" class="btn btn-outline" style="border-color: #38BDF8; color: #38BDF8;">
-          ← Go to Review 2 Report
-        </a>
-        <a href="/dashboard/" class="btn btn-outline">
-          🏠 Dashboard
-        </a>
-      </div>
+  <!-- Screen Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-group">
+      <button class="btn btn-primary" onclick="window.print()">Print / Save as PDF</button>
+      <a href="/reports/review3/download/" class="btn" download="REVIEW_3_FINAL_REPORT_CreatorOps.md">Download Markdown (.md)</a>
     </div>
+    <div class="toolbar-group">
+      <a href="/reports/review2/" class="btn">View Review 2 Report</a>
+      <a href="/dashboard/" class="btn">Dashboard</a>
+    </div>
+  </div>
+
+  <!-- Document Paper Sheet -->
+  <article class="paper">
 
     <!-- 1. Cover Page -->
-    <header class="report-header" id="section-1">
-      <span class="badge">Course Project Final Deliverable • Review 3</span>
-      <h1>CreatorOps — Final Project Report</h1>
+    <header class="report-title-block" id="sec-1">
+      <div class="institution-header">Vellore Institute of Technology</div>
+      <div class="department-sub">School of Computer Science and Engineering (SCOPE)</div>
 
+      <h1>Project Final Report (Review 3)</h1>
+      <h2>Course: BCSE408L — Cloud Computing and Full Stack Application Development</h2>
 
-      <div class="meta-grid">
-        <div class="meta-item">
-          <strong>Institution / Course</strong>
-          BCSE408L — Cloud Computing & Full Stack App Dev
-        </div>
-        <div class="meta-item">
-          <strong>Project Title</strong>
-          Project 12: CreatorOps (Marketing SaaS)
-        </div>
-        <div class="meta-item">
-          <strong>Student Name</strong>
-          Kathyayani T T
-        </div>
-        <div class="meta-item">
-          <strong>Public Live Production URL</strong>
-          <a href="https://creatorops-rho.vercel.app" target="_blank">creatorops-rho.vercel.app</a>
-        </div>
-        <div class="meta-item">
-          <strong>GitHub Source Repository</strong>
-          <a href="https://github.com/ttkathyayani/CreatorOps" target="_blank">github.com/ttkathyayani/CreatorOps</a>
-        </div>
-        <div class="meta-item">
-          <strong>Evaluation Stage</strong>
-          Review 3 / Final Project Defense
-        </div>
-      </div>
+      <table class="metadata-table">
+        <tr>
+          <td class="label">Project Title:</td>
+          <td class="value">Project 12 — CreatorOps: Cloud-Native Marketing SaaS Application</td>
+        </tr>
+        <tr>
+          <td class="label">Candidate Name:</td>
+          <td class="value">Kathyayani T T</td>
+        </tr>
+        <tr>
+          <td class="label">GitHub Repository:</td>
+          <td class="value"><a href="https://github.com/ttkathyayani/CreatorOps" target="_blank">https://github.com/ttkathyayani/CreatorOps</a></td>
+        </tr>
+        <tr>
+          <td class="label">Live Public URL:</td>
+          <td class="value"><a href="https://creatorops-rho.vercel.app" target="_blank">https://creatorops-rho.vercel.app</a></td>
+        </tr>
+        <tr>
+          <td class="label">Tech Stack:</td>
+          <td class="value">Python 3.12, Django 6.1, DRF 3.18, PostgreSQL, Vercel Serverless Edge</td>
+        </tr>
+      </table>
     </header>
 
     <!-- 2. Abstract -->
-    <section id="section-2">
-      <h2><span class="section-num">02</span> Abstract</h2>
+    <section id="sec-2">
+      <h2 class="section-heading">2. Abstract</h2>
       <p>
-        In the modern creator economy, agencies and brands face significant operational friction: disjointed
-        communication threads, missing script audit trails, manual brand guideline checks, and uncoordinated client
-        sign-offs.
+        Managing creator content across social channels involves coordination between content creators, account managers, and external brand clients. When agencies rely on email chains, spreadsheets, or messaging apps, they encounter problems such as untracked script revisions, accidental publishing of unapproved materials, and brand guideline oversights.
       </p>
       <p>
-        <strong>CreatorOps</strong> is a cloud-native, multi-tenant SaaS application built on Django 6.1, Django REST
-        Framework, and Vercel's Serverless Edge Platform. It establishes strict organizational tenancy, a 4-tier
-        Role-Based Access Control (RBAC) model, a deterministic 7-stage content lifecycle state machine, and four
-        autonomous AI agents (Script Review, Content Ideas, Approval Summary, and Campaign Performance Reporting). The
-        platform guarantees enterprise-grade multi-tenancy, immutable revision snapshotting, and cloud-hosted database
-        persistence.
+        CreatorOps is a multi-tenant Software-as-a-Service (SaaS) web application built using Django 6.1, Django REST Framework, and PostgreSQL, deployed on Vercel's serverless edge infrastructure. The system provides workspace isolation, a four-tier Role-Based Access Control (RBAC) model, a 7-stage content lifecycle state machine, and automated script checking modules for word count, spoken pacing, and brand safety compliance. The platform has been tested and deployed with public accessibility, automated revision history, and full REST API support.
       </p>
     </section>
 
     <!-- 3. Table of Contents -->
-    <section id="section-3">
-      <h2><span class="section-num">03</span> Table of Contents</h2>
-      <div class="toc-grid">
-        <div class="toc-item"><a href="#section-1"><span class="toc-num">01.</span> Cover Page</a></div>
-        <div class="toc-item"><a href="#section-2"><span class="toc-num">02.</span> Abstract</a></div>
-        <div class="toc-item"><a href="#section-3"><span class="toc-num">03.</span> Table of Contents</a></div>
-        <div class="toc-item"><a href="#section-4"><span class="toc-num">04.</span> Introduction</a></div>
-        <div class="toc-item"><a href="#section-5"><span class="toc-num">05.</span> Problem Statement</a></div>
-        <div class="toc-item"><a href="#section-6"><span class="toc-num">06.</span> Existing System</a></div>
-        <div class="toc-item"><a href="#section-7"><span class="toc-num">07.</span> Proposed System</a></div>
-        <div class="toc-item"><a href="#section-8"><span class="toc-num">08.</span> Requirement Analysis</a></div>
-        <div class="toc-item"><a href="#section-9"><span class="toc-num">09.</span> Functional Requirements</a></div>
-        <div class="toc-item"><a href="#section-10"><span class="toc-num">10.</span> Non Functional Requirements</a>
-        </div>
-        <div class="toc-item"><a href="#section-11"><span class="toc-num">11.</span> System Architecture</a></div>
-        <div class="toc-item"><a href="#section-12"><span class="toc-num">12.</span> Cloud Architecture</a></div>
-        <div class="toc-item"><a href="#section-13"><span class="toc-num">13.</span> Database Design</a></div>
-        <div class="toc-item"><a href="#section-14"><span class="toc-num">14.</span> Module Description</a></div>
-        <div class="toc-item"><a href="#section-15"><span class="toc-num">15.</span> User Interface Design</a></div>
-        <div class="toc-item"><a href="#section-16"><span class="toc-num">16.</span> Implementation</a></div>
-        <div class="toc-item"><a href="#section-17"><span class="toc-num">17.</span> Testing</a></div>
-        <div class="toc-item"><a href="#section-18"><span class="toc-num">18.</span> Deployment</a></div>
-        <div class="toc-item"><a href="#section-19"><span class="toc-num">19.</span> Results and Discussion</a></div>
-        <div class="toc-item"><a href="#section-20"><span class="toc-num">20.</span> Future Enhancements</a></div>
-        <div class="toc-item"><a href="#section-21"><span class="toc-num">21.</span> References</a></div>
-        <div class="toc-item"><a href="#section-22"><span class="toc-num">22.</span> Appendix</a></div>
-      </div>
+    <section id="sec-3">
+      <h2 class="section-heading">3. Table of Contents</h2>
+      <table class="toc-table">
+        <tr><td><a href="#sec-1">1. Cover Page</a></td><td style="text-align: right;">1</td></tr>
+        <tr><td><a href="#sec-2">2. Abstract</a></td><td style="text-align: right;">1</td></tr>
+        <tr><td><a href="#sec-3">3. Table of Contents</a></td><td style="text-align: right;">2</td></tr>
+        <tr><td><a href="#sec-4">4. Introduction</a></td><td style="text-align: right;">2</td></tr>
+        <tr><td><a href="#sec-5">5. Problem Statement</a></td><td style="text-align: right;">2</td></tr>
+        <tr><td><a href="#sec-6">6. Existing System</a></td><td style="text-align: right;">3</td></tr>
+        <tr><td><a href="#sec-7">7. Proposed System</a></td><td style="text-align: right;">3</td></tr>
+        <tr><td><a href="#sec-8">8. Requirement Analysis</a></td><td style="text-align: right;">3</td></tr>
+        <tr><td><a href="#sec-9">9. Functional Requirements</a></td><td style="text-align: right;">4</td></tr>
+        <tr><td><a href="#sec-10">10. Non-Functional Requirements</a></td><td style="text-align: right;">4</td></tr>
+        <tr><td><a href="#sec-11">11. System Architecture</a></td><td style="text-align: right;">5</td></tr>
+        <tr><td><a href="#sec-12">12. Cloud Architecture</a></td><td style="text-align: right;">5</td></tr>
+        <tr><td><a href="#sec-13">13. Database Design</a></td><td style="text-align: right;">6</td></tr>
+        <tr><td><a href="#sec-14">14. Module Description</a></td><td style="text-align: right;">7</td></tr>
+        <tr><td><a href="#sec-15">15. User Interface Design</a></td><td style="text-align: right;">7</td></tr>
+        <tr><td><a href="#sec-16">16. Implementation Details</a></td><td style="text-align: right;">8</td></tr>
+        <tr><td><a href="#sec-17">17. Testing</a></td><td style="text-align: right;">8</td></tr>
+        <tr><td><a href="#sec-18">18. Deployment</a></td><td style="text-align: right;">9</td></tr>
+        <tr><td><a href="#sec-19">19. Results and Discussion</a></td><td style="text-align: right;">9</td></tr>
+        <tr><td><a href="#sec-20">20. Future Enhancements</a></td><td style="text-align: right;">10</td></tr>
+        <tr><td><a href="#sec-21">21. References</a></td><td style="text-align: right;">10</td></tr>
+        <tr><td><a href="#sec-22">22. Appendix</a></td><td style="text-align: right;">10</td></tr>
+      </table>
     </section>
 
     <!-- 4. Introduction -->
-    <section id="section-4">
-      <h2><span class="section-num">04</span> Introduction</h2>
+    <section id="sec-4">
+      <h2 class="section-heading">4. Introduction</h2>
       <p>
-        Digital video and social content creation on Instagram, YouTube, TikTok, and LinkedIn represent the fastest
-        growing segments of corporate advertising. However, managing hundreds of content pieces per month requires
-        seamless collaboration between creators, editors, account managers, and external brand clients.
+        Digital content marketing across platforms like Instagram, YouTube, TikTok, and LinkedIn requires consistent content production and strict brand compliance. Agencies typically coordinate multiple client accounts simultaneously, each with distinct brand guidelines and approval hierarchies.
       </p>
       <p>
-        CreatorOps unites these workflows in a cloud-hosted marketing operations hub with real-time analytics, automated
-        script auditing, and structured two-tier approval gates.
+        CreatorOps is designed to organize this workflow. It centralizes client profiles, campaigns, content drafts, revision snapshots, and approval sign-offs within a cloud-hosted platform, ensuring that no content deliverable moves to publication without manager and client verification.
       </p>
     </section>
 
     <!-- 5. Problem Statement -->
-    <section id="section-5">
-      <h2><span class="section-num">05</span> Problem Statement</h2>
-      <p>Marketing agencies and content teams currently experience major operational breakdowns:</p>
-      <ul>
-        <li><strong>Fragmented Feedback:</strong> Scattered revisions across emails, chats, and shared drives create
-          version ambiguity.</li>
-        <li><strong>Unauthorized Publishing:</strong> Creators frequently record or publish drafts before formal client
-          sign-off.</li>
-        <li><strong>Manual Brand Compliance:</strong> Verifying forbidden terms, mandatory hashtags, and spoken duration
-          pacing is labor-intensive.</li>
-        <li><strong>Data Leakage Risks:</strong> Lack of multi-tenant boundaries risks leaking creative concepts between
-          competitor brand clients.</li>
-      </ul>
+    <section id="sec-5">
+      <h2 class="section-heading">5. Problem Statement</h2>
+      <p>Marketing agencies and creator teams frequently experience workflow failures:</p>
+      <ol>
+        <li><strong>Unorganized Feedback:</strong> Revisions sent across WhatsApp, Slack, and email threads lead to confusion over which draft is final.</li>
+        <li><strong>Premature Publishing:</strong> Content creators occasionally produce or publish deliverables before brand clients have officially approved the copy.</li>
+        <li><strong>Manual Compliance Checks:</strong> Reviewers manually check scripts for forbidden terms, required disclosures, and speaking duration, which is tedious and prone to oversight.</li>
+        <li><strong>Data Isolation Risks:</strong> Using shared spreadsheets risks exposing one client's marketing campaign data to another competing brand.</li>
+      </ol>
     </section>
 
     <!-- 6. Existing System -->
-    <section id="section-6">
-      <h2><span class="section-num">06</span> Existing System</h2>
+    <section id="sec-6">
+      <h2 class="section-heading">6. Existing System</h2>
       <p>
-        Current practices rely on general-purpose software combinations:
+        Existing workflows rely on generic productivity tools:
       </p>
       <ul>
-        <li><strong>Spreadsheets (Google Sheets/Excel):</strong> Unstructured text cells with zero binary media previews
-          and no state enforcement.</li>
-        <li><strong>Team Messaging (Slack/WhatsApp):</strong> Lacks formal approval audit trails and revision diffing.
-        </li>
-        <li><strong>Generic Project Trackers (Trello/Asana):</strong> Missing domain-specific creator parameters (video
-          duration pacing, hook scores, platform-specific constraints).</li>
+        <li><strong>Spreadsheets (Google Sheets, Microsoft Excel):</strong> Provide structured rows but lack state machine enforcement, file previewing, and role-based permissions.</li>
+        <li><strong>Instant Messaging (Slack, WhatsApp):</strong> Fast for discussion, but message history gets lost and approval decisions cannot be tracked as formal audit trails.</li>
+        <li><strong>Generic Project Management (Trello, Asana):</strong> Track cards on a board, but do not understand content creation workflows like script duration pacing, social channel aspect ratios, or two-tier client sign-off.</li>
       </ul>
     </section>
 
     <!-- 7. Proposed System -->
-    <section id="section-7">
-      <h2><span class="section-num">07</span> Proposed System</h2>
+    <section id="sec-7">
+      <h2 class="section-heading">7. Proposed System</h2>
       <p>
-        CreatorOps introduces a purpose-built Marketing SaaS featuring:
+        CreatorOps addresses these problems with the following features:
       </p>
       <ul>
-        <li><strong>Multi-Tenant Architecture:</strong> Clean data isolation per agency workspace with automatic slug
-          generation.</li>
-        <li><strong>4-Tier RBAC:</strong> Dedicated capabilities for Agency Admins, Managers, Creators, and Client
-          Reviewers.</li>
-        <li><strong>7-Stage State Machine:</strong> Draft &rarr; Pending Manager &rarr; Pending Client &rarr; Approved
-          &rarr; Scheduled &rarr; Published.</li>
-        <li><strong>Immutable Versioning:</strong> Automated revision snapshots comparing script bodies and captions
-          across iterations.</li>
-        <li><strong>Autonomous AI Agents:</strong> Real-time script quality score, hook brainstorming, feedback
-          aggregation, and campaign report generation.</li>
+        <li><strong>Tenant Isolation:</strong> Each agency runs inside an isolated workspace. Database queries are scoped to the active workspace.</li>
+        <li><strong>Four-Tier RBAC:</strong> Distinct permission sets for Admin, Manager, Creator, and Client Reviewer.</li>
+        <li><strong>Deterministic 7-State Workflow:</strong> Content progresses sequentially: <code>Draft</code> &rarr; <code>Pending Manager Review</code> &rarr; <code>Pending Client Approval</code> &rarr; <code>Approved</code> &rarr; <code>Scheduled</code> &rarr; <code>Published</code>.</li>
+        <li><strong>Revision History:</strong> Updates automatically create a <code>ContentVersion</code> snapshot, preserving the script, author, and timestamp.</li>
+        <li><strong>Automated Script Checking:</strong> Rules evaluate word count, calculate speaking duration (~130 words/min), detect hook keywords in the opening sentence, and flag prohibited brand terms.</li>
+        <li><strong>Cloud Deployment:</strong> Hosted on Vercel with automated Git integration, WhiteNoise static file caching, and PostgreSQL persistence.</li>
       </ul>
     </section>
 
     <!-- 8. Requirement Analysis -->
-    <section id="section-8">
-      <h2><span class="section-num">08</span> Requirement Analysis</h2>
-      <p>
-        Stakeholder analysis identifies four distinct operational personas:
-      </p>
+    <section id="sec-8">
+      <h2 class="section-heading">8. Requirement Analysis</h2>
+      <p>The system caters to four primary roles:</p>
       <ul>
-        <li><strong>Agency Admin:</strong> Manages overall tenant configuration, billing, and team membership.</li>
-        <li><strong>Campaign Manager:</strong> Oversees client CRM, campaign budgets, and performs Tier-1 internal
-          reviews.</li>
-        <li><strong>Content Creator:</strong> Drafts scripts, creates revisions, runs AI audits, and uploads media
-          assets.</li>
-        <li><strong>Client Reviewer:</strong> External brand stakeholder reviewing candidate deliverables with sign-off
-          authority.</li>
+        <li><strong>Agency Admin:</strong> Manages agency workspace settings, billing, and team invitations.</li>
+        <li><strong>Campaign Manager:</strong> Onboards client brands, creates campaigns, and executes internal reviews before deliverables reach clients.</li>
+        <li><strong>Content Creator:</strong> Writes scripts, uploads media, reviews automated checks, and requests approval.</li>
+        <li><strong>Client Reviewer:</strong> External client stakeholder who reviews finalized drafts and submits sign-off or change requests.</li>
       </ul>
     </section>
 
     <!-- 9. Functional Requirements -->
-    <section id="section-9">
-      <h2><span class="section-num">09</span> Functional Requirements</h2>
-      <table>
+    <section id="sec-9">
+      <h2 class="section-heading">9. Functional Requirements</h2>
+      <table class="data-table">
         <thead>
           <tr>
-            <th>Req ID</th>
-            <th>Requirement Title</th>
+            <th>ID</th>
+            <th>Requirement</th>
             <th>Description</th>
-            <th>Priority</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>FR-01</td>
-            <td>Authentication & Profiles</td>
-            <td>User registration, login, PBKDF2 password hashing, and user profile management.</td>
-            <td>Mandatory</td>
-          </tr>
-          <tr>
-            <td>FR-02</td>
-            <td>Multi-Tenant Workspaces</td>
-            <td>Workspace creation, context resolution, and data isolation.</td>
-            <td>Mandatory</td>
-          </tr>
-          <tr>
-            <td>FR-03</td>
-            <td>Client Brand CRM</td>
-            <td>Management of client brands, contacts, industries, and brand guidelines.</td>
-            <td>Mandatory</td>
-          </tr>
-          <tr>
-            <td>FR-04</td>
-            <td>Campaign Management</td>
-            <td>Campaigns grouped by client with budget, goal, and date boundaries.</td>
-            <td>Mandatory</td>
-          </tr>
-          <tr>
-            <td>FR-05</td>
-            <td>Content Deliverable Matrix</td>
-            <td>Tracking multi-platform deliverables with 7-state finite state machine.</td>
-            <td>Mandatory</td>
-          </tr>
-          <tr>
-            <td>FR-06</td>
-            <td>Immutable Version History</td>
-            <td>Automated snapshotting on every script/caption update.</td>
-            <td>Mandatory</td>
-          </tr>
-          <tr>
-            <td>FR-07</td>
-            <td>Two-Tier Approval Gates</td>
-            <td>Manager Gate (Tier 1) followed by Client Gate (Tier 2).</td>
-            <td>Mandatory</td>
-          </tr>
-          <tr>
-            <td>FR-08</td>
-            <td>Autonomous AI Agent Suite</td>
-            <td>4 micro-agents for script audit, brainstorming, summary, and report.</td>
-            <td>High</td>
-          </tr>
-          <tr>
-            <td>FR-09</td>
-            <td>RESTful API Endpoints</td>
-            <td>Full DRF ModelViewSet endpoints for programmatic integration.</td>
-            <td>High</td>
-          </tr>
-          <tr>
-            <td>FR-10</td>
-            <td>Cloud Asset Storage</td>
-            <td>Local media fallback and AWS S3 object storage integration.</td>
-            <td>High</td>
-          </tr>
+          <tr><td>FR-01</td><td>Authentication</td><td>User registration, login, logout, and password hashing using PBKDF2.</td></tr>
+          <tr><td>FR-02</td><td>Multi-Tenancy</td><td>Workspace creation, workspace switching, and automatic tenant data isolation.</td></tr>
+          <tr><td>FR-03</td><td>Client Management</td><td>CRUD operations for client brand profiles, contact details, and guidelines.</td></tr>
+          <tr><td>FR-04</td><td>Campaign Management</td><td>Organizing campaigns by client, budget, objective, and schedule.</td></tr>
+          <tr><td>FR-05</td><td>Content Pipeline</td><td>Tracking deliverables across social channels through 7 lifecycle stages.</td></tr>
+          <tr><td>FR-06</td><td>Versioning</td><td>Automatic generation of immutable revision snapshots on script updates.</td></tr>
+          <tr><td>FR-07</td><td>Two-Tier Approvals</td><td>Manager review queue followed by client review queue.</td></tr>
+          <tr><td>FR-08</td><td>Script Quality Checks</td><td>Automated script evaluation for duration, hook presence, and brand compliance.</td></tr>
+          <tr><td>FR-09</td><td>REST APIs</td><td>ModelViewSet endpoints for programmatic integration.</td></tr>
+          <tr><td>FR-10</td><td>Asset Storage</td><td>File uploads with support for local media and Amazon S3.</td></tr>
         </tbody>
       </table>
     </section>
 
     <!-- 10. Non-Functional Requirements -->
-    <section id="section-10">
-      <h2><span class="section-num">10</span> Non-Functional Requirements</h2>
+    <section id="sec-10">
+      <h2 class="section-heading">10. Non-Functional Requirements</h2>
       <ul>
-        <li><strong>Security:</strong> PBKDF2 with SHA-256 (390,000 rounds), CSRF protection, HTTP-only cookies, SQL
-          injection protection via Django ORM.</li>
-        <li><strong>Scalability:</strong> Serverless WSGI execution model scaling horizontally with traffic demand.</li>
-        <li><strong>Availability:</strong> 99.9% uptime SLA via Vercel's global Anycast edge network.</li>
-        <li><strong>Performance:</strong> Sub-200ms API response latency; sub-second page loads via WhiteNoise and CDN
-          caching.</li>
-        <li><strong>Usability:</strong> High-contrast responsive Black-and-Yellow UI adhering to WCAG 2.1 accessibility
-          standards.</li>
+        <li><strong>Security:</strong> Password hashing via PBKDF2 with SHA-256 (390,000 iterations), CSRF validation, and parameterized SQL queries through Django ORM.</li>
+        <li><strong>Scalability:</strong> Serverless execution model scaling dynamically with incoming requests.</li>
+        <li><strong>Availability:</strong> Deployed on Vercel's global edge network.</li>
+        <li><strong>Performance:</strong> Sub-second page loads through WhiteNoise static caching and CDN edge distribution.</li>
+        <li><strong>Usability:</strong> Responsive layout accessible across desktop, tablet, and mobile devices.</li>
       </ul>
     </section>
 
     <!-- 11. System Architecture -->
-    <section id="section-11">
-      <h2><span class="section-num">11</span> System Architecture</h2>
+    <section id="sec-11">
+      <h2 class="section-heading">11. System Architecture</h2>
       <p>
-        CreatorOps implements an enterprise-grade <strong>Three-Tier MVT Architecture</strong>:
+        CreatorOps uses a standard three-tier architecture:
       </p>
 
-      <div class="diagram-card">
-        <img src="/static/img/system_architecture.png" onerror="this.src='static/img/system_architecture.png'"
-          alt="System Architecture Diagram">
-        <div class="diagram-caption">Figure 11.1: Three-Tier Cloud Architecture with Integrated AI Agent Engine and
-          Object Storage</div>
+      <div class="figure-container">
+        <img src="/static/img/system_architecture.png" onerror="this.src='static/img/system_architecture.png'" alt="System Architecture Diagram">
+        <div class="figure-caption">Figure 1: Three-Tier System Architecture of CreatorOps</div>
       </div>
 
-      <p>
-        <strong>Presentation Tier:</strong> Responsive HTML5 templates and DRF JSON endpoints.<br>
-        <strong>Logic Tier:</strong> Django 6.1 WSGI application with RBAC middleware and 4 autonomous AI
-        micro-agents.<br>
-        <strong>Persistence Tier:</strong> Cloud PostgreSQL with ACID transactions and AWS S3 object storage.
-      </p>
+      <h3 class="sub-heading">11.1 Presentation Layer</h3>
+      <p>Server-rendered HTML templates with responsive CSS, plus RESTful JSON endpoints consumed by API clients.</p>
+
+      <h3 class="sub-heading">11.2 Application Layer</h3>
+      <p>Django 6.1 WSGI application handling routing, RBAC middleware, and workflow state transitions. DRF provides API serialization, and the <code>agents/</code> package executes script checks.</p>
+
+      <h3 class="sub-heading">11.3 Persistence Layer</h3>
+      <p>PostgreSQL relational database storing normalized application data, accompanied by S3 object storage for media files.</p>
     </section>
 
     <!-- 12. Cloud Architecture -->
-    <section id="section-12">
-      <h2><span class="section-num">12</span> Cloud Architecture</h2>
+    <section id="sec-12">
+      <h2 class="section-heading">12. Cloud Architecture</h2>
       <p>
-        The platform operates on the <strong>Vercel Global Serverless Edge Platform</strong>:
+        The cloud hosting setup utilizes Vercel's edge network:
       </p>
 
-      <div class="diagram-card">
-        <img src="/static/img/cloud_architecture.png" onerror="this.src='static/img/cloud_architecture.png'"
-          alt="Cloud Deployment Architecture Diagram">
-        <div class="diagram-caption">Figure 12.1: Serverless Edge Cloud Ingestion, Managed PostgreSQL Integration, and
-          S3 Storage Pipeline</div>
+      <div class="figure-container">
+        <img src="/static/img/cloud_architecture.png" onerror="this.src='static/img/cloud_architecture.png'" alt="Cloud Architecture Diagram">
+        <div class="figure-caption">Figure 2: Cloud Deployment Architecture on Vercel</div>
       </div>
 
-      <p>
-        Requests are received at Anycast edge locations, terminating TLS 1.3. Serverless Python 3.12 containers spin up
-        on demand to process WSGI requests, while static assets are served from global CDN caches.
-      </p>
+      <ul>
+        <li><strong>Edge Routing:</strong> Requests hit Anycast edge nodes where TLS termination occurs.</li>
+        <li><strong>Serverless WSGI Execution:</strong> Dynamic requests route to Python 3.12 functions executing <code>config/wsgi.py</code>.</li>
+        <li><strong>Static Caching:</strong> CSS, JavaScript, and diagrams are served through Vercel's CDN and WhiteNoise.</li>
+        <li><strong>Database Connection:</strong> Serverless instances connect to cloud PostgreSQL instances using connection strings (<code>DATABASE_URL</code>).</li>
+      </ul>
     </section>
 
     <!-- 13. Database Design -->
-    <section id="section-13">
-      <h2><span class="section-num">13</span> Database Design & ER Diagram</h2>
+    <section id="sec-13">
+      <h2 class="section-heading">13. Database Design</h2>
       <p>
-        The relational database is normalized to <strong>Third Normal Form (3NF)</strong> across 9 entities:
+        The relational database is normalized to 3NF and includes 9 core tables:
       </p>
 
-      <div class="diagram-card">
-        <img src="/static/img/erd_diagram.png" onerror="this.src='static/img/erd_diagram.png'"
-          alt="Entity-Relationship Diagram">
-        <div class="diagram-caption">Figure 13.1: Complete Entity-Relationship Diagram showing 1:N relations, cascade
-          delete rules, and uniqueness constraints</div>
+      <div class="figure-container">
+        <img src="/static/img/erd_diagram.png" onerror="this.src='static/img/erd_diagram.png'" alt="Entity Relationship Diagram">
+        <div class="figure-caption">Figure 3: Entity-Relationship Diagram of the Database Schema</div>
       </div>
 
-      <table>
+      <table class="data-table">
         <thead>
           <tr>
-            <th>Entity</th>
+            <th>Table</th>
             <th>Primary Key</th>
             <th>Foreign Keys</th>
-            <th>Key Attributes & Constraints</th>
+            <th>Key Attributes</th>
+            <th>Constraints</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td><strong>Workspace</strong></td>
-            <td><code>id</code> (BigInt)</td>
-            <td>None</td>
-            <td><code>name</code>, <code>slug</code> (UNIQUE), <code>description</code></td>
-          </tr>
-          <tr>
-            <td><strong>Membership</strong></td>
-            <td><code>id</code> (BigInt)</td>
-            <td><code>user_id</code>, <code>workspace_id</code></td>
-            <td><code>role</code>, <code>UNIQUE(user, workspace)</code></td>
-          </tr>
-          <tr>
-            <td><strong>Client</strong></td>
-            <td><code>id</code> (BigInt)</td>
-            <td><code>workspace_id</code></td>
-            <td><code>name</code>, <code>contact_email</code>, <code>UNIQUE(workspace, name)</code></td>
-          </tr>
-          <tr>
-            <td><strong>Campaign</strong></td>
-            <td><code>id</code> (BigInt)</td>
-            <td><code>client_id</code></td>
-            <td><code>title</code>, <code>budget</code>, <code>status</code></td>
-          </tr>
-          <tr>
-            <td><strong>ContentItem</strong></td>
-            <td><code>id</code> (BigInt)</td>
-            <td><code>campaign_id</code>, <code>creator_id</code></td>
-            <td><code>title</code>, <code>platform</code>, <code>status</code>, <code>due_date</code></td>
-          </tr>
-          <tr>
-            <td><strong>ContentVersion</strong></td>
-            <td><code>id</code> (BigInt)</td>
-            <td><code>content_item_id</code>, <code>created_by</code></td>
-            <td><code>revision_number</code>, <code>script_snapshot</code>, <code>caption_snapshot</code></td>
-          </tr>
-          <tr>
-            <td><strong>Approval</strong></td>
-            <td><code>id</code> (BigInt)</td>
-            <td><code>content_item_id</code>, <code>reviewer_id</code></td>
-            <td><code>decision</code>, <code>comment</code>, <code>timestamp</code></td>
-          </tr>
-          <tr>
-            <td><strong>Asset</strong></td>
-            <td><code>id</code> (BigInt)</td>
-            <td><code>content_item_id</code>, <code>uploaded_by</code></td>
-            <td><code>file</code>, <code>filename</code>, <code>size_bytes</code></td>
-          </tr>
-          <tr>
-            <td><strong>CampaignMetric</strong></td>
-            <td><code>id</code> (BigInt)</td>
-            <td><code>campaign_id</code></td>
-            <td><code>metric_name</code>, <code>metric_value</code>, <code>recorded_date</code></td>
-          </tr>
+          <tr><td>Workspace</td><td>id</td><td>None</td><td>name, slug, description</td><td>Unique slug</td></tr>
+          <tr><td>Membership</td><td>id</td><td>user_id, workspace_id</td><td>role (Admin, Manager, Creator, Client)</td><td>Unique (user, workspace)</td></tr>
+          <tr><td>Client</td><td>id</td><td>workspace_id</td><td>name, contact_email, brand_guidelines</td><td>Unique (workspace, name)</td></tr>
+          <tr><td>Campaign</td><td>id</td><td>client_id</td><td>title, objective, budget, status</td><td>Budget &ge; 0</td></tr>
+          <tr><td>ContentItem</td><td>id</td><td>campaign_id, creator_id</td><td>title, platform, script_body, status</td><td>7-stage status enum</td></tr>
+          <tr><td>ContentVersion</td><td>id</td><td>content_item_id, created_by</td><td>revision_number, script_snapshot</td><td>Unique (item, rev_num)</td></tr>
+          <tr><td>Approval</td><td>id</td><td>content_item_id, reviewer_id</td><td>decision, comment, timestamp</td><td>Decision choices</td></tr>
+          <tr><td>Asset</td><td>id</td><td>content_item_id, uploaded_by</td><td>file, filename, size_bytes</td><td>File extension check</td></tr>
+          <tr><td>CampaignMetric</td><td>id</td><td>campaign_id</td><td>metric_name, metric_value, recorded_date</td><td>Date index</td></tr>
         </tbody>
       </table>
     </section>
 
     <!-- 14. Module Description -->
-    <section id="section-14">
-      <h2><span class="section-num">14</span> Module Description</h2>
-      <p>The system is organized into 9 domain packages:</p>
-      <ol>
-        <li><code>accounts</code>: Authentication, user registration, profiles, password management.</li>
-        <li><code>workspaces</code>: Multi-tenant organization, membership management, RBAC routing.</li>
-        <li><code>clients</code>: Brand CRM, client roster, contact metadata, brand guidelines.</li>
-        <li><code>campaigns</code>: Marketing initiatives, budget allocation, channel strategy.</li>
-        <li><code>content</code>: Content matrix, social platform targeting, 7-stage state machine.</li>
-        <li><code>approvals</code>: Two-tier review queue (Manager Gate & Client Sign-off Gate).</li>
-        <li><code>assets</code>: Cloud file storage abstraction (local media and AWS S3 streaming).</li>
-        <li><code>analytics</code>: Executive dashboard, metric aggregators, automated reporting.</li>
-        <li><code>agents</code>: Autonomous AI micro-agents for script auditing, brainstorming, and reporting.</li>
-      </ol>
+    <section id="sec-14">
+      <h2 class="section-heading">14. Module Description</h2>
+      <p>The project is structured into 9 modular packages:</p>
+      <ul>
+        <li><code>accounts</code>: User accounts, session login, registration, and profile handling.</li>
+        <li><code>workspaces</code>: Tenant workspace administration and membership roles.</li>
+        <li><code>clients</code>: Brand CRM, contact information, and brand guidelines.</li>
+        <li><code>campaigns</code>: Marketing campaigns, objectives, budgets, and scheduling.</li>
+        <li><code>content</code>: Deliverable matrix, social platforms, and script editor.</li>
+        <li><code>approvals</code>: Two-tier approval inbox (Manager and Client stages).</li>
+        <li><code>assets</code>: File uploads and storage integration.</li>
+        <li><code>analytics</code>: Workspace metrics and dashboard data aggregation.</li>
+        <li><code>agents</code>: Script quality checks, content ideas, and comment summarization.</li>
+      </ul>
     </section>
 
     <!-- 15. User Interface Design -->
-    <section id="section-15">
-      <h2><span class="section-num">15</span> User Interface Design</h2>
+    <section id="sec-15">
+      <h2 class="section-heading">15. User Interface Design</h2>
       <p>
-        The frontend employs a modern, high-contrast <strong>Dark-and-Yellow Design System</strong>:
+        The web interface features responsive layouts developed with CSS Flexbox and Grid. Core screens include:
       </p>
       <ul>
-        <li><strong>Color Tokens:</strong> `#0B0F19` (Canvas), `#111827` (Cards), `#FACC15` (Primary Accent), `#10B981`
-          (Approved Status).</li>
-        <li><strong>Typography:</strong> Inter & JetBrains Mono with fluid sizing across viewport scales.</li>
-        <li><strong>Responsive Grid:</strong> Adaptive CSS Flexbox and Grid layouts optimized for mobile smartphones,
-          tablets, and wide screens.</li>
+        <li><strong>Authentication:</strong> Dedicated login and registration screens with session validation.</li>
+        <li><strong>Dashboard:</strong> Summarizes active campaigns, content deliverables awaiting review, and quick-action links.</li>
+        <li><strong>Content Pipeline:</strong> Filterable table by platform and approval status with quick status badges.</li>
+        <li><strong>Content Editor & Studio:</strong> Side-by-side script writing, automated review check sidebar, and version history viewer.</li>
+        <li><strong>Approval Inbox:</strong> Segregated queues for Manager reviews and Client sign-offs with direct approval buttons.</li>
       </ul>
     </section>
 
     <!-- 16. Implementation Details -->
-    <section id="section-16">
-      <h2><span class="section-num">16</span> Implementation Details</h2>
-      <p>
-        Key frameworks and libraries utilized in the production implementation:
-      </p>
+    <section id="sec-16">
+      <h2 class="section-heading">16. Implementation Details</h2>
+      <p>Key technologies employed in the platform:</p>
       <ul>
-        <li><strong>Language:</strong> Python 3.12</li>
-        <li><strong>Framework:</strong> Django 6.1 LTS</li>
-        <li><strong>REST Framework:</strong> Django REST Framework (DRF 3.18)</li>
-        <li><strong>Static Asset Pipeline:</strong> WhiteNoise 6.9</li>
-        <li><strong>Cloud Hosting:</strong> Vercel Serverless Edge Platform</li>
-        <li><strong>Database:</strong> Cloud PostgreSQL / SQLite</li>
-        <li><strong>Object Storage:</strong> AWS S3 via <code>boto3</code></li>
+        <li><strong>Programming Language:</strong> Python 3.12</li>
+        <li><strong>Web Framework:</strong> Django 6.1 LTS</li>
+        <li><strong>REST Framework:</strong> Django REST Framework 3.18</li>
+        <li><strong>Static Asset Management:</strong> WhiteNoise 6.9</li>
+        <li><strong>Hosting Environment:</strong> Vercel Serverless Edge Platform</li>
+        <li><strong>Database Driver:</strong> <code>dj-database-url</code> with PostgreSQL / SQLite</li>
       </ul>
     </section>
 
     <!-- 17. Testing -->
-    <section id="section-17">
-      <h2><span class="section-num">17</span> Testing & Verification</h2>
+    <section id="sec-17">
+      <h2 class="section-heading">17. Testing</h2>
       <p>
-        The platform features an automated test suite executed via Django's test runner, covering tenancy, versioning,
-        RBAC, and AI agents:
+        The platform features an automated test suite executed via Django's test runner (<code>manage.py test workspaces</code>):
       </p>
 
-      <table>
+      <table class="data-table">
         <thead>
           <tr>
             <th>Test ID</th>
-            <th>Test Case Description</th>
+            <th>Test Description</th>
             <th>Input Data</th>
             <th>Expected Result</th>
             <th>Actual Result</th>
@@ -965,148 +630,89 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>TC-01</td>
-            <td>Workspace slug auto-generation</td>
-            <td>Name: "Apex Digital Agency"</td>
-            <td>Slug: "apex-digital-agency"</td>
-            <td>Slug generated correctly</td>
-            <td><strong style="color: #10B981;">PASSED</strong></td>
-          </tr>
-          <tr>
-            <td>TC-02</td>
-            <td>Multi-tenant RBAC role distinction</td>
-            <td>Creator vs Manager</td>
-            <td>Isolated roles per user</td>
-            <td>Roles isolated per tenant</td>
-            <td><strong style="color: #10B981;">PASSED</strong></td>
-          </tr>
-          <tr>
-            <td>TC-03</td>
-            <td>Content lifecycle & version snapshotting</td>
-            <td>Draft updated to revision 2</td>
-            <td>Revisions 1 & 2 preserved</td>
-            <td>Snapshots preserved accurately</td>
-            <td><strong style="color: #10B981;">PASSED</strong></td>
-          </tr>
-          <tr>
-            <td>TC-04</td>
-            <td>AI Script Review Agent NLP scoring</td>
-            <td>30-word script with CTA</td>
-            <td>Score &ge; 80, Passed=True</td>
-            <td>Score=100, Passed=True</td>
-            <td><strong style="color: #10B981;">PASSED</strong></td>
-          </tr>
-          <tr>
-            <td>TC-05</td>
-            <td>AI Content Ideas Agent concept generator</td>
-            <td>Fitness industry, Instagram</td>
-            <td>3+ viral concepts</td>
-            <td>3 formatted concepts returned</td>
-            <td><strong style="color: #10B981;">PASSED</strong></td>
-          </tr>
-          <tr>
-            <td>TC-06</td>
-            <td>AI Approval Summary Agent comment clustering</td>
-            <td>2 review feedback comments</td>
-            <td>Action items generated</td>
-            <td>Action items generated</td>
-            <td><strong style="color: #10B981;">PASSED</strong></td>
-          </tr>
+          <tr><td>TC-01</td><td>Workspace slug auto-generation</td><td>Name: "Apex Digital Agency"</td><td>Slug: "apex-digital-agency"</td><td>Generated as expected</td><td><strong>PASSED</strong></td></tr>
+          <tr><td>TC-02</td><td>RBAC role assignment</td><td>Creator vs. Manager</td><td>Distinct roles in DB</td><td>Roles isolated per user</td><td><strong>PASSED</strong></td></tr>
+          <tr><td>TC-03</td><td>Version snapshotting</td><td>Script update on ContentItem</td><td>Rev 1 & Rev 2 saved</td><td>Snapshots preserved</td><td><strong>PASSED</strong></td></tr>
+          <tr><td>TC-04</td><td>Script review check</td><td>Script with hook and CTA</td><td>Score &ge; 80, Passed=True</td><td>Score=100, Passed=True</td><td><strong>PASSED</strong></td></tr>
+          <tr><td>TC-05</td><td>Content ideas generation</td><td>Fitness industry, Instagram</td><td>3+ concepts returned</td><td>3 concepts generated</td><td><strong>PASSED</strong></td></tr>
+          <tr><td>TC-06</td><td>Approval comment summary</td><td>2 feedback comments</td><td>Action items generated</td><td>Action items parsed</td><td><strong>PASSED</strong></td></tr>
         </tbody>
       </table>
+      <p><em>Execution Summary: 6 tests run, 6 passed, 0 failures (100% pass rate).</em></p>
     </section>
 
     <!-- 18. Deployment -->
-    <section id="section-18">
-      <h2><span class="section-num">18</span> Cloud Deployment</h2>
+    <section id="sec-18">
+      <h2 class="section-heading">18. Deployment</h2>
       <p>
-        The platform is deployed live on <strong>Vercel Global Edge Infrastructure</strong>:
+        The application is deployed on Vercel:
       </p>
       <ul>
-        <li><strong>Public Production URL:</strong> <a href="https://creatorops-rho.vercel.app" target="_blank"
-            style="color: var(--accent-blue);">https://creatorops-rho.vercel.app</a></li>
-        <li><strong>Status:</strong> Ready (Active Production)</li>
-        <li><strong>Continuous Integration:</strong> Automated builds triggered on Git push to <code>main</code> branch.
-        </li>
+        <li><strong>Production URL:</strong> <a href="https://creatorops-rho.vercel.app" target="_blank">https://creatorops-rho.vercel.app</a></li>
+        <li><strong>Repository Integration:</strong> Deploys automatically on git push to <code>main</code> branch.</li>
+        <li><strong>SSL:</strong> Managed wildcard TLS certificate via Vercel Edge.</li>
       </ul>
     </section>
 
     <!-- 19. Results and Discussion -->
-    <section id="section-19">
-      <h2><span class="section-num">19</span> Results and Discussion</h2>
+    <section id="sec-19">
+      <h2 class="section-heading">19. Results and Discussion</h2>
       <p>
-        CreatorOps demonstrates significant operational advantages:
+        The platform was tested across functional workflows and performance metrics:
       </p>
-      <ul>
-        <li><strong>Turnaround Speed:</strong> Centralized two-tier reviews reduced turnaround time by an estimated 65%.
-        </li>
-        <li><strong>Brand Safety:</strong> Automated NLP script checks caught non-compliant phrases in under 100ms.</li>
-        <li><strong>Infrastructure Cost:</strong> Serverless execution incurs zero idle server costs while scaling
-          instantly to demand spikes.</li>
-      </ul>
+      <ol>
+        <li><strong>Workflow Efficiency:</strong> Two-tier review queues programmatically prevent unapproved drafts from reaching clients, cutting down revision delays.</li>
+        <li><strong>Quality Control:</strong> Creators receive instant feedback on speaking duration, hook placement, and forbidden terms before submitting content for review.</li>
+        <li><strong>Performance:</strong> WhiteNoise compression and Vercel edge delivery achieve sub-second page loads globally with zero idle infrastructure cost.</li>
+      </ol>
     </section>
 
     <!-- 20. Future Enhancements -->
-    <section id="section-20">
-      <h2><span class="section-num">20</span> Future Enhancements</h2>
+    <section id="sec-20">
+      <h2 class="section-heading">20. Future Enhancements</h2>
       <ul>
-        <li><strong>Social Media API Integration:</strong> Direct publishing to Meta, YouTube, and TikTok APIs.</li>
-        <li><strong>Multimodal Video AI:</strong> Integration with Google Gemini API for storyboard video generation and
-          frame-level auditing.</li>
-        <li><strong>Automated Subtitling:</strong> Automatic Whisper AI speech-to-text generation.</li>
+        <li><strong>Direct Social Publishing:</strong> Integrating with Meta Graph, YouTube, and TikTok APIs to publish approved content directly.</li>
+        <li><strong>Speech-to-Text Video Verification:</strong> Using Whisper AI to automatically verify spoken video dialogue against approved scripts.</li>
+        <li><strong>In-Browser Video Proofing:</strong> Adding timestamped video annotation directly inside the approval screen.</li>
       </ul>
     </section>
 
     <!-- 21. References -->
-    <section id="section-21">
-      <h2><span class="section-num">21</span> References</h2>
+    <section id="sec-21">
+      <h2 class="section-heading">21. References</h2>
       <ol>
-        <li>Django Documentation (v6.1 LTS). <a href="https://docs.djangoproject.com/" target="_blank"
-            style="color: var(--accent-blue);">https://docs.djangoproject.com/</a></li>
-        <li>Django REST Framework Documentation. <a href="https://www.django-rest-framework.org/" target="_blank"
-            style="color: var(--accent-blue);">https://www.django-rest-framework.org/</a></li>
-        <li>Vercel Edge & Serverless Documentation. <a href="https://vercel.com/docs" target="_blank"
-            style="color: var(--accent-blue);">https://vercel.com/docs</a></li>
-        <li>WhiteNoise Static Files for Python Apps. <a href="https://whitenoise.readthedocs.io/" target="_blank"
-            style="color: var(--accent-blue);">https://whitenoise.readthedocs.io/</a></li>
+        <li>Django Software Foundation. <em>Django Documentation (v6.1 LTS)</em>. https://docs.djangoproject.com/</li>
+        <li>Django REST Framework. <em>DRF Web APIs Documentation</em>. https://www.django-rest-framework.org/</li>
+        <li>Vercel Inc. <em>Serverless Functions and Edge Network Architecture</em>. https://vercel.com/docs</li>
+        <li>WhiteNoise Documentation. https://whitenoise.readthedocs.io/</li>
       </ol>
     </section>
 
     <!-- 22. Appendix -->
-    <section id="section-22">
-      <h2><span class="section-num">22</span> Appendix</h2>
-      <div class="callout callout-success">
-        <strong>Final Demonstration Checklist:</strong><br>
-        ✓ User Registration & Login with Password Hashing<br>
-        ✓ Multi-Tenant Role-Based Access Control (4 Roles)<br>
-        ✓ 7-Stage Core Workflow State Machine<br>
-        ✓ Cloud Deployment on Vercel with Global Edge Routing<br>
-        ✓ Public Live URL: <a href="https://creatorops-rho.vercel.app" target="_blank"
-          style="color: #10B981; font-weight: 700;">https://creatorops-rho.vercel.app</a><br>
-        ✓ GitHub Repository: <a href="https://github.com/ttkathyayani/CreatorOps" target="_blank"
-          style="color: #10B981; font-weight: 700;">https://github.com/ttkathyayani/CreatorOps</a><br>
-        ✓ Responsive UI on Desktop, Tablet, and Mobile<br>
-        ✓ Autonomous AI Agent Suite (4 Micro-Agents Executing Live)
-      </div>
+    <section id="sec-22">
+      <h2 class="section-heading">22. Appendix</h2>
+      <h3 class="sub-heading">Project Demonstration Checklist:</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Checklist Item</th>
+            <th>Implementation Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>User registration and session login</td><td>Verified with PBKDF2 password hashing</td></tr>
+          <tr><td>Role-based access control (4 roles)</td><td>Verified across Admin, Manager, Creator, and Client</td></tr>
+          <tr><td>7-stage content lifecycle state machine</td><td>Verified from Draft to Published</td></tr>
+          <tr><td>Immutable revision snapshotting</td><td>Verified on ContentItem script updates</td></tr>
+          <tr><td>Automated script quality and brand safety audit</td><td>Verified with real-time feedback</td></tr>
+          <tr><td>Cloud deployment on Vercel</td><td>Live at https://creatorops-rho.vercel.app</td></tr>
+          <tr><td>Source code in GitHub repository</td><td>Maintained at https://github.com/ttkathyayani/CreatorOps</td></tr>
+          <tr><td>Responsive layout across devices</td><td>Verified on desktop, tablet, and mobile</td></tr>
+        </tbody>
+      </table>
     </section>
 
-  </div>
+  </article>
 
-  <script>
-    function downloadCurrentHTML() {
-      const htmlContent = document.documentElement.outerHTML;
-      const blob = new Blob([htmlContent], { type: 'text/html' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'REVIEW_3_FINAL_REPORT_CreatorOps.html';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
-  </script>
 </body>
-
 </html>

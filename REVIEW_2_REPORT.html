@@ -3,806 +3,648 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CreatorOps — Review 2 Deliverables Report (BCSE408L)</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <title>Review 2 Project Report — CreatorOps (BCSE408L)</title>
   <style>
-    :root {
-      --bg: #0B0F19;
-      --card-bg: #111827;
-      --card-inner: #1F2937;
-      --text: #F8FAFC;
-      --text-muted: #94A3B8;
-      --border: #374151;
-      --primary: #FACC15;
-      --primary-hover: #EAB308;
-      --accent-blue: #38BDF8;
-      --accent-green: #10B981;
-      --accent-purple: #C084FC;
-      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: var(--font-sans);
-      background-color: var(--bg);
-      color: var(--text);
-      font-size: 17px;
-      line-height: 1.8;
-      padding: 30px 20px;
+      font-family: "Times New Roman", Times, Georgia, serif;
+      background-color: #f1f5f9;
+      color: #111827;
+      line-height: 1.6;
+      font-size: 15px;
+      padding: 24px 16px;
     }
 
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 48px;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    }
-
-    /* Action Bar (Screen Only) */
-    .action-bar {
+    /* Minimal Screen Toolbar */
+    .toolbar {
+      max-width: 900px;
+      margin: 0 auto 18px auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 12px;
-      background: #1e293b;
-      padding: 16px 22px;
-      border-radius: 10px;
-      margin-bottom: 32px;
-      border: 1px solid #334155;
+      gap: 10px;
+      background: #ffffff;
+      padding: 10px 18px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     }
-    .action-bar .left-group, .action-bar .right-group {
+
+    .toolbar-group {
       display: flex;
-      gap: 12px;
+      gap: 8px;
       align-items: center;
       flex-wrap: wrap;
     }
+
     .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 18px;
-      border-radius: 7px;
-      font-size: 14px;
+      padding: 6px 14px;
+      font-size: 13px;
       font-weight: 600;
+      border-radius: 4px;
       text-decoration: none;
       cursor: pointer;
-      transition: all 0.2s ease;
-      border: 1px solid transparent;
+      border: 1px solid #94a3b8;
+      background: #f8fafc;
+      color: #1e293b;
+      transition: background 0.15s ease;
     }
+
+    .btn:hover {
+      background: #e2e8f0;
+    }
+
     .btn-primary {
-      background: var(--primary);
-      color: #000;
-      border-color: var(--primary);
+      background: #0f172a;
+      color: #ffffff;
+      border-color: #0f172a;
     }
+
     .btn-primary:hover {
-      background: var(--primary-hover);
-      transform: translateY(-1px);
-    }
-    .btn-outline {
-      background: transparent;
-      color: #F8FAFC;
-      border-color: #475569;
-    }
-    .btn-outline:hover {
       background: #334155;
-      border-color: #64748B;
     }
 
-    /* Cover / Header section */
-    .report-header {
-      border-bottom: 2px solid var(--border);
-      padding-bottom: 28px;
-      margin-bottom: 36px;
+    /* Paper Page Container */
+    .paper {
+      max-width: 900px;
+      margin: 0 auto 40px auto;
+      background: #ffffff;
+      border: 1px solid #d1d5db;
+      padding: 64px 72px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
     }
-    .badge {
-      display: inline-block;
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      background: rgba(250, 204, 21, 0.15);
-      color: var(--primary);
-      border: 1px solid rgba(250, 204, 21, 0.3);
-      margin-bottom: 14px;
-    }
-    h1 {
-      font-size: 38px;
-      color: var(--primary);
-      font-weight: 800;
-      line-height: 1.25;
-      margin-bottom: 14px;
-    }
-    .meta-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 16px;
-      margin-top: 20px;
-      background: #0F172A;
-      padding: 20px 24px;
-      border-radius: 8px;
-      border: 1px solid #1E293B;
-      font-size: 15px;
-    }
-    .meta-item strong {
-      color: var(--primary);
-      display: block;
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 3px;
-    }
-    .meta-item a {
-      color: var(--accent-blue);
-      text-decoration: none;
-      word-break: break-all;
-    }
-    .meta-item a:hover { text-decoration: underline; }
 
-    /* Section Typography */
-    h2 {
-      font-size: 26px;
-      color: #F1F5F9;
-      margin-top: 46px;
-      margin-bottom: 20px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 12px;
+    /* Academic Header Block */
+    .report-title-block {
+      text-align: center;
+      border-bottom: 2px solid #111827;
+      padding-bottom: 20px;
+      margin-bottom: 28px;
     }
-    h2 .section-num {
-      background: var(--primary);
-      color: #000;
-      padding: 3px 10px;
-      border-radius: 6px;
+
+    .report-title-block h1 {
+      font-size: 24px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      color: #000000;
+    }
+
+    .report-title-block h2 {
       font-size: 16px;
-      font-weight: 800;
+      font-weight: normal;
+      color: #374151;
+      margin-bottom: 14px;
     }
-    h3 {
-      font-size: 20px;
-      color: var(--primary);
-      margin-top: 28px;
+
+    .metadata-table {
+      width: 100%;
+      margin: 16px 0;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .metadata-table td {
+      padding: 4px 8px;
+      border: none;
+      vertical-align: top;
+    }
+
+    .metadata-table td.label {
+      font-weight: bold;
+      width: 25%;
+      color: #111827;
+    }
+
+    .metadata-table td.value {
+      width: 75%;
+      color: #374151;
+    }
+
+    .metadata-table td.value a {
+      color: #1d4ed8;
+      text-decoration: underline;
+    }
+
+    /* Headings */
+    h2.section-heading {
+      font-size: 17px;
+      font-weight: bold;
+      text-transform: uppercase;
+      border-bottom: 1px solid #111827;
+      padding-bottom: 4px;
+      margin-top: 32px;
       margin-bottom: 12px;
-      font-weight: 700;
+      color: #000000;
     }
+
+    h3.sub-heading {
+      font-size: 15px;
+      font-weight: bold;
+      margin-top: 18px;
+      margin-bottom: 6px;
+      color: #111827;
+    }
+
     p {
-      margin-bottom: 16px;
-      color: #CBD5E1;
-      font-size: 16.5px;
-      line-height: 1.8;
+      text-align: justify;
+      margin-bottom: 12px;
+      color: #1f2937;
     }
+
     ul, ol {
       margin-left: 28px;
-      margin-bottom: 18px;
-      color: #CBD5E1;
-      font-size: 16.5px;
-      line-height: 1.8;
-    }
-    li {
-      margin-bottom: 8px;
+      margin-bottom: 12px;
+      color: #1f2937;
     }
 
-    /* Tables */
-    table {
+    li {
+      margin-bottom: 4px;
+    }
+
+    /* Standard Academic Tables */
+    table.data-table {
       width: 100%;
       border-collapse: collapse;
-      margin: 22px 0 32px 0;
-      font-size: 15px;
-      background: #0F172A;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid var(--border);
+      margin: 16px 0 20px 0;
+      font-size: 13.5px;
     }
-    th, td {
-      padding: 14px 16px;
-      text-align: left;
-      border-bottom: 1px solid #1F2937;
-    }
-    th {
-      background: #1E293B;
-      color: var(--primary);
-      font-weight: 700;
-      font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: rgba(255, 255, 255, 0.02); }
 
-    /* Diagrams & Images */
-    .diagram-card {
-      background: #0B0F19;
-      border: 1px solid #334155;
-      border-radius: 10px;
-      padding: 18px;
-      margin: 24px 0 32px 0;
-      text-align: center;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    table.data-table th,
+    table.data-table td {
+      border: 1px solid #cbd5e1;
+      padding: 8px 10px;
+      text-align: left;
     }
-    .diagram-card img {
-      max-width: 100%;
+
+    table.data-table th {
+      background-color: #f8fafc;
+      color: #000000;
+      font-weight: bold;
+    }
+
+    table.data-table tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+
+    /* Figure Box */
+    .figure-container {
+      margin: 20px 0;
+      text-align: center;
+      page-break-inside: avoid;
+    }
+
+    .figure-container img {
+      max-width: 96%;
       height: auto;
-      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      padding: 4px;
+      background: #ffffff;
       display: block;
       margin: 0 auto;
-      background: #0F172A;
-    }
-    .diagram-caption {
-      margin-top: 12px;
-      font-size: 14.5px;
-      color: var(--text-muted);
-      font-style: italic;
     }
 
-    /* Code blocks */
-    pre, code {
-      font-family: var(--font-mono);
-      font-size: 14px;
-    }
-    code {
-      background: #1E293B;
-      padding: 3px 8px;
-      border-radius: 5px;
-      color: #FACC15;
-    }
-    pre {
-      background: #0B0F19;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 18px;
-      overflow-x: auto;
-      margin-bottom: 20px;
-    }
-    pre code {
-      background: none;
-      padding: 0;
-      color: #E2E8F0;
-      font-size: 14px;
+    .figure-caption {
+      margin-top: 8px;
+      font-size: 13.5px;
+      font-weight: bold;
+      color: #374151;
     }
 
-    /* Callout Boxes */
-    .callout {
-      background: rgba(56, 189, 248, 0.08);
-      border-left: 4px solid var(--accent-blue);
-      padding: 16px 22px;
-      border-radius: 0 8px 8px 0;
-      margin: 20px 0;
-      color: #E0F2FE;
-      font-size: 16px;
-      line-height: 1.8;
-    }
-    .callout-success {
-      background: rgba(16, 185, 129, 0.08);
-      border-left-color: var(--accent-green);
-      color: #D1FAE5;
-    }
-
-    /* Print Styles (Strict Clean Academic Output) */
+    /* Print Styles */
     @media print {
       body {
         background: #ffffff !important;
-        color: #111827 !important;
         padding: 0 !important;
-        font-size: 13pt !important;
-        line-height: 1.6 !important;
-      }
-      .action-bar { display: none !important; }
-      .container {
-        max-width: 100% !important;
-        border: none !important;
-        padding: 0 !important;
-        box-shadow: none !important;
-        background: #ffffff !important;
-      }
-      h1 { color: #000000 !important; font-size: 28pt !important; }
-      h2 { color: #000000 !important; font-size: 18pt !important; border-bottom: 1px solid #9ca3af !important; margin-top: 24pt !important; page-break-after: avoid; }
-      h2 .section-num { background: #000 !important; color: #fff !important; font-size: 13pt !important; }
-      h3 { color: #1e3a8a !important; font-size: 15pt !important; page-break-after: avoid; }
-      p, li { color: #1f2937 !important; font-size: 12.5pt !important; }
-      .meta-grid {
-        background: #f3f4f6 !important;
-        border: 1px solid #d1d5db !important;
-        color: #111827 !important;
-        font-size: 11pt !important;
-      }
-      .meta-item strong { color: #000000 !important; font-size: 10pt !important; }
-      .meta-item a { color: #1d4ed8 !important; }
-      table {
-        background: #ffffff !important;
-        border: 1px solid #d1d5db !important;
-        color: #111827 !important;
-        font-size: 11pt !important;
-        page-break-inside: avoid;
-      }
-      th {
-        background: #f3f4f6 !important;
-        color: #000000 !important;
-        font-size: 11.5pt !important;
-        border-bottom: 2px solid #9ca3af !important;
-      }
-      td { border-bottom: 1px solid #e5e7eb !important; font-size: 11pt !important; }
-      .diagram-card {
-        background: #ffffff !important;
-        border: 1px solid #cbd5e1 !important;
-        page-break-inside: avoid;
-        box-shadow: none !important;
-      }
-      pre {
-        background: #f8fafc !important;
-        border: 1px solid #cbd5e1 !important;
-        color: #0f172a !important;
-        font-size: 10.5pt !important;
-        page-break-inside: avoid;
-      }
-      pre code { color: #0f172a !important; font-size: 10.5pt !important; }
-      .callout {
-        background: #f0fdf4 !important;
-        border-left-color: #15803d !important;
-        color: #166534 !important;
         font-size: 12pt !important;
       }
-      .page-break { page-break-before: always; }
+
+      .toolbar {
+        display: none !important;
+      }
+
+      .paper {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        max-width: 100% !important;
+      }
+
+      h2.section-heading {
+        page-break-after: avoid;
+        margin-top: 20pt !important;
+      }
+
+      .figure-container {
+        page-break-inside: avoid;
+      }
+
+      table.data-table {
+        page-break-inside: avoid;
+        font-size: 10pt !important;
+      }
+
+      p {
+        font-size: 11pt !important;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-
-    <!-- Top Action Bar -->
-    <div class="action-bar">
-      <div class="left-group">
-        <button class="btn btn-primary" onclick="window.print()">
-          🖨️ Print / Save as PDF
-        </button>
-        <a href="/reports/review2/download/" class="btn btn-outline" download="REVIEW_2_REPORT.md">
-          📥 Download Markdown (.md)
-        </a>
-        <button class="btn btn-outline" onclick="downloadCurrentHTML()">
-          💾 Download HTML
-        </button>
-      </div>
-      <div class="right-group">
-        <a href="/reports/review3/" class="btn btn-outline" style="border-color: #FACC15; color: #FACC15;">
-          📑 Go to Review 3 Report →
-        </a>
-        <a href="/dashboard/" class="btn btn-outline">
-          🏠 Dashboard
-        </a>
-      </div>
+  <!-- Screen Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-group">
+      <button class="btn btn-primary" onclick="window.print()">Print / Save as PDF</button>
+      <a href="/reports/review2/download/" class="btn" download="REVIEW_2_REPORT_CreatorOps.md">Download Markdown (.md)</a>
     </div>
+    <div class="toolbar-group">
+      <a href="/reports/review3/" class="btn">View Review 3 Report</a>
+      <a href="/dashboard/" class="btn">Dashboard</a>
+    </div>
+  </div>
 
-    <!-- Header / Cover Details -->
-    <header class="report-header">
-      <span class="badge">Academic Deliverable • Review 2</span>
-      <h1>CreatorOps — Review 2 Project Report</h1>
-      <p style="font-size: 15px; color: var(--text-muted); margin-bottom: 0;">
-        Detailed technical architecture, database schema, modular design, REST API specifications, authentication, and cloud deployment verification.
-      </p>
+  <!-- Document Paper Sheet -->
+  <article class="paper">
 
-      <div class="meta-grid">
-        <div class="meta-item">
-          <strong>Course</strong>
-          BCSE408L — Cloud Computing & Full Stack App Dev
-        </div>
-        <div class="meta-item">
-          <strong>Project Title</strong>
-          Project 12: CreatorOps (Marketing SaaS)
-        </div>
-        <div class="meta-item">
-          <strong>Student Name</strong>
-          Kathyayani T T
-        </div>
-        <div class="meta-item">
-          <strong>Live Cloud URL</strong>
-          <a href="https://creatorops-rho.vercel.app" target="_blank">creatorops-rho.vercel.app</a>
-        </div>
-        <div class="meta-item">
-          <strong>GitHub Repository</strong>
-          <a href="https://github.com/ttkathyayani/CreatorOps" target="_blank">github.com/ttkathyayani/CreatorOps</a>
-        </div>
-        <div class="meta-item">
-          <strong>Review Stage</strong>
-          Review 2 Evaluation
-        </div>
-      </div>
+    <!-- Report Header -->
+    <header class="report-title-block">
+      <h1>Project Review 2 Report</h1>
+      <h2>Course: BCSE408L — Cloud Computing and Full Stack Application Development</h2>
+
+      <table class="metadata-table">
+        <tr>
+          <td class="label">Project Title:</td>
+          <td class="value">Project 12 — CreatorOps (Marketing SaaS Application)</td>
+        </tr>
+        <tr>
+          <td class="label">Candidate Name:</td>
+          <td class="value">Kathyayani T T</td>
+        </tr>
+        <tr>
+          <td class="label">GitHub Repository:</td>
+          <td class="value"><a href="https://github.com/ttkathyayani/CreatorOps" target="_blank">https://github.com/ttkathyayani/CreatorOps</a></td>
+        </tr>
+        <tr>
+          <td class="label">Live Public URL:</td>
+          <td class="value"><a href="https://creatorops-rho.vercel.app" target="_blank">https://creatorops-rho.vercel.app</a></td>
+        </tr>
+        <tr>
+          <td class="label">Evaluation Stage:</td>
+          <td class="value">Project Review 2</td>
+        </tr>
+      </table>
     </header>
 
-    <!-- Executive Summary -->
-    <div class="callout callout-success">
-      <strong>Deliverable Overview:</strong> This document fulfills all mandatory deliverables for <strong>Review 2</strong> as specified in the BCSE408L Project Guidelines:
-      (1) System Architecture, (2) Cloud Architecture, (3) Database Design, (4) ER Diagram, (5) Module Design, (6) API Design, (7) Authentication & RBAC, (8) Core Modules, (9) GitHub Repository, and (10) Initial Cloud Deployment Verification.
-    </div>
-
-    <!-- Section 1: System Architecture -->
+    <!-- 1. System Architecture -->
     <section>
-      <h2><span class="section-num">01</span> System Architecture</h2>
+      <h2 class="section-heading">1. System Architecture</h2>
       <p>
-        CreatorOps implements an enterprise-grade <strong>Three-Tier Cloud-Native Architecture</strong> grounded in the <strong>Model-View-Template (MVT)</strong> design pattern coupled with a high-throughput <strong>Django REST Framework (DRF 3.18)</strong> API subsystem:
+        CreatorOps is architected as a three-tier web application structured around the Model-View-Template (MVT) pattern and RESTful application programming interfaces.
       </p>
 
-      <div class="diagram-card">
-        <img src="/static/img/system_architecture.png" onerror="this.src='static/img/system_architecture.png'" alt="CreatorOps System Architecture Diagram">
-        <div class="diagram-caption">Figure 1.1: CreatorOps Three-Tier Cloud Architecture with Integrated AI Agent Engine and Object Storage</div>
+      <div class="figure-container">
+        <img src="/static/img/system_architecture.png" onerror="this.src='static/img/system_architecture.png'" alt="System Architecture Diagram">
+        <div class="figure-caption">Figure 1: High-Level Three-Tier Architecture of CreatorOps</div>
       </div>
 
-      <h3>Tier 1: Client & Presentation Layer</h3>
-      <ul>
-        <li><strong>Web UI:</strong> Server-side rendered Django HTML5 templates featuring a curated Black-and-Yellow design system (<code>#111111</code>, <code>#1C1C1C</code>, <code>#FACC15</code>), completely responsive on desktop, tablet, and mobile browsers.</li>
-        <li><strong>REST API Clients:</strong> Microservices, mobile endpoints, and testing harnesses consuming serialized JSON over HTTPS.</li>
-      </ul>
+      <h3 class="sub-heading">1.1 Client Tier (Presentation)</h3>
+      <p>
+        The client interface is rendered through responsive server-side HTML5 templates utilizing CSS variables for styling. It provides operational screens for workspace configuration, client brand records, marketing campaigns, content drafting, and approval queues. External clients and automated tools interact via JSON-based REST endpoints over HTTPS.
+      </p>
 
-      <h3>Tier 2: Business Logic & Application Layer</h3>
-      <ul>
-        <li><strong>Django 6.1 WSGI Engine:</strong> Manages core workflows, multi-tenant workspace routing, session validation, and state machine transitions.</li>
-        <li><strong>AI Agent Engine (<code>agents/</code>):</strong> Autonomous Python agent modules executing automated script reviews, hook brainstorms, approval summaries, and performance metric digests.</li>
-        <li><strong>WhiteNoise Static Engine:</strong> High-performance WSGI middleware handling compression (Gzip/Brotli), cache headers, and static bundle delivery.</li>
-      </ul>
+      <h3 class="sub-heading">1.2 Application Tier (Business Logic)</h3>
+      <p>
+        The application tier is powered by Python 3.12 and Django 6.1. It manages routing, tenant isolation, session validation, and content state transitions. A Django REST Framework (DRF) layer exposes ModelViewSets for programmatic operations. In addition, an internal rule-based agent module (<code>agents/</code>) provides automated checks on creator scripts—measuring word count, estimated speaking duration, hook keyword presence, and brand safety compliance. WhiteNoise serves static assets directly from the WSGI application layer.
+      </p>
 
-      <h3>Tier 3: Persistence & Storage Layer</h3>
+      <h3 class="sub-heading">1.3 Data Tier (Persistence)</h3>
+      <p>
+        Persistent relational data is stored in PostgreSQL for production deployment, with SQLite supported for local development. Binary assets (images, documents, and videos) are managed with support for Amazon S3 object storage via <code>boto3</code> and <code>django-storages</code>.
+      </p>
+    </section>
+
+    <!-- 2. Cloud Architecture -->
+    <section>
+      <h2 class="section-heading">2. Cloud Deployment Architecture</h2>
+      <p>
+        The production application is hosted on Vercel's cloud infrastructure, taking advantage of its edge routing network and serverless execution capabilities.
+      </p>
+
+      <div class="figure-container">
+        <img src="/static/img/cloud_architecture.png" onerror="this.src='static/img/cloud_architecture.png'" alt="Cloud Architecture Diagram">
+        <div class="figure-caption">Figure 2: Cloud Deployment Model on Vercel Serverless Edge Platform</div>
+      </div>
+
+      <h3 class="sub-heading">2.1 Ingestion and Execution Pipeline</h3>
       <ul>
-        <li><strong>Relational Database:</strong> Managed Cloud PostgreSQL (Neon/Supabase) via <code>dj-database-url</code> with transactional ACID isolation and connection pooling.</li>
-        <li><strong>Cloud Object Storage:</strong> AWS S3 integration via <code>boto3</code> / <code>django-storages</code> for scalable video, audio, and graphic asset hosting.</li>
+        <li><strong>DNS and Edge Ingestion:</strong> Traffic is routed through Vercel's Anycast edge network with automatic TLS/SSL termination.</li>
+        <li><strong>Serverless Execution:</strong> Incoming requests execute within Python 3.12 serverless functions via the standard WSGI interface (<code>config/wsgi.py</code>).</li>
+        <li><strong>Static Asset Offloading:</strong> Bundled CSS, JavaScript, and diagrams are cached and served from Vercel's content delivery network points of presence.</li>
+        <li><strong>Database Connectivity:</strong> The serverless runtime connects to a managed PostgreSQL database via connection pooling using the <code>DATABASE_URL</code> environment variable.</li>
       </ul>
     </section>
 
-    <!-- Section 2: Cloud Architecture -->
+    <!-- 3. Database Design -->
     <section>
-      <h2><span class="section-num">02</span> Cloud Deployment Architecture</h2>
+      <h2 class="section-heading">3. Database Schema Design</h2>
       <p>
-        CreatorOps is architected for seamless cloud-native execution on the <strong>Vercel Global Serverless Edge Platform</strong>:
+        The relational schema is normalized to Third Normal Form (3NF) and contains nine core entities structured around multi-tenant workspace isolation.
       </p>
 
-      <div class="diagram-card">
-        <img src="/static/img/cloud_architecture.png" onerror="this.src='static/img/cloud_architecture.png'" alt="CreatorOps Cloud Deployment Architecture Diagram">
-        <div class="diagram-caption">Figure 2.1: Serverless Edge Cloud Ingestion, Managed PostgreSQL Integration, and S3 Storage Pipeline</div>
-      </div>
-
-      <h3>Execution Pipeline & Cloud Mechanics:</h3>
-      <ol>
-        <li><strong>Anycast Edge Ingestion:</strong> Requests arrive at Vercel Anycast edge locations where SSL/TLS termination and DDoS mitigation are handled automatically.</li>
-        <li><strong>Serverless WSGI Execution:</strong> HTTP requests route directly to Python 3.12 Serverless functions executing <code>config/wsgi.py</code> with sub-second spin-up times.</li>
-        <li><strong>Static Asset Delivery:</strong> Vercel's global CDN caches and serves bundled CSS, JavaScript, and branding assets directly from edge points of presence.</li>
-        <li><strong>Serverless Database Adapter:</strong> To support ephemeral execution environments, CreatorOps features dynamic database fallback to local writable scratch space (<code>/tmp</code>) during zero-configuration deployments, while seamlessly binding to cloud-hosted PostgreSQL instances when <code>DATABASE_URL</code> is provisioned.</li>
-      </ol>
-    </section>
-
-    <!-- Section 3: Database Design -->
-    <section>
-      <h2><span class="section-num">03</span> Database Schema Design</h2>
-      <p>
-        The relational schema is normalized to <strong>Third Normal Form (3NF)</strong>, comprising 9 core entities designed around tenant isolation:
-      </p>
-
-      <table>
+      <table class="data-table">
         <thead>
           <tr>
-            <th>Entity Name</th>
+            <th>Entity</th>
             <th>Primary Key</th>
-            <th>Foreign Keys & Relations</th>
-            <th>Key Attributes & Constraints</th>
+            <th>Foreign Keys</th>
+            <th>Key Attributes</th>
+            <th>Integrity Constraints</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>Workspace</strong></td>
-            <td><code>id</code> (BigInt)</td>
-            <td>None (Root Tenant Entity)</td>
-            <td><code>name</code>, <code>slug</code> (Unique), <code>description</code>, <code>created_at</code></td>
+            <td><code>id</code></td>
+            <td>None</td>
+            <td><code>name</code>, <code>slug</code>, <code>description</code>, <code>created_at</code></td>
+            <td>Unique on <code>slug</code></td>
           </tr>
           <tr>
             <td><strong>Membership</strong></td>
-            <td><code>id</code> (BigInt)</td>
-            <td><code>user_id</code> &rarr; User, <code>workspace_id</code> &rarr; Workspace</td>
-            <td><code>role</code> (ADMIN, MANAGER, CREATOR, CLIENT_REVIEWER), <code>unique_together=(user, workspace)</code></td>
+            <td><code>id</code></td>
+            <td><code>user_id</code>, <code>workspace_id</code></td>
+            <td><code>role</code> (Admin, Manager, Creator, Client)</td>
+            <td>Unique on <code>(user, workspace)</code></td>
           </tr>
           <tr>
             <td><strong>Client</strong></td>
-            <td><code>id</code> (BigInt)</td>
-            <td><code>workspace_id</code> &rarr; Workspace</td>
-            <td><code>name</code>, <code>contact_email</code>, <code>industry</code>, <code>brand_guidelines</code>, <code>unique_together=(workspace, name)</code></td>
+            <td><code>id</code></td>
+            <td><code>workspace_id</code></td>
+            <td><code>name</code>, <code>contact_email</code>, <code>brand_guidelines</code></td>
+            <td>Unique on <code>(workspace, name)</code></td>
           </tr>
           <tr>
             <td><strong>Campaign</strong></td>
-            <td><code>id</code> (BigInt)</td>
-            <td><code>client_id</code> &rarr; Client</td>
-            <td><code>title</code>, <code>objective</code>, <code>target_audience</code>, <code>budget</code>, <code>status</code> (PLANNED, ACTIVE, COMPLETED)</td>
+            <td><code>id</code></td>
+            <td><code>client_id</code></td>
+            <td><code>title</code>, <code>objective</code>, <code>budget</code>, <code>status</code></td>
+            <td>Budget non-negative</td>
           </tr>
           <tr>
             <td><strong>ContentItem</strong></td>
-            <td><code>id</code> (BigInt)</td>
-            <td><code>campaign_id</code> &rarr; Campaign, <code>creator_id</code> &rarr; User</td>
-            <td><code>title</code>, <code>platform</code> (IG, YT, TikTok, LinkedIn), <code>script_body</code>, <code>status</code> (7-state finite state machine), <code>due_date</code></td>
+            <td><code>id</code></td>
+            <td><code>campaign_id</code>, <code>creator_id</code></td>
+            <td><code>title</code>, <code>platform</code>, <code>script_body</code>, <code>status</code></td>
+            <td>Status state machine enum</td>
           </tr>
           <tr>
             <td><strong>ContentVersion</strong></td>
-            <td><code>id</code> (BigInt)</td>
-            <td><code>content_item_id</code> &rarr; ContentItem, <code>created_by</code> &rarr; User</td>
-            <td><code>revision_number</code>, <code>script_snapshot</code>, <code>caption_snapshot</code>, <code>unique_together=(content_item, revision_number)</code></td>
+            <td><code>id</code></td>
+            <td><code>content_item_id</code>, <code>created_by</code></td>
+            <td><code>revision_number</code>, <code>script_snapshot</code></td>
+            <td>Unique on <code>(item, rev_num)</code></td>
           </tr>
           <tr>
             <td><strong>Approval</strong></td>
-            <td><code>id</code> (BigInt)</td>
-            <td><code>content_item_id</code> &rarr; ContentItem, <code>reviewer_id</code> &rarr; User</td>
-            <td><code>decision</code> (APPROVED, REJECTED, CHANGES_REQUESTED), <code>comment</code>, <code>timestamp</code></td>
+            <td><code>id</code></td>
+            <td><code>content_item_id</code>, <code>reviewer_id</code></td>
+            <td><code>decision</code>, <code>comment</code>, <code>timestamp</code></td>
+            <td>Decision choices</td>
           </tr>
           <tr>
             <td><strong>Asset</strong></td>
-            <td><code>id</code> (BigInt)</td>
-            <td><code>content_item_id</code> &rarr; ContentItem, <code>uploaded_by</code> &rarr; User</td>
-            <td><code>file</code>, <code>filename</code>, <code>s3_object_key</code>, <code>size_bytes</code></td>
+            <td><code>id</code></td>
+            <td><code>content_item_id</code>, <code>uploaded_by</code></td>
+            <td><code>file</code>, <code>filename</code>, <code>size_bytes</code></td>
+            <td>File extension check</td>
           </tr>
           <tr>
             <td><strong>CampaignMetric</strong></td>
-            <td><code>id</code> (BigInt)</td>
-            <td><code>campaign_id</code> &rarr; Campaign</td>
+            <td><code>id</code></td>
+            <td><code>campaign_id</code></td>
             <td><code>metric_name</code>, <code>metric_value</code>, <code>recorded_date</code></td>
+            <td>Indexed on recorded date</td>
           </tr>
         </tbody>
       </table>
     </section>
 
-    <!-- Section 4: ER Diagram -->
+    <!-- 4. ER Diagram -->
     <section>
-      <h2><span class="section-num">04</span> Entity-Relationship (ER) Diagram</h2>
+      <h2 class="section-heading">4. Entity-Relationship (ER) Diagram</h2>
       <p>
-        The following ER diagram maps the cardinalities and relational constraints among the system entities:
+        The entity-relationship diagram below maps the tables and cardinalities across the system:
       </p>
 
-      <div class="diagram-card">
-        <img src="/static/img/erd_diagram.png" onerror="this.src='static/img/erd_diagram.png'" alt="CreatorOps Entity-Relationship Diagram">
-        <div class="diagram-caption">Figure 4.1: Entity-Relationship Diagram displaying 1:N relations, cascade rules, and uniqueness constraints</div>
+      <div class="figure-container">
+        <img src="/static/img/erd_diagram.png" onerror="this.src='static/img/erd_diagram.png'" alt="Entity Relationship Diagram">
+        <div class="figure-caption">Figure 3: Entity-Relationship Diagram of the CreatorOps Database</div>
       </div>
 
-      <h3>Relational Cardinalities:</h3>
+      <h3 class="sub-heading">4.1 Cardinality Overview:</h3>
       <ul>
-        <li><strong>Workspace &rarr; Membership (1:N):</strong> An agency workspace contains multiple enrolled team members.</li>
-        <li><strong>Workspace &rarr; Client (1:N):</strong> A workspace manages brand records for multiple client companies.</li>
-        <li><strong>Client &rarr; Campaign (1:N):</strong> Each client sponsors one or more marketing campaigns.</li>
-        <li><strong>Campaign &rarr; ContentItem (1:N):</strong> A campaign comprises multiple creative content items across channels.</li>
-        <li><strong>ContentItem &rarr; ContentVersion (1:N):</strong> Every edit spawns an immutable, sequentially indexed version record.</li>
-        <li><strong>ContentItem &rarr; Approval (1:N):</strong> Multi-tier audit logging of internal manager and external client review decisions.</li>
-        <li><strong>ContentItem &rarr; Asset (1:N):</strong> Multiple raw or rendered media assets attached to each deliverable.</li>
+        <li><strong>Workspace to Membership:</strong> One-to-Many ($1 : N$). A workspace maintains multiple user memberships.</li>
+        <li><strong>Workspace to Client:</strong> One-to-Many ($1 : N$). A workspace holds multiple client brand profiles.</li>
+        <li><strong>Client to Campaign:</strong> One-to-Many ($1 : N$). A client sponsors multiple marketing campaigns.</li>
+        <li><strong>Campaign to ContentItem:</strong> One-to-Many ($1 : N$). A campaign contains multiple content deliverables.</li>
+        <li><strong>ContentItem to ContentVersion:</strong> One-to-Many ($1 : N$). Each edit generates a sequential revision record.</li>
+        <li><strong>ContentItem to Approval:</strong> One-to-Many ($1 : N$). An item records internal manager and client review decisions.</li>
       </ul>
     </section>
 
-    <!-- Section 5: Module Design -->
+    <!-- 5. Module Design -->
     <section>
-      <h2><span class="section-num">05</span> Modular Software Architecture</h2>
+      <h2 class="section-heading">5. Modular Architecture</h2>
       <p>
-        The project adheres to <strong>Domain-Driven Modular Design</strong>, partitioning responsibility into dedicated Django apps:
+        The software follows a domain-driven structure, separated into distinct Django apps:
       </p>
-
-      <pre><code>CreatorOps/
-├── accounts/      → Authentication, user registration, profiles, password management
-├── workspaces/    → Multi-tenancy, workspace switcher, role assignments, context processors
-├── clients/       → Brand CRM, client roster, contact metadata, brand voice rules
-├── campaigns/     → Marketing projects, budget allocation, channel strategy, goal tracking
-├── content/       → Content matrix, 7-state lifecycle machine, version control studio
-├── approvals/     → Two-tier review queue (Manager Gate & Client Sign-off Gate)
-├── assets/        → Cloud asset storage abstraction (local media & AWS S3 streaming)
-├── analytics/     → Executive dashboard, metric aggregators, automated PDF/JSON reporting
-├── agents/        → Autonomous AI Agent Engine (4 specialized NLP & audit agents)
-└── config/        → Settings, WSGI serverless adapter, root routing table</code></pre>
+      <ul>
+        <li><code>accounts</code>: Authentication, session management, user registration, and profile data.</li>
+        <li><code>workspaces</code>: Multi-tenant organizational boundaries, member roles, and tenant context resolution.</li>
+        <li><code>clients</code>: Client brand profiles, contact details, and brand voice guidelines.</li>
+        <li><code>campaigns</code>: Marketing campaign objectives, budget allocations, and status tracking.</li>
+        <li><code>content</code>: Deliverable management, social platform targeting, and revision snapshotting.</li>
+        <li><code>approvals</code>: Two-tier review workflow (Manager Gate followed by Client Sign-off).</li>
+        <li><code>assets</code>: Media asset handling and cloud storage integration.</li>
+        <li><code>analytics</code>: Dashboard KPI aggregation and performance reporting.</li>
+        <li><code>agents</code>: Automated script auditing, hook suggestions, and comment clustering.</li>
+        <li><code>config</code>: Root URL routing, project settings, and WSGI entrypoint.</li>
+      </ul>
     </section>
 
-    <!-- Section 6: API Design -->
+    <!-- 6. API Design -->
     <section>
-      <h2><span class="section-num">06</span> REST API Specifications</h2>
+      <h2 class="section-heading">6. REST API Design</h2>
       <p>
-        The application exposes a fully documented RESTful API powered by <strong>Django REST Framework (DRF)</strong>:
+        The REST API is implemented using Django REST Framework and requires authentication for all protected endpoints:
       </p>
 
-      <table>
+      <table class="data-table">
         <thead>
           <tr>
             <th>HTTP Method</th>
-            <th>API Endpoint</th>
+            <th>Endpoint</th>
             <th>Description</th>
-            <th>Permissions</th>
+            <th>Permitted Roles</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><code>GET / POST</code></td>
             <td><code>/api/clients/</code></td>
-            <td>List all clients in workspace / Create client profile</td>
+            <td>List or create clients in active workspace</td>
             <td>Authenticated Member</td>
           </tr>
           <tr>
-            <td><code>GET / PUT / DEL</code></td>
+            <td><code>GET / PUT / DELETE</code></td>
             <td><code>/api/clients/{id}/</code></td>
-            <td>Retrieve, update, or remove client record</td>
-            <td>Admin / Manager</td>
+            <td>Retrieve, update, or delete a client profile</td>
+            <td>Admin, Manager</td>
           </tr>
           <tr>
             <td><code>GET / POST</code></td>
             <td><code>/api/campaigns/</code></td>
-            <td>List campaigns / Create marketing campaign</td>
+            <td>List or create marketing campaigns</td>
             <td>Authenticated Member</td>
           </tr>
           <tr>
-            <td><code>GET / PUT / DEL</code></td>
+            <td><code>GET / PUT / DELETE</code></td>
             <td><code>/api/campaigns/{id}/</code></td>
-            <td>Retrieve, update, or delete campaign</td>
-            <td>Admin / Manager</td>
+            <td>Retrieve, update, or delete a campaign</td>
+            <td>Admin, Manager</td>
           </tr>
           <tr>
             <td><code>GET / POST</code></td>
             <td><code>/api/content/</code></td>
-            <td>List content deliverables / Create new item</td>
+            <td>List or create content deliverables</td>
             <td>Authenticated Member</td>
           </tr>
           <tr>
-            <td><code>GET / PUT / DEL</code></td>
+            <td><code>GET / PUT / DELETE</code></td>
             <td><code>/api/content/{id}/</code></td>
             <td>Retrieve, update, or delete content item</td>
-            <td>Creator / Manager</td>
+            <td>Creator, Manager</td>
           </tr>
           <tr>
             <td><code>POST</code></td>
             <td><code>/api/content/{id}/review/</code></td>
             <td>Submit manager or client approval decision</td>
-            <td>Manager / Client</td>
+            <td>Manager, Client</td>
           </tr>
           <tr>
             <td><code>GET</code></td>
             <td><code>/api/reports/campaigns/{id}/</code></td>
-            <td>Generate AI-driven campaign performance report</td>
+            <td>Retrieve campaign metrics summary</td>
             <td>Authenticated Member</td>
           </tr>
           <tr>
             <td><code>POST</code></td>
             <td><code>/api/agents/script-review/</code></td>
-            <td>Trigger autonomous script audit against brand rules</td>
-            <td>Creator / Manager</td>
-          </tr>
-          <tr>
-            <td><code>POST</code></td>
-            <td><code>/api/agents/{agent_type}/</code></td>
-            <td>Execute specialized AI agent (Brainstorm, Approval, Report)</td>
-            <td>Authenticated Member</td>
+            <td>Run automated script quality and brand compliance audit</td>
+            <td>Creator, Manager</td>
           </tr>
         </tbody>
       </table>
-
-      <h3>Sample Script Review Agent Request & Response:</h3>
-      <pre><code>// POST /api/agents/script-review/
-{
-  "script": "Stop scrolling! Here is the secret to glowing skin in 3 steps. Subscribe for more!",
-  "brand_rules": "Avoid cheap, fake. Required hashtag: #GlowSkin",
-  "platform": "Instagram"
-}
-
-// HTTP 200 OK Response
-{
-  "agent": "Script Review Agent",
-  "passed": true,
-  "score": 95,
-  "word_count": 16,
-  "estimated_duration_sec": 7,
-  "findings": ["All script checks passed successfully!"],
-  "suggestions": ["The script structure and pacing look optimal for production."]
-}</code></pre>
     </section>
 
-    <!-- Section 7: Authentication & RBAC -->
+    <!-- 7. Authentication & RBAC -->
     <section>
-      <h2><span class="section-num">07</span> Authentication & Multi-Tenant RBAC</h2>
+      <h2 class="section-heading">7. Authentication and Role-Based Access Control</h2>
       <p>
-        Security is enforced through a multi-layered defense-in-depth model:
+        The system implements a four-tier Role-Based Access Control (RBAC) model integrated with multi-tenant data boundaries:
       </p>
-
       <ul>
-        <li><strong>Cryptographic Password Storage:</strong> Implemented via PBKDF2 with SHA-256 (390,000 hashing rounds).</li>
-        <li><strong>Session Hardening:</strong> HTTP-only cookies, <code>SameSite=Lax</code>, and mandatory CSRF token validation on all mutating requests.</li>
-        <li><strong>Multi-Tenant Middleware:</strong> <code>workspaces.context_processors.active_workspace</code> automatically isolates data views based on the user's active session workspace.</li>
-        <li><strong>Role-Based Access Control (RBAC):</strong> Four distinct operational roles:
+        <li><strong>Password Protection:</strong> Passwords are stored as salted PBKDF2-SHA256 hashes.</li>
+        <li><strong>Session Isolation:</strong> Sessions are validated with CSRF protection on all state-modifying requests.</li>
+        <li><strong>Tenant Boundaries:</strong> The active workspace is resolved per request. Database operations automatically filter by workspace ID to ensure tenant data isolation.</li>
+        <li><strong>Role Definitions:</strong>
           <ol>
-            <li><strong>Admin:</strong> Complete organizational control, user invitation, workspace configuration.</li>
-            <li><strong>Manager:</strong> Client CRM, campaign creation, tier-1 content approvals.</li>
-            <li><strong>Creator:</strong> Script drafting, asset uploads, revision creation, AI assistant access.</li>
-            <li><strong>Client Reviewer:</strong> Read-only access to campaign deliverables with tier-2 sign-off authority.</li>
+            <li><strong>Admin:</strong> Global control over workspace settings, members, and roles.</li>
+            <li><strong>Manager:</strong> Client brand setup, campaign creation, and primary draft approvals.</li>
+            <li><strong>Creator:</strong> Content drafting, script versioning, and asset uploads.</li>
+            <li><strong>Client Reviewer:</strong> Read-only access to campaign deliverables with final approval sign-off.</li>
           </ol>
         </li>
       </ul>
     </section>
 
-    <!-- Section 8: Core Modules -->
+    <!-- 8. Core Modules Summary -->
     <section>
-      <h2><span class="section-num">08</span> Core Modules Implementation</h2>
-      <p>
-        All suggested functional modules from the syllabus are fully operational in the codebase:
-      </p>
+      <h2 class="section-heading">8. Core Modules Implementation Summary</h2>
       <ul>
-        <li><strong>Authentication & Workspace Module:</strong> Supports self-registration, default workspace instantiation, and membership switching.</li>
-        <li><strong>Content Production Engine:</strong> Implements a 7-stage state machine (<code>draft</code> &rarr; <code>pending_manager</code> &rarr; <code>pending_client</code> &rarr; <code>approved</code> &rarr; <code>scheduled</code> &rarr; <code>published</code>) preventing unauthorized phase skips.</li>
-        <li><strong>Approval Engine:</strong> Dedicated review inbox with side-by-side revision diffs and feedback loops.</li>
-        <li><strong>AI Agent Suite:</strong> 4 specialized agents implemented in Python:
-          <code>ScriptReviewAgent</code>, <code>HookBrainstormAgent</code>, <code>ApprovalSummaryAgent</code>, and <code>PerformanceReportAgent</code>.</li>
-        <li><strong>Cloud Asset Storage:</strong> Support for raw video/image ingestion with automatic size formatting and cloud storage keys.</li>
+        <li><strong>Content Lifecycle State Machine:</strong> Programmatically manages content transitions across 7 stages: <code>draft</code> &rarr; <code>pending_manager</code> &rarr; <code>pending_client</code> &rarr; <code>approved</code> &rarr; <code>changes_requested</code> &rarr; <code>scheduled</code> &rarr; <code>published</code>.</li>
+        <li><strong>Revision Snapshots:</strong> Every script or caption change generates an immutable <code>ContentVersion</code> record, maintaining a complete audit trail.</li>
+        <li><strong>Automated Script Analysis:</strong> The script review module checks text against word count limits, spoken duration pacing, hook keyword placement in the opening sentence, and forbidden brand terms.</li>
       </ul>
     </section>
 
-    <!-- Section 9: GitHub Repository -->
+    <!-- 9. GitHub Repository -->
     <section>
-      <h2><span class="section-num">09</span> GitHub Repository & Version Control</h2>
-      <div class="callout callout-success">
-        <strong>GitHub Repository:</strong> <a href="https://github.com/ttkathyayani/CreatorOps" target="_blank" style="color: #10B981; font-weight: 700;">https://github.com/ttkathyayani/CreatorOps</a><br>
-        <strong>Primary Branch:</strong> <code>main</code><br>
-        <strong>Engineering Practices:</strong> Clean modular commits, atomic feature implementations, zero build artifacts committed, comprehensive documentation.
-      </div>
+      <h2 class="section-heading">9. GitHub Repository</h2>
+      <p>
+        The complete project source code is maintained on GitHub under continuous version control:
+      </p>
+      <table class="data-table">
+        <tr>
+          <td style="width: 25%; font-weight: bold;">Repository:</td>
+          <td><a href="https://github.com/ttkathyayani/CreatorOps" target="_blank">https://github.com/ttkathyayani/CreatorOps</a></td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold;">Default Branch:</td>
+          <td><code>main</code></td>
+        </tr>
+      </table>
     </section>
 
-    <!-- Section 10: Initial Cloud Deployment -->
+    <!-- 10. Initial Deployment Verification -->
     <section>
-      <h2><span class="section-num">10</span> Initial Cloud Deployment Verification</h2>
+      <h2 class="section-heading">10. Cloud Deployment Verification</h2>
       <p>
-        The project is deployed and actively serving production traffic on Vercel:
+        The application is actively deployed and serving production traffic on Vercel:
       </p>
-      <table>
+      <table class="data-table">
         <thead>
           <tr>
-            <th>Parameter</th>
-            <th>Production Value</th>
+            <th>Deployment Metric</th>
+            <th>Value</th>
             <th>Status</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Cloud Hosting Provider</strong></td>
-            <td>Vercel Global Serverless Edge Platform</td>
-            <td><span style="color: #10B981; font-weight: 700;">ACTIVE</span></td>
+            <td>Hosting Environment</td>
+            <td>Vercel Serverless Edge Platform</td>
+            <td>Active</td>
           </tr>
           <tr>
-            <td><strong>Public Production URL</strong></td>
-            <td><a href="https://creatorops-rho.vercel.app" target="_blank" style="color: var(--accent-blue);">https://creatorops-rho.vercel.app</a></td>
-            <td><span style="color: #10B981; font-weight: 700;">HTTP 200 OK</span></td>
+            <td>Production URL</td>
+            <td><a href="https://creatorops-rho.vercel.app" target="_blank">https://creatorops-rho.vercel.app</a></td>
+            <td>HTTP 200 OK</td>
           </tr>
           <tr>
-            <td><strong>Static File Engine</strong></td>
-            <td>WhiteNoise 6.9 + Vercel Edge CDN</td>
-            <td><span style="color: #10B981; font-weight: 700;">OPTIMIZED</span></td>
-          </tr>
-          <tr>
-            <td><strong>Database Adapter</strong></td>
-            <td>PostgreSQL Engine + Dynamic Serverless Failover</td>
-            <td><span style="color: #10B981; font-weight: 700;">CONNECTED</span></td>
-          </tr>
-          <tr>
-            <td><strong>SSL/TLS Certificate</strong></td>
+            <td>SSL/TLS Certificate</td>
             <td>Let's Encrypt Wildcard Edge Certificate</td>
-            <td><span style="color: #10B981; font-weight: 700;">SECURED</span></td>
+            <td>Verified</td>
+          </tr>
+          <tr>
+            <td>Static Delivery</td>
+            <td>WhiteNoise 6.9 + Vercel Edge Cache</td>
+            <td>Operational</td>
           </tr>
         </tbody>
       </table>
     </section>
 
-  </div>
+  </article>
 
-  <script>
-    function downloadCurrentHTML() {
-      const htmlContent = document.documentElement.outerHTML;
-      const blob = new Blob([htmlContent], { type: 'text/html' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'REVIEW_2_REPORT_CreatorOps.html';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
-  </script>
 </body>
 </html>

@@ -1,209 +1,162 @@
-# CreatorOps — Review 2 Deliverables Report
-**Course:** Cloud Computing & Full Stack Application Development (BCSE408L)  
+# PROJECT REVIEW 2 REPORT
+
+**Course Code:** BCSE408L — Cloud Computing and Full Stack Application Development  
 **Project No. & Title:** Project 12 — CreatorOps  
-**Domain:** Marketing SaaS / Multi-Tenant Cloud Application  
+**Project Domain:** Marketing SaaS Application  
 **Student Name:** Kathyayani T T  
-**GitHub Account:** [ttkathyayani](https://github.com/ttkathyayani)  
-**GitHub Repository:** [https://github.com/ttkathyayani/CreatorOps](https://github.com/ttkathyayani/CreatorOps)  
-**Live Production URL:** [https://creatorops-rho.vercel.app](https://creatorops-rho.vercel.app)  
-
----
-
-## Executive Summary
-**Review 2** of the course **BCSE408L**. It details the **System Architecture**, **Cloud Deployment Architecture**, **Database Schema & ER Diagram**, **Modular Software Design**, **REST API Specifications**, **Authentication & Multi-Tenant Role-Based Access Control (RBAC)**, and **Initial Cloud Deployment Verification**.
+**GitHub Repository:** https://github.com/ttkathyayani/CreatorOps  
+**Live URL:** https://creatorops-rho.vercel.app  
 
 ---
 
 ## 1. System Architecture
 
-CreatorOps adopts a **Three-Tier Cloud-Native Architecture** built upon the **Model-View-Template (MVT)** and **RESTful API** paradigms:
+CreatorOps is built as a three-tier web application using Django for backend logic, Django REST Framework for REST APIs, and a relational database for persistent storage.
 
-![System Architecture](static/img/system_architecture.png)
+![Figure 1: System Architecture of CreatorOps](static/img/system_architecture.png)
 
-### Tier 1: Client Layer (Presentation Tier)
-- **Web & Mobile Browsers:** Responsive Single-Page UI and Server-Rendered Views styled via an intentional Black-and-Yellow Design System (`#111111`, `#1C1C1C`, `#FACC15`).
-- **REST API Clients:** Third-party webhooks, mobile apps, and automated testing suites communicating via standard JSON over HTTPS.
+### 1.1 Presentation Tier
+- **Frontend Interface:** Server-rendered HTML templates built with HTML5, CSS3, and vanilla JavaScript. Provides a dashboard, content creation forms, and review interfaces.
+- **API Consumers:** External clients or mobile devices communicate with the backend using standard JSON over HTTPS.
 
-### Tier 2: Application Layer (Logic Tier)
-- **Django 6.1 WSGI Application:** Implements core business rules, multi-tenant workspace isolation, and state machine transitions.
-- **Django REST Framework (DRF 3.18):** Provides standardized serialization, token/session authentication, and nested ModelViewSets.
-- **AI Agent Engine (`agents/`):** Autonomous heuristic and NLP intelligence engine executing script auditing, creative brainstorming, feedback clustering, and performance reporting.
-- **WhiteNoise Static File Engine:** Integrated WSGI middleware providing gzip/Brotli compression, unique hash fingerprints, and CDN-compatible caching.
+### 1.2 Application Tier
+- **Django Application Server:** Handles URL routing, authentication, request validation, and business logic.
+- **REST API Layer:** Django REST Framework ViewSets expose standard CRUD endpoints for clients, campaigns, and content deliverables.
+- **AI Processing Modules:** Python modules in `agents/` execute script checks (reading time, word count, hook detection, forbidden brand terms) and generate content ideas.
+- **Static Asset Serving:** WhiteNoise serves collected CSS, JavaScript, and image assets directly through the WSGI layer.
 
-### Tier 3: Data & Storage Layer (Persistence Tier)
-- **Relational Database:** Dual-mode support for Cloud PostgreSQL (Neon/Supabase) in production and SQLite in isolated development environments.
-- **Cloud Object Storage:** Amazon S3 integration via `boto3` for high-throughput video and image asset storage.
+### 1.3 Data Tier
+- **Database:** PostgreSQL for production; SQLite used during local development.
+- **File Storage:** Local media handling for development, with AWS S3 support configured via `django-storages` for production media uploads.
 
 ---
 
 ## 2. Cloud Architecture
 
-CreatorOps is deployed on the **Vercel Global Serverless Edge Platform**, delivering serverless elasticity, zero-downtime deployments, and global low-latency access:
+The application is deployed on Vercel's cloud platform. Incoming requests pass through Vercel's edge network and are handled by serverless Python runtimes executing the WSGI application.
 
-![Cloud Architecture](static/img/cloud_architecture.png)
+![Figure 2: Cloud Deployment Model](static/img/cloud_architecture.png)
 
-### Key Architectural Flow:
-1. **Edge Ingestion:** User requests hit Vercel's Anycast Edge Network with automated TLS/SSL termination and Cloudflare DDoS protection.
-2. **Serverless WSGI Execution:** Dynamic requests route to Python 3.12 Serverless Functions running `config/wsgi.py`. Cold starts are minimized using lightweight packaging (~15MB max lambda footprint).
-3. **Static Asset Offloading:** Static assets (`/static/*`) are served directly via Vercel's global CDN cache and WhiteNoise.
-4. **Cloud Database Connection:** The serverless runtime connects to a managed PostgreSQL database via pooled connection strings (`DATABASE_URL`), with read/write `/tmp` database replication for serverless isolation.
-5. **Asset Storage Pipeline:** Media deliverables (MP4 videos, PNG graphics) stream to an AWS S3 bucket with signed URL retrieval.
+### 2.1 Deployment Pipeline
+1. **Source Control:** Code is pushed to the `main` branch on GitHub (`ttkathyayani/CreatorOps`).
+2. **Build Stage:** Vercel detects changes, installs dependencies from `requirements.txt`, runs `collectstatic`, and prepares the WSGI entrypoint.
+3. **Execution:** Requests route to serverless Python 3.12 workers. If dynamic requests require database access, they connect via the configured `DATABASE_URL` connection pool.
+4. **Static Caching:** CSS, JavaScript, and static diagrams are cached at edge locations for low-latency delivery.
 
 ---
 
 ## 3. Database Design
 
-The relational schema comprises **9 normalized entities (3NF)** structured around multi-tenant boundaries:
+The relational schema is normalized to Third Normal Form (3NF) and contains 9 core tables structured around multi-tenant workspaces.
 
-| Entity Name | Primary Key | Foreign Keys | Key Attributes |
-| :--- | :--- | :--- | :--- |
-| **Workspace** | `id` (BigInt) | None | `name`, `slug` (unique), `description`, `created_at` |
-| **Membership** | `id` (BigInt) | `user_id`, `workspace_id` | `role` (ADMIN, MANAGER, CREATOR, CLIENT_REVIEWER) |
-| **Client** | `id` (BigInt) | `workspace_id` | `name`, `contact_email`, `industry`, `brand_guidelines` |
-| **Campaign** | `id` (BigInt) | `client_id` | `title`, `objective`, `target_audience`, `budget`, `status` |
-| **ContentItem** | `id` (BigInt) | `campaign_id`, `creator_id` | `title`, `platform`, `script_body`, `caption`, `status`, `due_date` |
-| **ContentVersion**| `id` (BigInt) | `content_item_id`, `created_by` | `revision_number`, `script_snapshot`, `caption_snapshot` |
-| **Approval** | `id` (BigInt) | `content_item_id`, `reviewer_id`| `decision`, `comment`, `timestamp` |
-| **Asset** | `id` (BigInt) | `content_item_id`, `uploaded_by`| `file`, `filename`, `s3_object_key`, `size_bytes` |
-| **CampaignMetric**| `id` (BigInt) | `campaign_id` | `metric_name`, `metric_value`, `recorded_date` |
+### Table 1: Database Entities and Field Specifications
 
-### Key Integrity Constraints:
-- `Membership.unique_together = ("user", "workspace")`: Prevents duplicate roles in a single organization.
-- `Client.unique_together = ("workspace", "name")`: Prevents client name collisions within a tenant.
-- `ContentVersion.unique_together = ("content_item", "revision_number")`: Guarantees sequential, tamper-proof version numbering.
+| Table | Primary Key | Foreign Keys | Key Fields | Constraints |
+| :--- | :--- | :--- | :--- | :--- |
+| **Workspace** | `id` | None | `name`, `slug`, `description`, `created_at` | `slug` is unique |
+| **Membership** | `id` | `user_id`, `workspace_id` | `role` (Admin, Manager, Creator, Client) | Unique on `(user, workspace)` |
+| **Client** | `id` | `workspace_id` | `name`, `contact_email`, `brand_guidelines` | Unique on `(workspace, name)` |
+| **Campaign** | `id` | `client_id` | `title`, `objective`, `budget`, `status` | `budget >= 0` |
+| **ContentItem** | `id` | `campaign_id`, `creator_id` | `title`, `platform`, `script_body`, `status` | State machine enum |
+| **ContentVersion**| `id` | `content_item_id`, `created_by` | `revision_number`, `script_snapshot`, `caption_snapshot` | Unique on `(content_item, revision_number)` |
+| **Approval** | `id` | `content_item_id`, `reviewer_id` | `decision`, `comment`, `timestamp` | Decision choices |
+| **Asset** | `id` | `content_item_id`, `uploaded_by` | `file`, `filename`, `size_bytes` | File extension filter |
+| **CampaignMetric**| `id` | `campaign_id` | `metric_name`, `metric_value`, `recorded_date` | Date indexing |
 
 ---
 
 ## 4. Entity-Relationship (ER) Diagram
 
-![ER Diagram](static/img/erd_diagram.png)
+The relationships among workspaces, clients, campaigns, content deliverables, versions, and approvals are shown below:
 
-### Cardinality Summary:
-- **Workspace to Membership:** $1 : N$ (One workspace has many members).
-- **Workspace to Client:** $1 : N$ (One workspace owns multiple brand clients).
-- **Client to Campaign:** $1 : N$ (One client runs multiple marketing campaigns).
-- **Campaign to ContentItem:** $1 : N$ (One campaign groups multiple deliverables).
-- **ContentItem to ContentVersion:** $1 : N$ (One deliverable maintains an audit trail of revisions).
-- **ContentItem to Approval:** $1 : N$ (One deliverable records manager and client review decisions).
-- **ContentItem to Asset:** $1 : N$ (One deliverable links multiple video/image assets).
-- **Campaign to CampaignMetric:** $1 : N$ (One campaign tracks time-series performance metrics).
+![Figure 3: Entity-Relationship Diagram](static/img/erd_diagram.png)
+
+### 4.1 Cardinalities:
+- One Workspace has many Memberships ($1 : N$).
+- One Workspace manages many Clients ($1 : N$).
+- One Client has many Campaigns ($1 : N$).
+- One Campaign contains many Content Items ($1 : N$).
+- One Content Item records multiple Content Versions ($1 : N$).
+- One Content Item receives multiple Approval reviews ($1 : N$).
+- One Content Item holds multiple media Assets ($1 : N$).
 
 ---
 
 ## 5. Module Design
 
-The codebase adheres to **Domain-Driven Design (DDD)** organized into 9 modular packages:
+The project is structured into domain-specific Django apps:
 
-```
-CreatorOps/
-├── accounts/      --> Authentication lifecycle, registration, user profiles
-├── workspaces/    --> Tenant organization, membership RBAC, context processors
-├── clients/       --> Brand CRM, client profiles, brand voice rules
-├── campaigns/     --> Marketing initiatives, budget tracking, milestone goals
-├── content/       --> Content matrix, 7-stage state machine, versioning studio
-├── approvals/     --> Two-tier approval queue (Manager & Client gates)
-├── assets/        --> Cloud file storage abstraction, S3 streaming, size formatting
-├── analytics/     --> Executive dashboard, KPI aggregation, report views
-├── agents/        --> Autonomous AI Agent Engine (4 specialized agents)
-└── config/        --> Settings, WSGI serverless bridge, root URL routing
-```
+- **`accounts`**: User registration, login, logout, and profile management.
+- **`workspaces`**: Workspace creation, member role management, and tenant filtering.
+- **`clients`**: Client brand profiles, contact details, and brand voice guidelines.
+- **`campaigns`**: Marketing campaigns, goals, budget tracking, and timelines.
+- **`content`**: Content items, social platform assignment, script drafting, and revision snapshots.
+- **`approvals`**: Two-step approval queue (Manager approval $\rightarrow$ Client sign-off).
+- **`assets`**: File attachment handling and media storage.
+- **`analytics`**: Dashboard metric aggregation and summary reports.
+- **`agents`**: Script quality evaluation, hook recommendations, and comment summarization.
+- **`config`**: Project configuration, URL routing, and WSGI entry point.
 
 ---
 
-## 6. API Design (Django REST Framework)
+## 6. API Design
 
-All REST endpoints require authentication and return standard JSON schemas:
+The application provides RESTful endpoints built using Django REST Framework:
 
-| Method | Endpoint | Description | Permission Required |
+### Table 2: REST API Specifications
+
+| Method | Endpoint | Description | Permitted Roles |
 | :--- | :--- | :--- | :--- |
-| `GET / POST` | `/api/clients/` | List all workspace clients / Create new client | Authenticated Member |
-| `GET / PUT / DEL` | `/api/clients/{id}/` | Retrieve, update, or remove client profile | Admin / Manager |
-| `GET / POST` | `/api/campaigns/` | List campaigns / Create new campaign | Authenticated Member |
-| `GET / PUT / DEL` | `/api/campaigns/{id}/` | Retrieve, update, or delete campaign | Admin / Manager |
-| `GET / POST` | `/api/content/` | List content items / Create new deliverable | Authenticated Member |
-| `GET / PUT / DEL` | `/api/content/{id}/` | Retrieve, update, or delete content item | Creator / Manager |
-| `POST` | `/api/content/{id}/review/` | Submit manager/client approval decision | Manager / Client |
-| `GET` | `/api/reports/campaigns/{id}/` | Generate AI executive campaign report | Authenticated Member |
-| `POST` | `/api/agents/script-review/` | Real-time script quality & brand audit | Creator / Manager |
-| `POST` | `/api/agents/{agent_type}/` | Trigger dynamic AI agent execution | Authenticated Member |
-
-### Sample JSON Request & Response (`/api/agents/script-review/`):
-```json
-// POST /api/agents/script-review/
-{
-  "script": "Stop scrolling! Here is the secret to glowing skin in 3 steps. Subscribe for more!",
-  "brand_rules": "Avoid cheap, fake. Required hashtag: #GlowSkin",
-  "platform": "Instagram"
-}
-
-// HTTP 200 OK Response
-{
-  "agent": "Script Review Agent",
-  "passed": true,
-  "score": 95,
-  "word_count": 16,
-  "estimated_duration_sec": 7,
-  "findings": ["All script checks passed successfully!"],
-  "suggestions": ["The script structure and pacing look optimal for production."]
-}
-```
+| `GET / POST` | `/api/clients/` | List or create clients in active workspace | Authenticated member |
+| `GET / PUT / DELETE` | `/api/clients/{id}/` | Retrieve, update, or delete a client | Admin, Manager |
+| `GET / POST` | `/api/campaigns/` | List or create campaigns | Authenticated member |
+| `GET / PUT / DELETE` | `/api/campaigns/{id}/` | Retrieve, update, or delete a campaign | Admin, Manager |
+| `GET / POST` | `/api/content/` | List or create content deliverables | Authenticated member |
+| `GET / PUT / DELETE` | `/api/content/{id}/` | Retrieve, update, or delete content item | Creator, Manager |
+| `POST` | `/api/content/{id}/review/` | Submit manager or client approval decision | Manager, Client |
+| `GET` | `/api/reports/campaigns/{id}/` | Generate summary performance metrics | Authenticated member |
+| `POST` | `/api/agents/script-review/` | Analyze script for word count, hook, and brand rules | Creator, Manager |
 
 ---
 
-## 7. Authentication & Role-Based Access Control (RBAC)
+## 7. Authentication and Role-Based Access Control
 
-### Security Flow:
-1. **Password Hashing:** Django PBKDF2 with SHA-256 (390,000 iterations).
-2. **Session Integrity:** Secure HTTP-only session cookies with CSRF token validation on all state-mutating requests.
-3. **Workspace Injection:** Custom `@workspace_required` decorator extracts and verifies active tenant ID from session, binding `request.workspace` and `request.membership`.
-4. **Role Enforcement:** Custom `@role_required([roles])` decorator and DRF `IsWorkspaceAdminOrManager` permission classes restrict access:
+User authentication and role authorization are implemented using Django's built-in authentication system with custom middleware and decorators:
 
-```
-[Incoming Request]
-       │
-       ▼
-[Is Authenticated?] ── No ──> Redirect to Login
-       │ Yes
-       ▼
-[Active Workspace in Session?] ── No ──> Auto-assign first membership
-       │ Yes
-       ▼
-[User Role in Allowed Roles?] ── No ──> HTTP 403 Forbidden
-       │ Yes
-       ▼
-[Execute View Logic]
-```
+1. **Password Security:** Stored as PBKDF2 hashes with SHA-256.
+2. **Session Security:** Standard session cookies with CSRF token verification on all POST/PUT/DELETE operations.
+3. **Multi-Tenancy:** Each request resolves the active workspace from session data. Database queries filter by `workspace_id` to prevent cross-tenant data leaks.
+4. **Role Permissions:**
+   - **Admin:** Manages workspace settings and team invitations.
+   - **Manager:** Sets up clients, creates campaigns, and reviews drafts before client viewing.
+   - **Creator:** Writes scripts, uploads media, and submits items for review.
+   - **Client Reviewer:** Reviews items that have passed manager review and provides final sign-off.
 
 ---
 
 ## 8. Core Modules Implementation Summary
 
-1. **Multi-Tenant Engine (`workspaces`):** Complete data isolation per workspace with auto-slug generation.
-2. **Content Production Engine (`content`):** 7-stage state machine (`draft` $\rightarrow$ `pending_manager` $\rightarrow$ `pending_client` $\rightarrow$ `approved` $\rightarrow$ `scheduled` $\rightarrow$ `published`) with immutable `ContentVersion` snapshots.
-3. **Two-Tier Approval Queue (`approvals`):** Gated sign-offs ensuring deliverables cannot reach clients without manager approval.
-4. **AI Agent Suite (`agents`):** 4 autonomous heuristic agents executing quality checks, creative brainstorming, feedback clustering, and performance reporting.
-5. **Asset Storage (`assets`):** Dual-mode file upload supporting local media and AWS S3 streaming.
+1. **Content Lifecycle State Machine:** Tracks items through 7 explicit states: `draft`, `pending_manager`, `pending_client`, `approved`, `changes_requested`, `scheduled`, and `published`. Items cannot jump from draft to client review without manager sign-off.
+2. **Revision History:** Whenever a script is updated, a `ContentVersion` record stores an exact snapshot of the text, author, and timestamp, allowing side-by-side comparison.
+3. **Automated Script Checking:** The script review module parses creator scripts, calculates estimated spoken duration (~130 words/min), detects hook keywords in the opening sentence, and checks against forbidden words defined in the client's brand guidelines.
 
 ---
 
-## 9. GitHub Repository & Engineering Practices
+## 9. GitHub Repository
 
-- **Repository Link:** [https://github.com/ttkathyayani/CreatorOps](https://github.com/ttkathyayani/CreatorOps)
-- **Primary Branch:** `main`
-- **Version Control Metrics:**
-  - Initial platform release: Commit `8979b69` (123 files).
-  - Vercel zero-config cloud deployment: Commit `da51772`.
-  - Comprehensive review & viva documentation: Commit `8cefdae`.
-  - Commit history demonstrates continuous integration and modular feature deployment.
+- **Repository URL:** https://github.com/ttkathyayani/CreatorOps
+- **Default Branch:** `main`
+- **Source Files:** All Django application code, migrations, templates, static assets, and test files are committed and maintained under git version control.
 
 ---
 
 ## 10. Initial Cloud Deployment Verification
 
-- **Cloud Platform:** Vercel Global Edge Network
-- **Deployment URL:** [https://creatorops-rho.vercel.app](https://creatorops-rho.vercel.app)
-- **Deployment Status:** **Ready (Active Production)**
-- **Verification Proof:**
-  - HTTP 200 responses verified on root domain, `/dashboard/`, `/clients/`, `/campaigns/`, `/content/`, and `/guide/`.
-  - SSL/TLS Certificate issued and validated via Let's Encrypt / Vercel Edge.
-  - WhiteNoise serving compressed static assets at edge with HTTP 304 caching.
+- **Hosting Platform:** Vercel Serverless Edge Platform
+- **Live URL:** https://creatorops-rho.vercel.app
+- **Deployment Status:** Active
+- **Verification:**
+  - Root redirect and user login operational.
+  - Workspace dashboard and navigation verified.
+  - Static assets and diagrams served with HTTP 200 responses.
+  - SSL certificate active via Let's Encrypt / Vercel Edge.

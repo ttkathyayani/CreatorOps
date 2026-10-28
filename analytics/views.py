@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse
@@ -196,3 +197,77 @@ def api_run_agent(request, agent_type):
         return JsonResponse({"error": f"Unknown agent: {agent_type}"}, status=400)
 
     return JsonResponse(res)
+
+
+from .competitor_service import CompetitorService
+
+@workspace_required
+def competitors_view(request):
+    """
+    Competitor Intelligence & Public Social Benchmarking Dashboard.
+    Collects publicly available engagement metrics (views, likes, comments) across YouTube, TikTok, and Instagram
+    to compare agency performance and help optimize content.
+    """
+    platform_filter = request.GET.get("platform", "ALL").upper()
+
+    if request.method == "POST":
+        name = request.POST.get("name", "").strip()
+        handle = request.POST.get("handle", "").strip()
+        platform = request.POST.get("platform", "YouTube Shorts").strip()
+        category = request.POST.get("category", "Marketing Agency").strip()
+
+        if name and handle:
+            CompetitorService.add_competitor(name, handle, platform, category)
+            messages.success(request, f"Competitor '{name}' ({handle}) successfully tracked. Public telemetry ingested!")
+        else:
+            messages.error(request, "Competitor Brand Name and Social Handle are required.")
+        return redirect(f"{request.path}?platform={platform_filter}")
+
+    kpis = CompetitorService.get_benchmark_kpis()
+    competitors = CompetitorService.get_all_competitors(platform_filter)
+    recommendations = CompetitorService.get_ai_recommendations()
+
+    return render(request, "analytics/competitors.html", {
+        "kpis": kpis,
+        "competitors": competitors,
+        "recommendations": recommendations,
+        "selected_platform": platform_filter,
+    })
+
+
+@csrf_exempt
+def api_competitors_benchmark(request):
+    """REST API endpoint for competitor benchmarking data."""
+    platform = request.GET.get("platform", "ALL")
+    return JsonResponse({
+        "status": "success",
+        "generated_at": datetime.utcnow().isoformat(),
+        "summary_kpis": CompetitorService.get_benchmark_kpis(),
+        "head_to_head": CompetitorService.get_all_competitors(platform),
+        "recommendations": CompetitorService.get_ai_recommendations()
+    })
+
+
+@csrf_exempt
+def api_add_competitor(request):
+    """REST API endpoint to register and ingest a new competitor handle."""
+    if request.method != "POST":
+        return JsonResponse({"error": "POST method required"}, status=405)
+
+    import json
+    try:
+        data = json.loads(request.body)
+    except Exception:
+        data = request.POST.dict()
+
+    name = data.get("name", "").strip()
+    handle = data.get("handle", "").strip()
+    platform = data.get("platform", "YouTube Shorts").strip()
+    category = data.get("category", "Marketing Agency").strip()
+
+    if not name or not handle:
+        return JsonResponse({"error": "name and handle are required"}, status=400)
+
+    result = CompetitorService.add_competitor(name, handle, platform, category)
+    return JsonResponse({"status": "created", "competitor": result}, status=201)
+

@@ -94,7 +94,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASE_URL = os.environ.get("DATABASE_URL")
 USE_SQLITE = os.environ.get("USE_SQLITE", "False" if DATABASE_URL else "True").lower() in ("true", "1", "yes")
 
-if DATABASE_URL:
+if not USE_SQLITE and DATABASE_URL:
     import urllib.parse
     url = urllib.parse.urlparse(DATABASE_URL)
     DATABASES = {

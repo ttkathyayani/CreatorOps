@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Review 2 Project Report â CreatorOps (BCSE408L)</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Times New Roman", Times, Georgia, serif;
+      background-color: #f1f5f9;
+      color: #111827;
+      line-height: 1.6;
+      font-size: 15px;
+      padding: 24px 16px;
+    }
+
+    /* Minimal Screen Toolbar */
+    .toolbar {
+      max-width: 900px;
+      margin: 0 auto 18px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      background: #ffffff;
+      padding: 10px 18px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    .toolbar-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 4px;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid #94a3b8;
+      background: #f8fafc;
+      color: #1e293b;
+      transition: background 0.15s ease;
+    }
+
+    .btn:hover {
+      background: #e2e8f0;
+    }
+
+    .btn-primary {
+      background: #0f172a;
+      color: #ffffff;
+      border-color: #0f172a;
+    }
+
+    .btn-primary:hover {
+      background: #334155;
+    }
+
+    /* Paper Page Container */
+    .paper {
+      max-width: 900px;
+      margin: 0 auto 40px auto;
+      background: #ffffff;
+      border: 1px solid #d1d5db;
+      padding: 64px 72px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    }
+
+    /* Academic Header Block */
+    .report-title-block {
+      text-align: center;
+      border-bottom: 2px solid #111827;
+      padding-bottom: 20px;
+      margin-bottom: 28px;
+    }
+
+    .report-title-block h1 {
+      font-size: 24px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      color: #000000;
+    }
+
+    .report-title-block h2 {
+      font-size: 16px;
+      font-weight: normal;
+      color: #374151;
+      margin-bottom: 14px;
+    }
+
+    .metadata-table {
+      width: 100%;
+      margin: 16px 0;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .metadata-table td {
+      padding: 4px 8px;
+      border: none;
+      vertical-align: top;
+    }
+
+    .metadata-table td.label {
+      font-weight: bold;
+      width: 25%;
+      color: #111827;
+    }
+
+    .metadata-table td.value {
+      width: 75%;
+      color: #374151;
+    }
+
+    .metadata-table td.value a {
+      color: #1d4ed8;
+      text-decoration: underline;
+    }
+
+    /* Headings */
+    h2.section-heading {
+      font-size: 17px;
+      font-weight: bold;
+      text-transform: uppercase;
+      border-bottom: 1px solid #111827;
+      padding-bottom: 4px;
+      margin-top: 32px;
+      margin-bottom: 12px;
+      color: #000000;
+    }
+
+    h3.sub-heading {
+      font-size: 15px;
+      font-weight: bold;
+      margin-top: 18px;
+      margin-bottom: 6px;
+      color: #111827;
+    }
+
+    p {
+      text-align: justify;
+      margin-bottom: 12px;
+      color: #1f2937;
+    }
+
+    ul, ol {
+      margin-left: 28px;
+      margin-bottom: 12px;
+      color: #1f2937;
+    }
+
+    li {
+      margin-bottom: 4px;
+    }
+
+    /* Standard Academic Tables */
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 20px 0;
+      font-size: 13.5px;
+    }
+
+    table.data-table th,
+    table.data-table td {
+      border: 1px solid #cbd5e1;
+      padding: 8px 10px;
+      text-align: left;
+    }
+
+    table.data-table th {
+      background-color: #f8fafc;
+      color: #000000;
+      font-weight: bold;
+    }
+
+    table.data-table tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+
+    /* Figure Box */
+    .figure-container {
+      margin: 20px 0;
+      text-align: center;
+      page-break-inside: avoid;
+    }
+
+    .figure-container img {
+      max-width: 96%;
+      height: auto;
+      border: 1px solid #d1d5db;
+      padding: 4px;
+      background: #ffffff;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .figure-caption {
+      margin-top: 8px;
+      font-size: 13.5px;
+      font-weight: bold;
+      color: #374151;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        background: #ffffff !important;
+        padding: 0 !important;
+        font-size: 12pt !important;
+      }
+
+      .toolbar {
+        display: none !important;
+      }
+
+      .paper {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        max-width: 100% !important;
+      }
+
+      h2.section-heading {
+        page-break-after: avoid;
+        margin-top: 20pt !important;
+      }
+
+      .figure-container {
+        page-break-inside: avoid;
+      }
+
+      table.data-table {
+        page-break-inside: avoid;
+        font-size: 10pt !important;
+      }
+
+      p {
+        font-size: 11pt !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Screen Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-group">
+      <button class="btn btn-primary" onclick="window.print()">Print / Save as PDF</button>
+      <a href="/reports/review2/download/" class="btn" download="REVIEW_2_REPORT_CreatorOps.md">Download Markdown (.md)</a>
+    </div>
+    <div class="toolbar-group">
+      <a href="/reports/review3/" class="btn">View Review 3 Report</a>
+      <a href="/dashboard/" class="btn">Dashboard</a>
+    </div>
+  </div>
+
+  <!-- Document Paper Sheet -->
+  <article class="paper">
+
+    <!-- Report Header -->
+    <header class="report-title-block">
+      <h1>Project Review 2 Report</h1>
+      <h2>Course: BCSE408L â Cloud Computing and Full Stack Application Development</h2>
+
+      <table class="metadata-table">
+        <tr>
+          <td class="label">Project Title:</td>
+          <td class="value">Project 12 â CreatorOps (Marketing SaaS Application)</td>
+        </tr>
+        <tr>
+          <td class="label">Candidate Name:</td>
+          <td class="value">Kathyayani T T</td>
+        </tr>
+        <tr>
+          <td class="label">GitHub Repository:</td>
+          <td class="value"><a href="https://github.com/ttkathyayani/CreatorOps" target="_blank">https://github.com/ttkathyayani/CreatorOps</a></td>
+        </tr>
+        <tr>
+          <td class="label">Live Public URL:</td>
+          <td class="value"><a href="https://creatorops-rho.vercel.app" target="_blank">https://creatorops-rho.vercel.app</a></td>
+        </tr>
+        <tr>
+          <td class="label">Evaluation Stage:</td>
+          <td class="value">Project Review 2</td>
+        </tr>
+      </table>
+    </header>
+
+    <!-- 1. System Architecture -->
+    <section>
+      <h2 class="section-heading">1. System Architecture</h2>
+      <p>
+        CreatorOps is architected as a three-tier web application structured around the Model-View-Template (MVT) pattern and RESTful application programming interfaces.
+      </p>
+
+      <div class="figure-container">
+        <img src="/static/img/system_architecture.png" onerror="this.src='static/img/system_architecture.png'" alt="System Architecture Diagram">
+        <div class="figure-caption">Figure 1: High-Level Three-Tier Architecture of CreatorOps</div>
+      </div>
+
+      <h3 class="sub-heading">1.1 Client Tier (Presentation)</h3>
+      <p>
+        The client interface is rendered through responsive server-side HTML5 templates utilizing CSS variables for styling. It provides operational screens for workspace configuration, client brand records, marketing campaigns, content drafting, and approval queues. External clients and automated tools interact via JSON-based REST endpoints over HTTPS.
+      </p>
+
+      <h3 class="sub-heading">1.2 Application Tier (Business Logic)</h3>
+      <p>
+        The application tier is powered by Python 3.12 and Django 6.1. It manages routing, tenant isolation, session validation, and content state transitions. A Django REST Framework (DRF) layer exposes ModelViewSets for programmatic operations. In addition, an internal rule-based agent module (<code>agents/</code>) provides automated checks on creator scriptsâmeasuring word count, estimated speaking duration, hook keyword presence, and brand safety compliance. WhiteNoise serves static assets directly from the WSGI application layer.
+      </p>
+
+      <h3 class="sub-heading">1.3 Data Tier (Persistence)</h3>
+      <p>
+        Persistent relational data is stored in PostgreSQL for production deployment, with SQLite supported for local development. Binary assets (images, documents, and videos) are managed with support for Amazon S3 object storage via <code>boto3</code> and <code>django-storages</code>.
+      </p>
+    </section>
+
+    <!-- 2. Cloud Architecture -->
+    <section>
+      <h2 class="section-heading">2. Cloud Deployment Architecture</h2>
+      <p>
+        The production application is hosted on Vercel's cloud infrastructure, taking advantage of its edge routing network and serverless execution capabilities.
+      </p>
+
+      <div class="figure-container">
+        <img src="/static/img/cloud_architecture.png" onerror="this.src='static/img/cloud_architecture.png'" alt="Cloud Architecture Diagram">
+        <div class="figure-caption">Figure 2: Cloud Deployment Model on Vercel Serverless Edge Platform</div>
+      </div>
+
+      <h3 class="sub-heading">2.1 Ingestion and Execution Pipeline</h3>
+      <ul>
+        <li><strong>DNS and Edge Ingestion:</strong> Traffic is routed through Vercel's Anycast edge network with automatic TLS/SSL termination.</li>
+        <li><strong>Serverless Execution:</strong> Incoming requests execute within Python 3.12 serverless functions via the standard WSGI interface (<code>config/wsgi.py</code>).</li>
+        <li><strong>Static Asset Offloading:</strong> Bundled CSS, JavaScript, and diagrams are cached and served from Vercel's content delivery network points of presence.</li>
+        <li><strong>Database Connectivity:</strong> The serverless runtime connects to a managed PostgreSQL database via connection pooling using the <code>DATABASE_URL</code> environment variable.</li>
+      </ul>
+    </section>
+
+    <!-- 3. Database Design -->
+    <section>
+      <h2 class="section-heading">3. Database Schema Design</h2>
+      <p>
+        The relational schema is normalized to Third Normal Form (3NF) and contains nine core entities structured around multi-tenant workspace isolation.
+      </p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Entity</th>
+            <th>Primary Key</th>
+            <th>Foreign Keys</th>
+            <th>Key Attributes</th>
+            <th>Integrity Constraints</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Workspace</strong></td>
+            <td><code>id</code></td>
+            <td>None</td>
+            <td><code>name</code>, <code>slug</code>, <code>description</code>, <code>created_at</code></td>
+            <td>Unique on <code>slug</code></td>
+          </tr>
+          <tr>
+            <td><strong>Membership</strong></td>
+            <td><code>id</code></td>
+            <td><code>user_id</code>, <code>workspace_id</code></td>
+            <td><code>role</code> (Admin, Manager, Creator, Client)</td>
+            <td>Unique on <code>(user, workspace)</code></td>
+          </tr>
+          <tr>
+            <td><strong>Client</strong></td>
+            <td><code>id</code></td>
+            <td><code>workspace_id</code></td>
+            <td><code>name</code>, <code>contact_email</code>, <code>brand_guidelines</code></td>
+            <td>Unique on <code>(workspace, name)</code></td>
+          </tr>
+          <tr>
+            <td><strong>Campaign</strong></td>
+            <td><code>id</code></td>
+            <td><code>client_id</code></td>
+            <td><code>title</code>, <code>objective</code>, <code>budget</code>, <code>status</code></td>
+            <td>Budget non-negative</td>
+          </tr>
+          <tr>
+            <td><strong>ContentItem</strong></td>
+            <td><code>id</code></td>
+            <td><code>campaign_id</code>, <code>creator_id</code></td>
+            <td><code>title</code>, <code>platform</code>, <code>script_body</code>, <code>status</code></td>
+            <td>Status state machine enum</td>
+          </tr>
+          <tr>
+            <td><strong>ContentVersion</strong></td>
+            <td><code>id</code></td>
+            <td><code>content_item_id</code>, <code>created_by</code></td>
+            <td><code>revision_number</code>, <code>script_snapshot</code></td>
+            <td>Unique on <code>(item, rev_num)</code></td>
+          </tr>
+          <tr>
+            <td><strong>Approval</strong></td>
+            <td><code>id</code></td>
+            <td><code>content_item_id</code>, <code>reviewer_id</code></td>
+            <td><code>decision</code>, <code>comment</code>, <code>timestamp</code></td>
+            <td>Decision choices</td>
+          </tr>
+          <tr>
+            <td><strong>Asset</strong></td>
+            <td><code>id</code></td>
+            <td><code>content_item_id</code>, <code>uploaded_by</code></td>
+            <td><code>file</code>, <code>filename</code>, <code>size_bytes</code></td>
+            <td>File extension check</td>
+          </tr>
+          <tr>
+            <td><strong>CampaignMetric</strong></td>
+            <td><code>id</code></td>
+            <td><code>campaign_id</code></td>
+            <td><code>metric_name</code>, <code>metric_value</code>, <code>recorded_date</code></td>
+            <td>Indexed on recorded date</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 4. ER Diagram -->
+    <section>
+      <h2 class="section-heading">4. Entity-Relationship (ER) Diagram</h2>
+      <p>
+        The entity-relationship diagram below maps the tables and cardinalities across the system:
+      </p>
+
+      <div class="figure-container">
+        <img src="/static/img/erd_diagram.png" onerror="this.src='static/img/erd_diagram.png'" alt="Entity Relationship Diagram">
+        <div class="figure-caption">Figure 3: Entity-Relationship Diagram of the CreatorOps Database</div>
+      </div>
+
+      <h3 class="sub-heading">4.1 Cardinality Overview:</h3>
+      <ul>
+        <li><strong>Workspace to Membership:</strong> One-to-Many ($1 : N$). A workspace maintains multiple user memberships.</li>
+        <li><strong>Workspace to Client:</strong> One-to-Many ($1 : N$). A workspace holds multiple client brand profiles.</li>
+        <li><strong>Client to Campaign:</strong> One-to-Many ($1 : N$). A client sponsors multiple marketing campaigns.</li>
+        <li><strong>Campaign to ContentItem:</strong> One-to-Many ($1 : N$). A campaign contains multiple content deliverables.</li>
+        <li><strong>ContentItem to ContentVersion:</strong> One-to-Many ($1 : N$). Each edit generates a sequential revision record.</li>
+        <li><strong>ContentItem to Approval:</strong> One-to-Many ($1 : N$). An item records internal manager and client review decisions.</li>
+      </ul>
+    </section>
+
+    <!-- 5. Module Design -->
+    <section>
+      <h2 class="section-heading">5. Modular Architecture</h2>
+      <p>
+        The software follows a domain-driven structure, separated into distinct Django apps:
+      </p>
+      <ul>
+        <li><code>accounts</code>: Authentication, session management, user registration, and profile data.</li>
+        <li><code>workspaces</code>: Multi-tenant organizational boundaries, member roles, and tenant context resolution.</li>
+        <li><code>clients</code>: Client brand profiles, contact details, and brand voice guidelines.</li>
+        <li><code>campaigns</code>: Marketing campaign objectives, budget allocations, and status tracking.</li>
+        <li><code>content</code>: Deliverable management, social platform targeting, and revision snapshotting.</li>
+        <li><code>approvals</code>: Two-tier review workflow (Manager Gate followed by Client Sign-off).</li>
+        <li><code>assets</code>: Media asset handling and cloud storage integration.</li>
+        <li><code>analytics</code>: Dashboard KPI aggregation and performance reporting.</li>
+        <li><code>agents</code>: Automated script auditing, hook suggestions, and comment clustering.</li>
+        <li><code>config</code>: Root URL routing, project settings, and WSGI entrypoint.</li>
+      </ul>
+    </section>
+
+    <!-- 6. API Design -->
+    <section>
+      <h2 class="section-heading">6. REST API Design</h2>
+      <p>
+        The REST API is implemented using Django REST Framework and requires authentication for all protected endpoints:
+      </p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>HTTP Method</th>
+            <th>Endpoint</th>
+            <th>Description</th>
+            <th>Permitted Roles</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>GET / POST</code></td>
+            <td><code>/api/clients/</code></td>
+            <td>List or create clients in active workspace</td>
+            <td>Authenticated Member</td>
+          </tr>
+          <tr>
+            <td><code>GET / PUT / DELETE</code></td>
+            <td><code>/api/clients/{id}/</code></td>
+            <td>Retrieve, update, or delete a client profile</td>
+            <td>Admin, Manager</td>
+          </tr>
+          <tr>
+            <td><code>GET / POST</code></td>
+            <td><code>/api/campaigns/</code></td>
+            <td>List or create marketing campaigns</td>
+            <td>Authenticated Member</td>
+          </tr>
+          <tr>
+            <td><code>GET / PUT / DELETE</code></td>
+            <td><code>/api/campaigns/{id}/</code></td>
+            <td>Retrieve, update, or delete a campaign</td>
+            <td>Admin, Manager</td>
+          </tr>
+          <tr>
+            <td><code>GET / POST</code></td>
+            <td><code>/api/content/</code></td>
+            <td>List or create content deliverables</td>
+            <td>Authenticated Member</td>
+          </tr>
+          <tr>
+            <td><code>GET / PUT / DELETE</code></td>
+            <td><code>/api/content/{id}/</code></td>
+            <td>Retrieve, update, or delete content item</td>
+            <td>Creator, Manager</td>
+          </tr>
+          <tr>
+            <td><code>POST</code></td>
+            <td><code>/api/content/{id}/review/</code></td>
+            <td>Submit manager or client approval decision</td>
+            <td>Manager, Client</td>
+          </tr>
+          <tr>
+            <td><code>GET</code></td>
+            <td><code>/api/reports/campaigns/{id}/</code></td>
+            <td>Retrieve campaign metrics summary</td>
+            <td>Authenticated Member</td>
+          </tr>
+          <tr>
+            <td><code>POST</code></td>
+            <td><code>/api/agents/script-review/</code></td>
+            <td>Run automated script quality and brand compliance audit</td>
+            <td>Creator, Manager</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 7. Authentication & RBAC -->
+    <section>
+      <h2 class="section-heading">7. Authentication and Role-Based Access Control</h2>
+      <p>
+        The system implements a four-tier Role-Based Access Control (RBAC) model integrated with multi-tenant data boundaries:
+      </p>
+      <ul>
+        <li><strong>Password Protection:</strong> Passwords are stored as salted PBKDF2-SHA256 hashes.</li>
+        <li><strong>Session Isolation:</strong> Sessions are validated with CSRF protection on all state-modifying requests.</li>
+        <li><strong>Tenant Boundaries:</strong> The active workspace is resolved per request. Database operations automatically filter by workspace ID to ensure tenant data isolation.</li>
+        <li><strong>Role Definitions:</strong>
+          <ol>
+            <li><strong>Admin:</strong> Global control over workspace settings, members, and roles.</li>
+            <li><strong>Manager:</strong> Client brand setup, campaign creation, and primary draft approvals.</li>
+            <li><strong>Creator:</strong> Content drafting, script versioning, and asset uploads.</li>
+            <li><strong>Client Reviewer:</strong> Read-only access to campaign deliverables with final approval sign-off.</li>
+          </ol>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 8. Core Modules Summary -->
+    <section>
+      <h2 class="section-heading">8. Core Modules Implementation Summary</h2>
+      <ul>
+        <li><strong>Content Lifecycle State Machine:</strong> Programmatically manages content transitions across 7 stages: <code>draft</code> &rarr; <code>pending_manager</code> &rarr; <code>pending_client</code> &rarr; <code>approved</code> &rarr; <code>changes_requested</code> &rarr; <code>scheduled</code> &rarr; <code>published</code>.</li>
+        <li><strong>Revision Snapshots:</strong> Every script or caption change generates an immutable <code>ContentVersion</code> record, maintaining a complete audit trail.</li>
+        <li><strong>Automated Script Analysis:</strong> The script review module checks text against word count limits, spoken duration pacing, hook keyword placement in the opening sentence, and forbidden brand terms.</li>
+      </ul>
+    </section>
+
+    <!-- 9. GitHub Repository -->
+    <section>
+      <h2 class="section-heading">9. GitHub Repository</h2>
+      <p>
+        The complete project source code is maintained on GitHub under continuous version control:
+      </p>
+      <table class="data-table">
+        <tr>
+          <td style="width: 25%; font-weight: bold;">Repository:</td>
+          <td><a href="https://github.com/ttkathyayani/CreatorOps" target="_blank">https://github.com/ttkathyayani/CreatorOps</a></td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold;">Default Branch:</td>
+          <td><code>main</code></td>
+        </tr>
+      </table>
+    </section>
+
+    <!-- 10. Initial Deployment Verification -->
+    <section>
+      <h2 class="section-heading">10. Cloud Deployment Verification</h2>
+      <p>
+        The application is actively deployed and serving production traffic on Vercel:
+      </p>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Deployment Metric</th>
+            <th>Value</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Hosting Environment</td>
+            <td>Vercel Serverless Edge Platform</td>
+            <td>Active</td>
+          </tr>
+          <tr>
+            <td>Production URL</td>
+            <td><a href="https://creatorops-rho.vercel.app" target="_blank">https://creatorops-rho.vercel.app</a></td>
+            <td>HTTP 200 OK</td>
+          </tr>
+          <tr>
+            <td>SSL/TLS Certificate</td>
+            <td>Let's Encrypt Wildcard Edge Certificate</td>
+            <td>Verified</td>
+          </tr>
+          <tr>
+            <td>Static Delivery</td>
+            <td>WhiteNoise 6.9 + Vercel Edge Cache</td>
+            <td>Operational</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  </article>
+
+</body>
+</html>

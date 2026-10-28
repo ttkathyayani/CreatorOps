@@ -26,6 +26,22 @@ def review_guide_view(request):
             return HttpResponse(f.read(), content_type="text/html")
     return HttpResponse("Guide not found", status=404)
 
+def review1_report_view(request):
+    report_path = settings.BASE_DIR / "REVIEW_1_REPORT.html"
+    if report_path.exists():
+        with open(report_path, "r", encoding="utf-8") as f:
+            return HttpResponse(f.read(), content_type="text/html")
+    return HttpResponse("Review 1 Report not found", status=404)
+
+def review1_download_view(request):
+    md_path = settings.BASE_DIR / "REVIEW_1_REPORT.md"
+    if md_path.exists():
+        with open(md_path, "r", encoding="utf-8") as f:
+            response = HttpResponse(f.read(), content_type="text/markdown; charset=utf-8")
+            response["Content-Disposition"] = 'attachment; filename="REVIEW_1_REPORT_CreatorOps.md"'
+            return response
+    return HttpResponse("Markdown file not found", status=404)
+
 def review2_report_view(request):
     report_path = settings.BASE_DIR / "REVIEW_2_REPORT.html"
     if report_path.exists():
@@ -63,10 +79,14 @@ def root_redirect(request):
         return redirect("dashboard")
     return redirect("accounts:login")
 
+from analytics.views import api_competitors_benchmark, api_add_competitor
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", root_redirect, name="root"),
     path("guide/", review_guide_view, name="review-guide"),
+    path("reports/review1/", review1_report_view, name="report-review1"),
+    path("reports/review1/download/", review1_download_view, name="report-review1-download"),
     path("reports/review2/", review2_report_view, name="report-review2"),
     path("reports/review2/download/", review2_download_view, name="report-review2-download"),
     path("reports/review3/", review3_report_view, name="report-review3"),
@@ -89,6 +109,8 @@ urlpatterns = [
     path("api/reports/campaigns/<int:pk>/", CampaignReportAPIView.as_view(), name="api-campaign-report"),
     path("api/agents/script-review/", api_script_review, name="api-script-review"),
     path("api/agents/<str:agent_type>/", api_run_agent, name="api-run-agent"),
+    path("api/competitors/benchmark/", api_competitors_benchmark, name="api-competitors-benchmark-root"),
+    path("api/competitors/", api_add_competitor, name="api-competitors-root"),
 ]
 
 from django.views.static import serve

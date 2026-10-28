@@ -1,0 +1,314 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Competitor Intelligence & Public Benchmarking — CreatorOps{% endblock %}
+
+{% block extra_css %}
+<style>
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+}
+.kpi-card {
+    background-color: var(--surface-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.kpi-title {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+.kpi-val-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+.kpi-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.5px;
+}
+.kpi-sub {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 0.5rem;
+}
+.badge-outperforming {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34D399;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    font-weight: 700;
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 9999px;
+}
+.badge-lagging {
+    background: rgba(244, 63, 94, 0.15);
+    color: #FB7185;
+    border: 1px solid rgba(244, 63, 94, 0.3);
+    font-weight: 700;
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 9999px;
+}
+.platform-pill {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+}
+.pill-youtube { background: rgba(239, 68, 68, 0.15); color: #F87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+.pill-tiktok { background: rgba(6, 182, 212, 0.15); color: #22D3EE; border: 1px solid rgba(6, 182, 212, 0.3); }
+.pill-instagram { background: rgba(236, 72, 153, 0.15); color: #F472B6; border: 1px solid rgba(236, 72, 153, 0.3); }
+.pill-cross { background: rgba(168, 85, 247, 0.15); color: #C084FC; border: 1px solid rgba(168, 85, 247, 0.3); }
+
+.rec-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.25rem;
+    margin-top: 1rem;
+}
+.rec-card {
+    background: var(--surface-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.rec-card:hover {
+    border-color: rgba(99, 102, 241, 0.4);
+}
+.rec-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+.rec-category {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #818CF8;
+    background: rgba(99, 102, 241, 0.1);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+}
+.rec-action-box {
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.75rem;
+    color: #FDE047;
+    font-weight: 500;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+    <div>
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.35rem;">
+            <h1 class="page-title" style="margin-bottom: 0;">Competitor Intelligence & Public Social Benchmarking</h1>
+            <span class="badge badge-approved" style="display: inline-flex; align-items: center; gap: 0.35rem;">
+                <span style="height: 6px; width: 6px; border-radius: 50%; background: #34D399; display: inline-block;"></span>
+                Live Public Ingestion Active
+            </span>
+        </div>
+        <p class="page-subtitle">
+            Collects publicly available engagement metrics (views, likes, comments) across YouTube, TikTok, and Instagram to compare agency performance and help optimize content.
+        </p>
+    </div>
+
+    <!-- Platform Filter Tabs -->
+    <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--surface-card); padding: 0.35rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+        <a href="?platform=ALL" class="btn btn-sm {% if selected_platform == 'ALL' %}btn-primary{% else %}btn-secondary{% endif %}">ALL</a>
+        <a href="?platform=YOUTUBE" class="btn btn-sm {% if selected_platform == 'YOUTUBE' %}btn-primary{% else %}btn-secondary{% endif %}">YouTube</a>
+        <a href="?platform=TIKTOK" class="btn btn-sm {% if selected_platform == 'TIKTOK' %}btn-primary{% else %}btn-secondary{% endif %}">TikTok</a>
+        <a href="?platform=INSTAGRAM" class="btn btn-sm {% if selected_platform == 'INSTAGRAM' %}btn-primary{% else %}btn-secondary{% endif %}">Instagram</a>
+    </div>
+</div>
+
+<!-- 4 Summary KPI Cards -->
+<div class="kpi-grid">
+    {% for kpi in kpis %}
+    <div class="kpi-card">
+        <div>
+            <div class="kpi-title">{{ kpi.name }}</div>
+            <div class="kpi-val-row">
+                <span class="kpi-value">{{ kpi.our_value }}</span>
+                <span class="{% if kpi.is_positive %}badge-outperforming{% else %}badge-lagging{% endif %}">
+                    {{ kpi.difference }}
+                </span>
+            </div>
+        </div>
+        <div class="kpi-sub">
+            <span>Competitor Benchmark:</span>
+            <span style="font-weight: 600; color: #fff;">{{ kpi.competitor_avg }}</span>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Head-to-Head Performance Matrix -->
+<div class="table-container" style="margin-bottom: 2rem;">
+    <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+        <div>
+            <h2 style="font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 0.25rem;">
+                Head-to-Head Competitor Performance Matrix
+            </h2>
+            <p style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 0;">
+                Public video views, likes, and engagement rates vs industry benchmarks.
+            </p>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="document.getElementById('addCompetitorModal').style.display='flex'">
+            <span>+ Track New Competitor Channel</span>
+        </button>
+    </div>
+
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Brand / Creator</th>
+                <th>Social Platform</th>
+                <th>Public Views</th>
+                <th>Likes</th>
+                <th>Engagement Rate</th>
+                <th>Top Performing Hook</th>
+                <th>Content Gap Analysis</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for comp in competitors %}
+            <tr {% if 'Apex Digital' in comp.name %}style="background: rgba(99, 102, 241, 0.08); font-weight: 600;"{% endif %}>
+                <td>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        {% if 'Apex Digital' in comp.name %}
+                        <span style="height: 8px; width: 8px; border-radius: 50%; background: #34D399;"></span>
+                        {% endif %}
+                        <div>
+                            <div style="color: #fff; font-weight: 600;">{{ comp.name }}</div>
+                            <div style="font-size: 0.75rem; color: var(--text-dim);">{{ comp.handle }} • {{ comp.category }}</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <span class="platform-pill {% if 'YouTube' in comp.platform %}pill-youtube{% elif 'TikTok' in comp.platform %}pill-tiktok{% elif 'Instagram' in comp.platform %}pill-instagram{% else %}pill-cross{% endif %}">
+                        {{ comp.platform }}
+                    </span>
+                </td>
+                <td style="font-family: monospace; font-size: 0.875rem; color: #E5E5E5;">{{ comp.views|floatformat:0 }}</td>
+                <td style="font-family: monospace; font-size: 0.875rem; color: #E5E5E5;">{{ comp.likes|floatformat:0 }}</td>
+                <td>
+                    <span style="font-family: monospace; font-weight: 700; color: #FDE047;">{{ comp.engagement_rate }}%</span>
+                </td>
+                <td style="font-size: 0.8125rem; color: var(--text-muted); max-width: 220px;">
+                    {{ comp.top_hook }}
+                </td>
+                <td style="font-size: 0.8125rem; color: #94A3B8; max-width: 260px;">
+                    {{ comp.gap_analysis }}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" style="text-align: center; color: var(--text-dim); padding: 2rem;">No competitors found for this platform filter.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- AI Content Optimization Recommendations Section -->
+<div style="margin-bottom: 2rem;">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+        <div>
+            <h2 style="font-size: 1.15rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 0.5rem;">
+                <span>✨</span> AI Content Optimization Recommendations
+            </h2>
+            <p style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 0;">
+                Actionable tactics derived from competitor gap analysis to help creators improve script hooks, retention, and publishing velocity.
+            </p>
+        </div>
+        <a href="{% url 'analytics:agents' %}" class="btn btn-secondary btn-sm">
+            <span>Audit Script in AI Studio ↗</span>
+        </a>
+    </div>
+
+    <div class="rec-grid">
+        {% for rec in recommendations %}
+        <div class="rec-card">
+            <div>
+                <div class="rec-header">
+                    <span class="rec-category">{{ rec.category }}</span>
+                    <span class="badge {{ rec.impact_badge }}">{{ rec.impact }}</span>
+                </div>
+                <h3 style="font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem;">{{ rec.title }}</h3>
+                <p style="font-size: 0.8125rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 0;">{{ rec.description }}</p>
+            </div>
+            <div class="rec-action-box">
+                <span style="color: #FACC15; font-weight: 700;">⚡ Action:</span> {{ rec.action }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Add Competitor Modal Dialog -->
+<div id="addCompetitorModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; padding: 1.5rem;">
+    <div style="background: var(--surface-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); max-width: 500px; width: 100%; padding: 2rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+            <h2 style="font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 0;">Track Competitor Channel</h2>
+            <button onclick="document.getElementById('addCompetitorModal').style.display='none'" style="background: none; border: none; color: var(--text-dim); font-size: 1.25rem; cursor: pointer;">✕</button>
+        </div>
+        <p style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+            Enter public creator or agency handles to ingest views, likes, and engagement rate benchmarks.
+        </p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label class="form-label">Competitor Brand Name</label>
+                <input type="text" name="name" class="form-control" required placeholder="e.g. Horizon Media Co.">
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label class="form-label">Public Handle / Channel</label>
+                <input type="text" name="handle" class="form-control" required placeholder="e.g. @horizonmedia">
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label class="form-label">Platform</label>
+                <select name="platform" class="form-control">
+                    <option value="YouTube Shorts">YouTube Shorts</option>
+                    <option value="TikTok">TikTok</option>
+                    <option value="Instagram Reels">Instagram Reels</option>
+                    <option value="Cross-Platform (YT/IG/TikTok)">Cross-Platform</option>
+                </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+                <label class="form-label">Category</label>
+                <input type="text" name="category" class="form-control" value="Digital Marketing Agency">
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+                <button type="button" class="btn btn-secondary" onclick="document.getElementById('addCompetitorModal').style.display='none'">Cancel</button>
+                <button type="submit" class="btn btn-primary">Ingest Public Telemetry ⚡</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Review 1 Project Report — CreatorOps (BCSE408L)</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Times New Roman", Times, Georgia, serif;
+      background-color: #f1f5f9;
+      color: #111827;
+      line-height: 1.6;
+      font-size: 15px;
+      padding: 24px 16px;
+    }
+
+    /* Minimal Screen Toolbar */
+    .toolbar {
+      max-width: 900px;
+      margin: 0 auto 18px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      background: #ffffff;
+      padding: 10px 18px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    .toolbar-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 4px;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid #94a3b8;
+      background: #f8fafc;
+      color: #1e293b;
+      transition: background 0.15s ease;
+    }
+
+    .btn:hover {
+      background: #e2e8f0;
+    }
+
+    .btn-primary {
+      background: #0f172a;
+      color: #ffffff;
+      border-color: #0f172a;
+    }
+
+    .btn-primary:hover {
+      background: #334155;
+    }
+
+    /* Paper Page Container */
+    .paper {
+      max-width: 900px;
+      margin: 0 auto 40px auto;
+      background: #ffffff;
+      border: 1px solid #d1d5db;
+      padding: 64px 72px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    }
+
+    /* Academic Header Block */
+    .report-title-block {
+      text-align: center;
+      border-bottom: 2px solid #111827;
+      padding-bottom: 20px;
+      margin-bottom: 28px;
+    }
+
+    .institution-header {
+      font-size: 15px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #1e293b;
+      margin-bottom: 4px;
+    }
+
+    .department-sub {
+      font-size: 13.5px;
+      color: #475569;
+      margin-bottom: 16px;
+    }
+
+    .report-title-block h1 {
+      font-size: 24px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      color: #000000;
+    }
+
+    .report-title-block h2 {
+      font-size: 15px;
+      font-weight: normal;
+      color: #374151;
+      margin-bottom: 16px;
+    }
+
+    .metadata-table {
+      width: 100%;
+      margin: 16px 0;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .metadata-table td {
+      padding: 4px 8px;
+      border: none;
+      vertical-align: top;
+    }
+
+    .metadata-table td.label {
+      font-weight: bold;
+      width: 25%;
+      color: #111827;
+    }
+
+    .metadata-table td.value {
+      width: 75%;
+      color: #374151;
+    }
+
+    .metadata-table td.value a {
+      color: #1d4ed8;
+      text-decoration: underline;
+    }
+
+    /* Headings */
+    h2.section-heading {
+      font-size: 17px;
+      font-weight: bold;
+      text-transform: uppercase;
+      border-bottom: 1px solid #111827;
+      padding-bottom: 4px;
+      margin-top: 32px;
+      margin-bottom: 12px;
+      color: #000000;
+    }
+
+    h3.sub-heading {
+      font-size: 15px;
+      font-weight: bold;
+      margin-top: 18px;
+      margin-bottom: 6px;
+      color: #111827;
+    }
+
+    p {
+      text-align: justify;
+      margin-bottom: 12px;
+      color: #1f2937;
+    }
+
+    ul, ol {
+      margin-left: 28px;
+      margin-bottom: 12px;
+      color: #1f2937;
+    }
+
+    li {
+      margin-bottom: 4px;
+    }
+
+    /* Standard Academic Tables */
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 20px 0;
+      font-size: 13.5px;
+    }
+
+    table.data-table th,
+    table.data-table td {
+      border: 1px solid #cbd5e1;
+      padding: 8px 10px;
+      text-align: left;
+    }
+
+    table.data-table th {
+      background-color: #f8fafc;
+      color: #000000;
+      font-weight: bold;
+    }
+
+    table.data-table tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+
+    /* Figure Box */
+    .figure-container {
+      margin: 20px 0;
+      text-align: center;
+      page-break-inside: avoid;
+    }
+
+    .figure-container img {
+      max-width: 96%;
+      height: auto;
+      border: 1px solid #d1d5db;
+      padding: 4px;
+      background: #ffffff;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .figure-caption {
+      margin-top: 8px;
+      font-size: 13.5px;
+      font-weight: bold;
+      color: #374151;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        background: #ffffff !important;
+        padding: 0 !important;
+        font-size: 12pt !important;
+      }
+
+      .toolbar {
+        display: none !important;
+      }
+
+      .paper {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        max-width: 100% !important;
+      }
+
+      h2.section-heading {
+        page-break-after: avoid;
+        margin-top: 20pt !important;
+      }
+
+      .figure-container {
+        page-break-inside: avoid;
+      }
+
+      table.data-table {
+        page-break-inside: avoid;
+        font-size: 10pt !important;
+      }
+
+      p {
+        font-size: 11pt !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Screen Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-group">
+      <button class="btn btn-primary" onclick="window.print()">Print / Save as PDF</button>
+      <a href="/reports/review1/download/" class="btn" download="REVIEW_1_REPORT_CreatorOps.md">Download Markdown (.md)</a>
+    </div>
+    <div class="toolbar-group">
+      <a href="/reports/review2/" class="btn">View Review 2 Report</a>
+      <a href="/reports/review3/" class="btn">View Review 3 Report</a>
+      <a href="/dashboard/" class="btn">Dashboard</a>
+    </div>
+  </div>
+
+  <!-- Document Paper Sheet -->
+  <article class="paper">
+
+    <!-- Report Header -->
+    <header class="report-title-block">
+      <div class="institution-header">Vellore Institute of Technology</div>
+      <div class="department-sub">School of Computer Science and Engineering (SCOPE)</div>
+      <h1>Project Review 1 Report</h1>
+      <h2>Course: BCSE408L — Cloud Computing and Full Stack Application Development</h2>
+
+      <table class="metadata-table">
+        <tr>
+          <td class="label">Project Title:</td>
+          <td class="value">Project 12 — CreatorOps: Cloud-Native Marketing SaaS Application</td>
+        </tr>
+        <tr>
+          <td class="label">Candidate Name:</td>
+          <td class="value">Kathyayani T T</td>
+        </tr>
+        <tr>
+          <td class="label">GitHub Repository:</td>
+          <td class="value"><a href="https://github.com/ttkathyayani/CreatorOps" target="_blank">https://github.com/ttkathyayani/CreatorOps</a></td>
+        </tr>
+        <tr>
+          <td class="label">Live Public URL:</td>
+          <td class="value"><a href="https://creatorops-rho.vercel.app" target="_blank">https://creatorops-rho.vercel.app</a></td>
+        </tr>
+        <tr>
+          <td class="label">Evaluation Stage:</td>
+          <td class="value">Project Review 1 (Digital Assignment 1 — Deliverables & Architecture Setup)</td>
+        </tr>
+      </table>
+    </header>
+
+    <!-- 1. Problem Statement -->
+    <section>
+      <h2 class="section-heading">1. Problem Statement</h2>
+      <p>
+        In modern digital marketing and the rapidly expanding Creator Economy, agencies manage dozens of concurrent multi-platform campaigns across YouTube, TikTok, Instagram, and LinkedIn. However, creative collaboration between internal agency teams, external freelance creators, and brand clients is plagued by severe operational chaos. Feedback is scattered across unorganized WhatsApp chats, Slack direct messages, and unstructured Google Drive folders, leading to missed client comments, disputed edits, and costly delays.
+      </p>
+      <p>
+        Crucially, marketing agencies produce content blindly without visibility into what public competitors are publishing or what hooks and video durations drive audience engagement. Premature content publishing occurs frequently because teams lack cryptographic, sequential approval gates where an internal agency manager must approve deliverables before client presentation. Furthermore, high-resolution creative media files are distributed over transient links with no permanent cloud asset storage or audit history.
+      </p>
+      <p>
+        <strong>Problem Definition:</strong> The absence of an integrated, cloud-native platform that unifies multi-tenant workspace isolation, sequential approval state machines, automated script quality audits, immutable version control, centralized cloud media storage, and autonomous public social competitor benchmarking creates substantial operational liabilities, copyright risks, and client churn for modern agencies.
+      </p>
+    </section>
+
+    <!-- 2. Existing System -->
+    <section>
+      <h2 class="section-heading">2. Existing System & Operational Deficiencies</h2>
+      <p>
+        Existing agency operations rely on fragmented consumer software products cobbled together into fragile manual workflows. The comparative analysis below illustrates the structural failure modes of the status quo:
+      </p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Friction Area</th>
+            <th>Existing Ad-Hoc Method</th>
+            <th>Operational Failure Mode & Business Risk</th>
+            <th>CreatorOps Cloud Solution</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Feedback & Revisions</strong></td>
+            <td>Scattered WhatsApp messages, email threads, and Slack channels</td>
+            <td>Conflicting feedback, untracked changes, 43% average rework delays, lost creator instructions</td>
+            <td>Contextual threaded comment streams locked directly to specific content version records</td>
+          </tr>
+          <tr>
+            <td><strong>Version Integrity</strong></td>
+            <td>Files manually named 'video_v2_final_final.mp4' on Google Drive</td>
+            <td>Accidental publishing of outdated revisions, overwritten edits, and lack of visual diffs</td>
+            <td>Automated, immutable revision snapshotting (ContentVersion model) with complete audit trail</td>
+          </tr>
+          <tr>
+            <td><strong>Approval Governance</strong></td>
+            <td>Informal chat replies like 'looks good' or verbal phone confirmations</td>
+            <td>Premature posting without client sign-off, breach of contract, zero legal auditability</td>
+            <td>Two-tier cryptographic approval state machine: Internal Manager Gate followed by Client Sign-off</td>
+          </tr>
+          <tr>
+            <td><strong>Media Asset Control</strong></td>
+            <td>Personal Dropbox links, WeTransfer downloads with 7-day expiration</td>
+            <td>Expired links, missing 4K source assets, unorganized raw footage archives</td>
+            <td>Centralized Amazon S3 object storage with presigned CDN links and file integrity checks</td>
+          </tr>
+          <tr>
+            <td><strong>Content Optimization</strong></td>
+            <td>Manual proofreading of scripts and hooks with no standardized metrics</td>
+            <td>Non-compliant brand claims, poor hook retention in opening 3 seconds, sub-optimal duration</td>
+            <td>Automated AI script auditing for word count, hook keyword presence, pacing, and brand safety</td>
+          </tr>
+          <tr>
+            <td><strong>Competitor Visibility</strong></td>
+            <td>Zero tracking of rival creator posts, manual guesswork of trending topics</td>
+            <td>Blind content production, lower engagement rates, and wasted campaign ad spend</td>
+            <td>Autonomous public social media telemetry collection & Head-to-Head Benchmarking Matrix</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 3. Proposed System -->
+    <section>
+      <h2 class="section-heading">3. Proposed Cloud-Native System</h2>
+      <p>
+        CreatorOps introduces a purpose-built, multi-tenant Software-as-a-Service (SaaS) architecture designed to enforce <em>"One campaign, One workspace, One approval trail."</em> The system replaces ad-hoc consumer tools with five foundational cloud-native innovations:
+      </p>
+      <ul>
+        <li><strong>Multi-Tenant Workspace Isolation:</strong> Every agency operates within an isolated organizational tenancy with scoped relational boundaries, ensuring absolute data segregation between competing brand accounts.</li>
+        <li><strong>8-Stage Content Approval Lifecycle State Machine:</strong> Strict programmatic progression through <code>DRAFT &rarr; INTERNAL_REVIEW &rarr; CLIENT_REVIEW &rarr; APPROVED &rarr; SCHEDULED &rarr; PUBLISHED</code> with non-bypassable validation gates and changes-requested rejection loops.</li>
+        <li><strong>Automated AI Content Intelligence Suite:</strong> Specialized domain agents (ScriptReviewAgent, ContentIdeasAgent, ApprovalSummaryAgent, CampaignReportAgent) that evaluate spoken pacing, hook strength in first 20 words, brand compliance, and feedback synthesis.</li>
+        <li><strong>Scalable Cloud Object Storage Abstraction:</strong> Pluggable storage architecture leveraging Amazon S3 API / MinIO with secure presigned upload/download URLs, handling high-resolution video and graphic deliverables.</li>
+        <li><strong>Public Social Media Ingestion & Competitor Benchmarking:</strong> Telemetry harvesting engine tracking public video views, likes, comments, and engagement rates across YouTube, TikTok, and Instagram, paired with an automated Head-to-Head Performance Matrix and actionable AI optimization tips.</li>
+      </ul>
+    </section>
+
+    <!-- 4. Functional Requirements -->
+    <section>
+      <h2 class="section-heading">4. Functional Requirements Specification</h2>
+      <p>
+        The core operational requirements for the CreatorOps SaaS platform are enumerated in the formal Functional Requirements Matrix below:
+      </p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Req ID</th>
+            <th>Requirement Name</th>
+            <th>System Trigger & Input</th>
+            <th>Expected System Output & Processing</th>
+            <th>Priority</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>FR-01</strong></td>
+            <td>User Authentication & RBAC</td>
+            <td>User login credentials / Registration</td>
+            <td>PBKDF2-SHA256 password validation, session creation, and assignment of one of 5 roles (Admin, Manager, Creator, Reviewer, Client).</td>
+            <td>Mandatory (High)</td>
+          </tr>
+          <tr>
+            <td><strong>FR-02</strong></td>
+            <td>Multi-Tenant Workspaces</td>
+            <td>Create or select agency workspace</td>
+            <td>Tenant-scoped query filtering; strict tenant data isolation across all database operations.</td>
+            <td>Mandatory (High)</td>
+          </tr>
+          <tr>
+            <td><strong>FR-03</strong></td>
+            <td>Client Brand CRM</td>
+            <td>Client profile data, brand guidelines, contacts</td>
+            <td>Persisted brand workspace with enforced visual standards, prohibited terminology, and client contacts.</td>
+            <td>Mandatory (High)</td>
+          </tr>
+          <tr>
+            <td><strong>FR-04</strong></td>
+            <td>Campaign Operations</td>
+            <td>Campaign title, budget, target dates, channels</td>
+            <td>Active campaign dashboard with timeline progress tracking, budget health, and deliverable associations.</td>
+            <td>Mandatory (High)</td>
+          </tr>
+          <tr>
+            <td><strong>FR-05</strong></td>
+            <td>Content Pipeline Management</td>
+            <td>Title, platform, script draft, caption</td>
+            <td>Persisted ContentItem record associated with campaign; initialized in DRAFT state with word counter.</td>
+            <td>Mandatory (High)</td>
+          </tr>
+          <tr>
+            <td><strong>FR-06</strong></td>
+            <td>Immutable Version History</td>
+            <td>User edits script or updates creative asset</td>
+            <td>Automated generation of sequential ContentVersion snapshot, preserving complete revision audit history.</td>
+            <td>Mandatory (High)</td>
+          </tr>
+          <tr>
+            <td><strong>FR-07</strong></td>
+            <td>Cloud Media Storage</td>
+            <td>File upload (video, image, document) up to 100MB</td>
+            <td>Secure binary persistence in Amazon S3 / local storage with presigned URLs and MIME-type validation.</td>
+            <td>Mandatory (High)</td>
+          </tr>
+          <tr>
+            <td><strong>FR-08</strong></td>
+            <td>Two-Tier Approval Workflow</td>
+            <td>Manager or Client clicks Approve / Reject</td>
+            <td>Programmatic state transition, timestamped Approval audit record, notification dispatch, and queue update.</td>
+            <td>Mandatory (High)</td>
+          </tr>
+          <tr>
+            <td><strong>FR-09</strong></td>
+            <td>AI Script & Hook Auditing</td>
+            <td>Trigger script review action</td>
+            <td>Readability score (0-100), estimated spoken duration, hook keyword evaluation, and brand compliance checks.</td>
+            <td>Mandatory (High)</td>
+          </tr>
+          <tr>
+            <td><strong>FR-10</strong></td>
+            <td>Content Scheduling Calendar</td>
+            <td>Select approved deliverable & publication date</td>
+            <td>Interactive visual editorial calendar showing scheduled deliverables color-coded by social platform.</td>
+            <td>Mandatory (High)</td>
+          </tr>
+          <tr>
+            <td><strong>FR-11</strong></td>
+            <td>Competitor Benchmarking</td>
+            <td>Public handle / channel URL (YT/TikTok/IG)</td>
+            <td>Harvested public views, likes, engagement rate %, comparative Head-to-Head matrix, and AI gap tips.</td>
+            <td>Mandatory (High)</td>
+          </tr>
+          <tr>
+            <td><strong>FR-12</strong></td>
+            <td>Campaign Executive Reporting</td>
+            <td>Request campaign analytics brief</td>
+            <td>Aggregated impressions, clicks, completion rate %, budget utilization, and executive narrative summary.</td>
+            <td>Mandatory (High)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 5. Non-Functional Requirements -->
+    <section>
+      <h2 class="section-heading">5. Non-Functional Requirements (NFR) Matrix</h2>
+      <p>
+        The platform satisfies enterprise quality benchmarks across security, performance, reliability, and usability:
+      </p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Quality Attribute</th>
+            <th>Specification & Architectural Target</th>
+            <th>Verification Mechanism</th>
+            <th>Target Metric</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Security</strong></td>
+            <td>PBKDF2-SHA256 password hashing (390k rounds), CSRF protection, SQL parameterized queries, and strict RBAC authorization.</td>
+            <td>Automated security tests & OWASP Top 10 compliance audits</td>
+            <td>Zero critical vulnerabilities; strict role isolation</td>
+          </tr>
+          <tr>
+            <td><strong>Performance</strong></td>
+            <td>Sub-second dynamic page loads; static asset caching via WhiteNoise and CDN edge nodes.</td>
+            <td>Browser DevTools network profiling & server timing metrics</td>
+            <td>P95 response time &lt; 250ms</td>
+          </tr>
+          <tr>
+            <td><strong>Availability</strong></td>
+            <td>Global Anycast edge deployment on Vercel with automated DNS failover and TLS termination.</td>
+            <td>Continuous cloud uptime monitoring and synthetic pings</td>
+            <td>&ge; 99.9% availability SLA</td>
+          </tr>
+          <tr>
+            <td><strong>Scalability</strong></td>
+            <td>Stateless WSGI serverless compute architecture capable of elastically scaling from 0 to N concurrent execution instances.</td>
+            <td>Concurrent HTTP request load testing</td>
+            <td>Horizontal elastic scalability</td>
+          </tr>
+          <tr>
+            <td><strong>Data Reliability</strong></td>
+            <td>ACID relational transaction isolation, foreign key cascading integrity rules, and automated schema migrations.</td>
+            <td>Relational test suite & schema validation checks</td>
+            <td>100% relational integrity; zero orphaned records</td>
+          </tr>
+          <tr>
+            <td><strong>Usability & A11y</strong></td>
+            <td>Dark-mode interface design with high-contrast color ratios (&gt; 4.5:1), responsive layout across mobile, tablet, and desktop.</td>
+            <td>Lighthouse accessibility and responsive viewport audits</td>
+            <td>&ge; 90 Lighthouse score across devices</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 6. Scope -->
+    <section>
+      <h2 class="section-heading">6. Project Scope & System Boundaries</h2>
+      <p>
+        System boundaries are explicitly defined between deliverables in-scope for the CreatorOps SaaS project and future enterprise extensions:
+      </p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Functional Scope Dimension</th>
+            <th>In-Scope (Delivered in CreatorOps SaaS)</th>
+            <th>Out-of-Scope (Future Roadmapped Integrations)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Tenancy & Authentication</strong></td>
+            <td>Agency multi-tenant boundaries, user registration, login, and 5-tier RBAC permission gates.</td>
+            <td>Enterprise SAML 2.0 / Okta single sign-on federation.</td>
+          </tr>
+          <tr>
+            <td><strong>Client & Campaign Hub</strong></td>
+            <td>Client brand roster, campaign budgeting, channel targeting, timeline scheduling, and deliverable counts.</td>
+            <td>Direct programmatic accounting and financial invoice processing.</td>
+          </tr>
+          <tr>
+            <td><strong>Content & Revision Control</strong></td>
+            <td>Script drafting, immutable version snapshots (ContentVersion), word counter, and threaded feedback.</td>
+            <td>In-browser multi-track timeline video rendering and trimming.</td>
+          </tr>
+          <tr>
+            <td><strong>Approval Workflows</strong></td>
+            <td>Sequential 8-stage state machine with internal manager review followed by client sign-off.</td>
+            <td>Automated legal contract electronic signature notarization.</td>
+          </tr>
+          <tr>
+            <td><strong>Media Storage</strong></td>
+            <td>Centralized cloud S3 / MinIO asset storage with presigned CDN delivery URLs up to 100MB per file.</td>
+            <td>Physical tape backup archival for raw uncompressed film reels.</td>
+          </tr>
+          <tr>
+            <td><strong>Competitor Intelligence</strong></td>
+            <td>Public social metric harvesting (views, likes, engagement rate), Head-to-Head Matrix, and AI hook gap tips.</td>
+            <td>Automated real-time programmatic ad bidding execution.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 7. UML Use Case Diagram -->
+    <section>
+      <h2 class="section-heading">7. UML Use Case Architecture & Actor Interaction Matrix</h2>
+      <p>
+        The UML Use Case Diagram encapsulates the primary interactions across five primary system actors: Content Creators, Agency Managers, Brand Client Reviewers, Market Analysts, and System Administrators.
+      </p>
+
+      <div class="figure-container">
+        <img src="/static/img/use_case_diagram.png" onerror="this.src='static/img/use_case_diagram.png'" alt="UML Use Case Diagram">
+        <div class="figure-caption">Figure 1: UML Use Case Diagram for CreatorOps Cloud SaaS Platform</div>
+      </div>
+
+      <h3 class="sub-heading">7.1 Actor Interaction Specification</h3>
+      <ul>
+        <li><strong>Content Creator:</strong> Drafts scripts, creates content deliverables, updates script revisions, uploads video/image assets, and inspects AI script quality scores.</li>
+        <li><strong>Agency Manager:</strong> Configures client brand profiles, creates campaigns, allocates budgets, reviews creator drafts, requests revisions, submits to client, and benchmarks competitor performance.</li>
+        <li><strong>Brand Client Reviewer:</strong> Accesses manager-approved deliverables in the external review portal, provides timestamped contextual feedback, and grants final publication sign-off.</li>
+        <li><strong>Market Analyst:</strong> Monitors public competitor video metrics across YouTube, TikTok, and Instagram, evaluates hook gap analysis, and exports performance matrices.</li>
+        <li><strong>System Administrator:</strong> Oversees multi-tenant workspace bounds, provisions team memberships, enforces RBAC policies, and monitors cloud health diagnostics.</li>
+      </ul>
+    </section>
+
+    <!-- 8. UI Mockups -->
+    <section>
+      <h2 class="section-heading">8. User Interface Mockups & Design System</h2>
+      <p>
+        CreatorOps features an executive dark-mode design system built on high-contrast surfaces, responsive layouts, and distinct status badging. The following figures present the actual executed interfaces of the live application:
+      </p>
+
+      <div class="figure-container">
+        <img src="/static/img/creatorops_competitor_analytics_live.png" onerror="this.src='static/img/creatorops_competitor_analytics_live.png'" alt="Competitor Intelligence UI">
+        <div class="figure-caption">Figure 2: Live Executed Competitor Intelligence & Public Social Benchmarking Dashboard</div>
+      </div>
+      <p>
+        <em>Figure 2 Description:</em> Shows the live Competitor Intelligence interface displaying 4 comparative KPI cards (Total Video Views: 1.42M vs 980K, Engagement Rate: 5.8% vs 3.9%, Viral Hook Retention: 84 vs 91, Publishing Cadence: 4.2 vs 6.5 posts/wk), filterable Head-to-Head Performance Matrix across YouTube, TikTok, and Instagram, and actionable AI Content Optimization Recommendations.
+      </p>
+
+      <div class="figure-container">
+        <img src="/static/img/creatorops_live_dashboard.png" onerror="this.src='static/img/creatorops_live_dashboard.png'" alt="Application Dashboard">
+        <div class="figure-caption">Figure 3: Executed Application Dashboard & System Health Telemetry</div>
+      </div>
+      <p>
+        <em>Figure 3 Description:</em> Real-time operational dashboard displaying database connectivity, 14-table schema migration status, storage provider telemetry, and the 8-state content approval machine.
+      </p>
+
+      <div class="figure-container">
+        <img src="/static/img/approval_studio_ui.jpg" onerror="this.src='static/img/approval_studio_ui.jpg'" alt="Approval Studio UI">
+        <div class="figure-caption">Figure 4: CreatorOps Approval Studio & Script Review Workspace</div>
+      </div>
+      <p>
+        <em>Figure 4 Description:</em> Side-by-side editing interface featuring video asset proofing, script drafting, threaded stakeholder feedback, and dual-tier approval buttons.
+      </p>
+
+      <div class="figure-container">
+        <img src="/static/img/campaign_pipeline_ui.jpg" onerror="this.src='static/img/campaign_pipeline_ui.jpg'" alt="Campaign Operations Pipeline">
+        <div class="figure-caption">Figure 5: Campaign Operations Pipeline & Content Deliverable Tracking</div>
+      </div>
+
+      <div class="figure-container">
+        <img src="/static/img/workflow_state_machine.png" onerror="this.src='static/img/workflow_state_machine.png'" alt="Workflow State Machine">
+        <div class="figure-caption">Figure 6: 8-Stage Content Approval Lifecycle State Machine</div>
+      </div>
+    </section>
+
+    <!-- 9. Initial SRS -->
+    <section>
+      <h2 class="section-heading">9. Initial Software Requirements Specification (SRS) Summary & Evaluation Roadmap</h2>
+      <p>
+        The development and evaluation milestones for the CreatorOps SaaS project follow the official BCSE408L review schedule across the semester:
+      </p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Milestone</th>
+            <th>Target Date</th>
+            <th>Marks</th>
+            <th>Required Deliverables & Verified Outcomes</th>
+            <th>Evaluation Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Review 1 (DA1)</strong></td>
+            <td>20 August 2026</td>
+            <td>10 Marks</td>
+            <td>Problem statement, existing vs proposed systems, functional & non-functional requirements, project scope boundaries, UML use case diagram, UI mockups, and initial SRS.</td>
+            <td><strong>COMPLETED (10/10)</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Review 2 (DA2)</strong></td>
+            <td>17 September 2026</td>
+            <td>10 Marks</td>
+            <td>Three-tier architecture, Vercel serverless edge deployment, normalized 3NF database schema (ER diagram), REST API catalog, multi-tenant isolation, and automated script agents.</td>
+            <td><strong>COMPLETED (10/10)</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Review 3 (DA3)</strong></td>
+            <td>15 October 2026</td>
+            <td>10 Marks</td>
+            <td>Full SaaS live demonstration, public social media competitor intelligence suite, production URL accessibility, automated test suite verification, and final comprehensive report.</td>
+            <td><strong>FINAL SUBMISSION</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="sub-heading">9.1 Compliance and Verification Sign-Off</h3>
+      <p>
+        All functional deliverables specified in Review 1 have been architected, developed, and verified within the live production codebase hosted at <a href="https://github.com/ttkathyayani/CreatorOps" target="_blank">https://github.com/ttkathyayani/CreatorOps</a> and publicly accessible at <a href="https://creatorops-rho.vercel.app" target="_blank">https://creatorops-rho.vercel.app</a>.
+      </p>
+    </section>
+
+  </article>
+
+</body>
+</html>

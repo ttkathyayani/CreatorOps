@@ -304,8 +304,12 @@
           <td class="value">Project 12 — CreatorOps: Cloud-Native Marketing SaaS Application</td>
         </tr>
         <tr>
-          <td class="label">Candidate Name:</td>
-          <td class="value">Kathyayani T T</td>
+          <td class="label">Student Name &amp; ID:</td>
+          <td class="value">Kathyayani T T (ID: 24BCE1201)</td>
+        </tr>
+        <tr>
+          <td class="label">Project Guide:</td>
+          <td class="value">Professor Dr. Dinakaran M</td>
         </tr>
         <tr>
           <td class="label">GitHub Repository:</td>
@@ -316,8 +320,8 @@
           <td class="value"><a href="https://creatorops-rho.vercel.app" target="_blank">https://creatorops-rho.vercel.app</a></td>
         </tr>
         <tr>
-          <td class="label">Evaluation Stage:</td>
-          <td class="value">Project Review 1 (Digital Assignment 1 — Deliverables & Architecture Setup)</td>
+          <td class="label">Deliverables:</td>
+          <td class="value">Review 1 Deliverables (Digital Assignment 1 — Deliverables &amp; Initial SRS)</td>
         </tr>
       </table>
     </header>
@@ -326,35 +330,48 @@
     <section>
       <h2 class="section-heading">1. Problem Statement</h2>
       <p>
-        In modern digital marketing and the rapidly expanding Creator Economy, agencies manage dozens of concurrent multi-platform campaigns across YouTube, TikTok, Instagram, and LinkedIn. However, creative collaboration between internal agency teams, external freelance creators, and brand clients is plagued by severe operational chaos. Feedback is scattered across unorganized WhatsApp chats, Slack direct messages, and unstructured Google Drive folders, leading to missed client comments, disputed edits, and costly delays.
+        In modern digital marketing and the rapidly expanding Creator Economy, marketing agencies, content creators, and brand managers must coordinate dozens of concurrent multi-platform campaigns across YouTube, TikTok, Instagram, and LinkedIn. However, creative collaboration between internal agency teams, external freelance creators, and corporate brand clients is plagued by severe operational chaos.
       </p>
       <p>
-        Crucially, marketing agencies produce content blindly without visibility into what public competitors are publishing or what hooks and video durations drive audience engagement. Premature content publishing occurs frequently because teams lack cryptographic, sequential approval gates where an internal agency manager must approve deliverables before client presentation. Furthermore, high-resolution creative media files are distributed over transient links with no permanent cloud asset storage or audit history.
+        Marketing agencies and creator teams frequently experience workflow failures:
       </p>
+      <ul>
+        <li><strong>Unorganized Feedback:</strong> Revisions sent across WhatsApp, Slack, and email threads lead to confusion over which draft is final. Feedback is scattered across unstructured chats and personal Google Drive folders, resulting in missed client comments, disputed edits, and costly delays.</li>
+        <li><strong>Premature Publishing:</strong> Content creators occasionally produce or publish deliverables before brand clients have officially approved the copy. Teams lack cryptographic, sequential approval gates where an internal agency manager must approve deliverables before client presentation.</li>
+        <li><strong>Manual Compliance Checks:</strong> Reviewers manually check scripts for forbidden terms, required disclosures, spoken duration, and hook quality, which is tedious, slow, and highly prone to human oversight.</li>
+        <li><strong>Data Isolation Risks:</strong> Using shared spreadsheets and generic boards risks exposing one client's marketing campaign data, budgets, or unreleased assets to another competing brand.</li>
+        <li><strong>Lack of Direct Publishing Automation:</strong> Approved assets still require manual download and re-upload across social platforms, risking mismatched captions, outdated video cuts, or human error.</li>
+      </ul>
       <p>
-        <strong>Problem Definition:</strong> The absence of an integrated, cloud-native platform that unifies multi-tenant workspace isolation, sequential approval state machines, automated script quality audits, immutable version control, centralized cloud media storage, and autonomous public social competitor benchmarking creates substantial operational liabilities, copyright risks, and client churn for modern agencies.
+        <strong>Problem Definition:</strong> The absence of an integrated, cloud-native platform that unifies multi-tenant workspace isolation, sequential approval state machines, automated script quality audits, immutable version control, centralized cloud media storage, direct social API publishing, and autonomous public social competitor benchmarking creates substantial operational liabilities, copyright risks, and client churn for modern agencies.
       </p>
     </section>
 
     <!-- 2. Existing System -->
     <section>
-      <h2 class="section-heading">2. Existing System & Operational Deficiencies</h2>
+      <h2 class="section-heading">2. Existing System</h2>
       <p>
-        Existing agency operations rely on fragmented consumer software products cobbled together into fragile manual workflows. The comparative analysis below illustrates the structural failure modes of the status quo:
+        Existing workflows rely on generic consumer productivity tools cobbled together into fragile manual workflows:
       </p>
+      <ul>
+        <li><strong>Spreadsheets (Google Sheets, Microsoft Excel):</strong> Provide structured rows and columns for tracking post dates and captions, but completely lack state machine enforcement, in-browser file previewing, video proofing, automated notifications, and role-based permissions.</li>
+        <li><strong>Instant Messaging (Slack, WhatsApp):</strong> Convenient and fast for informal discussion, but message history quickly gets buried, files expire, and critical approval decisions cannot be tracked or audited as legally binding trails.</li>
+        <li><strong>Generic Project Management (Trello, Asana, Monday.com):</strong> Capable of tracking generic task cards across Kanban columns, but fundamentally lack domain-specific content creation workflows such as spoken script pacing calculation (~130 wpm), social channel aspect ratio validation (9:16 vs 16:9), two-tier manager/client sign-off queues, and direct social API publishing.</li>
+      </ul>
 
+      <h3 class="sub-heading">Comparative Analysis of Existing Systems vs. CreatorOps</h3>
       <table class="data-table">
         <thead>
           <tr>
             <th>Friction Area</th>
             <th>Existing Ad-Hoc Method</th>
-            <th>Operational Failure Mode & Business Risk</th>
+            <th>Operational Failure Mode &amp; Business Risk</th>
             <th>CreatorOps Cloud Solution</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Feedback & Revisions</strong></td>
+            <td><strong>Feedback &amp; Revisions</strong></td>
             <td>Scattered WhatsApp messages, email threads, and Slack channels</td>
             <td>Conflicting feedback, untracked changes, 43% average rework delays, lost creator instructions</td>
             <td>Contextual threaded comment streams locked directly to specific content version records</td>
@@ -378,7 +395,7 @@
             <td>Centralized Amazon S3 object storage with presigned CDN links and file integrity checks</td>
           </tr>
           <tr>
-            <td><strong>Content Optimization</strong></td>
+            <td><strong>Quality &amp; Compliance</strong></td>
             <td>Manual proofreading of scripts and hooks with no standardized metrics</td>
             <td>Non-compliant brand claims, poor hook retention in opening 3 seconds, sub-optimal duration</td>
             <td>Automated AI script auditing for word count, hook keyword presence, pacing, and brand safety</td>
@@ -387,7 +404,13 @@
             <td><strong>Competitor Visibility</strong></td>
             <td>Zero tracking of rival creator posts, manual guesswork of trending topics</td>
             <td>Blind content production, lower engagement rates, and wasted campaign ad spend</td>
-            <td>Autonomous public social media telemetry collection & Head-to-Head Benchmarking Matrix</td>
+            <td>Autonomous public social media telemetry collection &amp; Head-to-Head Benchmarking Matrix</td>
+          </tr>
+          <tr>
+            <td><strong>Direct Publishing</strong></td>
+            <td>Manual download of video and manual posting via mobile apps</td>
+            <td>Accidental post of wrong draft, forgotten hashtags, publication delays</td>
+            <td>Direct Social Publishing integrating with Meta Graph, YouTube, and TikTok APIs</td>
           </tr>
         </tbody>
       </table>
@@ -395,22 +418,26 @@
 
     <!-- 3. Proposed System -->
     <section>
-      <h2 class="section-heading">3. Proposed Cloud-Native System</h2>
+      <h2 class="section-heading">3. Proposed System</h2>
       <p>
-        CreatorOps introduces a purpose-built, multi-tenant Software-as-a-Service (SaaS) architecture designed to enforce <em>"One campaign, One workspace, One approval trail."</em> The system replaces ad-hoc consumer tools with five foundational cloud-native innovations:
+        CreatorOps introduces a purpose-built, multi-tenant Software-as-a-Service (SaaS) architecture designed to enforce <em>"One campaign, One workspace, One approval trail. Unfair competitive advantage."</em> The system replaces ad-hoc consumer tools with foundational cloud-native innovations:
       </p>
       <ul>
         <li><strong>Multi-Tenant Workspace Isolation:</strong> Every agency operates within an isolated organizational tenancy with scoped relational boundaries, ensuring absolute data segregation between competing brand accounts.</li>
-        <li><strong>8-Stage Content Approval Lifecycle State Machine:</strong> Strict programmatic progression through <code>DRAFT &rarr; INTERNAL_REVIEW &rarr; CLIENT_REVIEW &rarr; APPROVED &rarr; SCHEDULED &rarr; PUBLISHED</code> with non-bypassable validation gates and changes-requested rejection loops.</li>
-        <li><strong>Automated AI Content Intelligence Suite:</strong> Specialized domain agents (ScriptReviewAgent, ContentIdeasAgent, ApprovalSummaryAgent, CampaignReportAgent) that evaluate spoken pacing, hook strength in first 20 words, brand compliance, and feedback synthesis.</li>
-        <li><strong>Scalable Cloud Object Storage Abstraction:</strong> Pluggable storage architecture leveraging Amazon S3 API / MinIO with secure presigned upload/download URLs, handling high-resolution video and graphic deliverables.</li>
-        <li><strong>Public Social Media Ingestion & Competitor Benchmarking:</strong> Telemetry harvesting engine tracking public video views, likes, comments, and engagement rates across YouTube, TikTok, and Instagram, paired with an automated Head-to-Head Performance Matrix and actionable AI optimization tips.</li>
+        <li><strong>Four-Tier Role-Based Access Control (RBAC):</strong> Distinct permission sets for Admin, Manager, Creator, and Client Reviewer, enforcing least privilege across internal vs external reviewers.</li>
+        <li><strong>8-Stage Content Approval Lifecycle State Machine:</strong> Strict programmatic progression through <code>DRAFT &rarr; PENDING_MANAGER &rarr; CHANGES_REQUESTED &rarr; PENDING_CLIENT &rarr; APPROVED &rarr; SCHEDULED &rarr; PUBLISHED</code> with non-bypassable validation gates.</li>
+        <li><strong>Immutable Revision History:</strong> Updates automatically create a ContentVersion snapshot, preserving the script, author, revision number, and timestamp.</li>
+        <li><strong>Automated Script Checking:</strong> Rules evaluate word count, calculate speaking duration (~130 words/min), detect hook keywords in the opening sentence, and flag prohibited brand terms.</li>
+        <li><strong>Scalable Cloud Object Storage:</strong> High-throughput media storage backed by Amazon S3 API / MinIO with secure presigned upload/download URLs.</li>
+        <li><strong>Competitor Intelligence &amp; Benchmarking:</strong> Telemetry harvesting tracking public views, likes, and engagement rates across YouTube Shorts, TikTok, and Instagram, paired with an automated Head-to-Head Matrix.</li>
+        <li><strong>Direct Social Publishing:</strong> Native programmatic publishing to Meta Graph API v19.0 (Instagram Reels / Posts), YouTube Data API v3 (Shorts), and TikTok Content Posting API v2.</li>
+        <li><strong>Cloud Deployment:</strong> Hosted on Vercel's global Anycast edge network with automated Git CI/CD integration, WhiteNoise static caching, and PostgreSQL / SQLite persistence.</li>
       </ul>
     </section>
 
     <!-- 4. Functional Requirements -->
     <section>
-      <h2 class="section-heading">4. Functional Requirements Specification</h2>
+      <h2 class="section-heading">4. Functional Requirements</h2>
       <p>
         The core operational requirements for the CreatorOps SaaS platform are enumerated in the formal Functional Requirements Matrix below:
       </p>
@@ -505,9 +532,9 @@
           </tr>
           <tr>
             <td><strong>FR-12</strong></td>
-            <td>Campaign Executive Reporting</td>
-            <td>Request campaign analytics brief</td>
-            <td>Aggregated impressions, clicks, completion rate %, budget utilization, and executive narrative summary.</td>
+            <td>Direct Social Publishing</td>
+            <td>Manager clicks Direct Social Publish</td>
+            <td>Programmatic publishing integrating with Meta Graph, YouTube Data API v3, and TikTok Content Posting APIs; generates remote post IDs and permalinks.</td>
             <td>Mandatory (High)</td>
           </tr>
         </tbody>
@@ -516,7 +543,7 @@
 
     <!-- 5. Non-Functional Requirements -->
     <section>
-      <h2 class="section-heading">5. Non-Functional Requirements (NFR) Matrix</h2>
+      <h2 class="section-heading">5. Non-Functional Requirements</h2>
       <p>
         The platform satisfies enterprise quality benchmarks across security, performance, reliability, and usability:
       </p>
@@ -573,7 +600,7 @@
 
     <!-- 6. Scope -->
     <section>
-      <h2 class="section-heading">6. Project Scope & System Boundaries</h2>
+      <h2 class="section-heading">6. Scope</h2>
       <p>
         System boundaries are explicitly defined between deliverables in-scope for the CreatorOps SaaS project and future enterprise extensions:
       </p>
@@ -621,9 +648,9 @@
       </table>
     </section>
 
-    <!-- 7. UML Use Case Diagram -->
+    <!-- 7. Use Case Diagram -->
     <section>
-      <h2 class="section-heading">7. UML Use Case Architecture & Actor Interaction Matrix</h2>
+      <h2 class="section-heading">7. Use Case Diagram</h2>
       <p>
         The UML Use Case Diagram encapsulates the primary interactions across five primary system actors: Content Creators, Agency Managers, Brand Client Reviewers, Market Analysts, and System Administrators.
       </p>
@@ -645,22 +672,22 @@
 
     <!-- 8. UI Mockups -->
     <section>
-      <h2 class="section-heading">8. User Interface Mockups & Design System</h2>
+      <h2 class="section-heading">8. UI Mockups</h2>
       <p>
         CreatorOps features an executive dark-mode design system built on high-contrast surfaces, responsive layouts, and distinct status badging. The following figures present the actual executed interfaces of the live application:
       </p>
 
       <div class="figure-container">
         <img src="/static/img/creatorops_competitor_analytics_live.png" onerror="this.src='static/img/creatorops_competitor_analytics_live.png'" alt="Competitor Intelligence UI">
-        <div class="figure-caption">Figure 2: Live Executed Competitor Intelligence & Public Social Benchmarking Dashboard</div>
+        <div class="figure-caption">Figure 2: Live Executed Competitor Intelligence &amp; Public Social Benchmarking Dashboard</div>
       </div>
       <p>
-        <em>Figure 2 Description:</em> Shows the live Competitor Intelligence interface displaying 4 comparative KPI cards (Total Video Views: 1.42M vs 980K, Engagement Rate: 5.8% vs 3.9%, Viral Hook Retention: 84 vs 91, Publishing Cadence: 4.2 vs 6.5 posts/wk), filterable Head-to-Head Performance Matrix across YouTube, TikTok, and Instagram, and actionable AI Content Optimization Recommendations.
+        <em>Figure 2 Description:</em> Shows the live Competitor Intelligence interface displaying 4 comparative KPI cards (Total Video Views: 2.45M vs 1.69M, Engagement Rate: 5.8% vs 3.9%, Viral Hook Retention: 60% vs 65%, Publishing Cadence: 4.2 vs 6.5 posts/wk), filterable Head-to-Head Performance Matrix across YouTube, TikTok, and Instagram, and actionable AI Content Optimization Recommendations.
       </p>
 
       <div class="figure-container">
         <img src="/static/img/creatorops_live_dashboard.png" onerror="this.src='static/img/creatorops_live_dashboard.png'" alt="Application Dashboard">
-        <div class="figure-caption">Figure 3: Executed Application Dashboard & System Health Telemetry</div>
+        <div class="figure-caption">Figure 3: Executed Application Dashboard &amp; System Health Telemetry</div>
       </div>
       <p>
         <em>Figure 3 Description:</em> Real-time operational dashboard displaying database connectivity, 14-table schema migration status, storage provider telemetry, and the 8-state content approval machine.
@@ -668,7 +695,7 @@
 
       <div class="figure-container">
         <img src="/static/img/approval_studio_ui.jpg" onerror="this.src='static/img/approval_studio_ui.jpg'" alt="Approval Studio UI">
-        <div class="figure-caption">Figure 4: CreatorOps Approval Studio & Script Review Workspace</div>
+        <div class="figure-caption">Figure 4: CreatorOps Approval Studio &amp; Script Review Workspace</div>
       </div>
       <p>
         <em>Figure 4 Description:</em> Side-by-side editing interface featuring video asset proofing, script drafting, threaded stakeholder feedback, and dual-tier approval buttons.
@@ -676,7 +703,7 @@
 
       <div class="figure-container">
         <img src="/static/img/campaign_pipeline_ui.jpg" onerror="this.src='static/img/campaign_pipeline_ui.jpg'" alt="Campaign Operations Pipeline">
-        <div class="figure-caption">Figure 5: Campaign Operations Pipeline & Content Deliverable Tracking</div>
+        <div class="figure-caption">Figure 5: Campaign Operations Pipeline &amp; Content Deliverable Tracking</div>
       </div>
 
       <div class="figure-container">
@@ -687,7 +714,7 @@
 
     <!-- 9. Initial SRS -->
     <section>
-      <h2 class="section-heading">9. Initial Software Requirements Specification (SRS) Summary & Evaluation Roadmap</h2>
+      <h2 class="section-heading">9. Initial SRS</h2>
       <p>
         The development and evaluation milestones for the CreatorOps SaaS project follow the official BCSE408L review schedule across the semester:
       </p>

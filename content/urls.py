@@ -11,4 +11,6 @@ urlpatterns = [
     path("<int:pk>/edit/", views.content_edit, name="edit"),
     path("<int:pk>/submit/", views.submit_for_review, name="submit"),
     path("<int:pk>/publish/", views.publish_content, name="publish"),
+    path("<int:pk>/direct-publish/", views.api_direct_publish, name="api-direct-publish"),
+    path("api/social-accounts/", views.api_social_accounts, name="api-social-accounts"),
 ]

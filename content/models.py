@@ -30,6 +30,10 @@ class ContentItem(models.Model):
     caption = models.TextField(blank=True, default="", help_text="Final caption, copy, hashtags.")
     due_date = models.DateField(null=True, blank=True)
     status = models.CharField(max_length=30, choices=Status.choices, default=Status.DRAFT)
+    published_url = models.URLField(max_length=500, blank=True, default="")
+    published_post_id = models.CharField(max_length=120, blank=True, default="")
+    published_platform = models.CharField(max_length=50, blank=True, default="")
+    published_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -65,3 +69,21 @@ class ContentVersion(models.Model):
 
     def __str__(self):
         return f"{self.content_item.title} (v{self.revision_number})"
+
+
+class SocialPublishLog(models.Model):
+    content_item = models.ForeignKey(ContentItem, on_delete=models.CASCADE, related_name="publish_logs")
+    platform = models.CharField(max_length=50)
+    post_id = models.CharField(max_length=120)
+    post_url = models.URLField(max_length=500)
+    status = models.CharField(max_length=30, default="published")
+    response_payload = models.JSONField(default=dict, blank=True)
+    published_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.platform} [{self.post_id}] - {self.content_item.title}"
+

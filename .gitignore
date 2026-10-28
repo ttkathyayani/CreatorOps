@@ -10,9 +10,14 @@ media/
 .pytest_cache/
 .DS_Store
 Thumbs.db
-*.docx
+# Temporary and auto-generated docx
 ~$*.docx
+Attachment_*.docx
+*.tmp
 docs/*.pdf
+
+
 docs/figures/
 frontend/
 backend/
+

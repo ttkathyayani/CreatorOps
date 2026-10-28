@@ -53,14 +53,21 @@
         </button>
         {% endif %}
 
-        <!-- Final Publishing Step -->
+        <!-- Final Direct Social Publishing Step -->
         {% if item.status == "approved" and user_role in "ADMIN,MANAGER" %}
-        <form method="POST" action="{% url 'content:publish' item.id %}" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-success">
-                <span>📢 Mark as Published</span>
-            </button>
-        </form>
+        <button type="button" class="btn btn-success" id="openDirectPublishBtn" style="background: linear-gradient(135deg, #10B981, #059669); border-color: #10B981; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4); font-weight: 600;">
+            <span>🚀 Direct Social Publish</span>
+        </button>
+        {% elif item.status == "published" and user_role in "ADMIN,MANAGER" %}
+        <button type="button" class="btn btn-secondary" id="openDirectPublishBtn" style="border-color: rgba(16, 185, 129, 0.4); color: #34D399;">
+            <span>📡 Cross-Publish / Re-Publish</span>
+        </button>
+        {% endif %}
+
+        {% if item.published_url %}
+        <a href="{{ item.published_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="border-color: rgba(59, 130, 246, 0.5); color: #60A5FA;">
+            <span>🔗 View Live Post &rarr;</span>
+        </a>
         {% endif %}
     </div>
 </div>
@@ -94,6 +101,41 @@
         </div>
     </div>
 </div>
+
+<!-- Direct Social Publishing Telemetry Card -->
+{% if item.status == "published" or item.published_url %}
+<div class="card" style="margin-bottom: 2rem; border-left: 4px solid #10B981; background: linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, rgba(20, 20, 20, 0.95) 100%);">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+        <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
+                <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10B981; box-shadow: 0 0 10px #10B981;"></span>
+                <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; color: #34D399;">Direct Social Publishing Telemetry</span>
+                <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #34D399; font-size: 0.7rem; border: 1px solid rgba(16, 185, 129, 0.3);">HTTP 200 Live API Stream</span>
+            </div>
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 0 0 0.5rem 0; color: #FFFFFF;">
+                Content Deliverable Live on {{ item.published_platform|default:item.platform }}
+            </h3>
+            <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; font-size: 0.8125rem; color: var(--text-muted);">
+                {% if item.published_post_id %}
+                <div><strong>Remote Post ID:</strong> <code style="background: #111; padding: 2px 6px; border-radius: 4px; color: #FACC15;">{{ item.published_post_id }}</code></div>
+                {% endif %}
+                {% if item.published_at %}
+                <div><strong>Published At:</strong> {{ item.published_at|date:"M d, Y H:i e" }}</div>
+                {% endif %}
+                <div><strong>API Ingestion Gate:</strong> Meta Graph v19.0 &bull; YouTube Data API v3 &bull; TikTok Content Posting v2</div>
+            </div>
+        </div>
+        <div>
+            {% if item.published_url %}
+            <a href="{{ item.published_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="background: #10B981; border-color: #10B981; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                <span>🌐 Open Live Social Post</span>
+                <span>&rarr;</span>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endif %}
 
 <div class="grid-3" style="margin-bottom: 2rem;">
     <!-- Script & Copy Panel (2 cols) -->
@@ -328,10 +370,110 @@ No revision comments to synthesize yet. Feedback iterations will be summarized h
         </div>
     </div>
 </div>
+
+<!-- Direct Social Publishing Modal -->
+<div class="modal-backdrop" id="directPublishModal" style="display: none; align-items: center; justify-content: center; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999; padding: 1.5rem;">
+    <div class="modal-card" style="max-width: 650px; width: 100%; background: #1C1C1C; border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-md); padding: 1.75rem; box-shadow: 0 20px 40px rgba(0,0,0,0.8);">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+            <div>
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                    <span style="font-size: 1.25rem;">🚀</span>
+                    <h2 class="card-title" style="margin: 0; font-size: 1.25rem; font-weight: 700; color: #FFFFFF;">Direct Social Publishing Studio</h2>
+                </div>
+                <div style="font-size: 0.8125rem; color: var(--text-muted);">
+                    Publish approved content directly to Meta Graph, YouTube, or TikTok APIs
+                </div>
+            </div>
+            <button type="button" id="closePublishModalBtn" style="background:none; border:none; color:var(--text-muted); font-size: 1.5rem; cursor:pointer; line-height: 1;">&times;</button>
+        </div>
+
+        <form method="POST" action="{% url 'content:publish' item.id %}" id="socialPublishForm">
+            {% csrf_token %}
+            <div style="margin-bottom: 1.25rem;">
+                <label class="form-label" style="font-weight: 600; margin-bottom: 0.5rem; display: block; color: var(--text-main);">
+                    Target Social Platform &amp; API Gateway:
+                </label>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem;">
+                    <label class="platform-select-card" style="cursor: pointer; border: 2px solid {% if item.platform == 'Instagram' %}#10B981{% else %}rgba(255,255,255,0.1){% endif %}; padding: 0.85rem; border-radius: 8px; background: #141414; display: flex; flex-direction: column; gap: 0.35rem;">
+                        <input type="radio" name="target_platform" value="Instagram" {% if item.platform == 'Instagram' or item.platform not in 'YouTube,TikTok' %}checked{% endif %} style="accent-color: #10B981;">
+                        <span style="font-weight: 700; font-size: 0.9rem; color: #FFFFFF;">📸 Meta Graph</span>
+                        <span style="font-size: 0.75rem; color: #34D399;">Instagram Reels v19.0</span>
+                    </label>
+
+                    <label class="platform-select-card" style="cursor: pointer; border: 2px solid {% if item.platform == 'YouTube' %}#10B981{% else %}rgba(255,255,255,0.1){% endif %}; padding: 0.85rem; border-radius: 8px; background: #141414; display: flex; flex-direction: column; gap: 0.35rem;">
+                        <input type="radio" name="target_platform" value="YouTube" {% if item.platform == 'YouTube' %}checked{% endif %} style="accent-color: #10B981;">
+                        <span style="font-weight: 700; font-size: 0.9rem; color: #FFFFFF;">▶️ YouTube API</span>
+                        <span style="font-size: 0.75rem; color: #34D399;">Shorts / Video v3</span>
+                    </label>
+
+                    <label class="platform-select-card" style="cursor: pointer; border: 2px solid {% if item.platform == 'TikTok' %}#10B981{% else %}rgba(255,255,255,0.1){% endif %}; padding: 0.85rem; border-radius: 8px; background: #141414; display: flex; flex-direction: column; gap: 0.35rem;">
+                        <input type="radio" name="target_platform" value="TikTok" {% if item.platform == 'TikTok' %}checked{% endif %} style="accent-color: #10B981;">
+                        <span style="font-weight: 700; font-size: 0.9rem; color: #FFFFFF;">🎵 TikTok API</span>
+                        <span style="font-size: 0.75rem; color: #34D399;">Content Posting v2</span>
+                    </label>
+                </div>
+            </div>
+
+            <div style="background: #141414; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 1rem; margin-bottom: 1.25rem;">
+                <div style="font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; margin-bottom: 0.35rem;">Live Payload Preview</div>
+                <div style="font-size: 0.875rem; color: #FFFFFF; font-weight: 600; margin-bottom: 0.25rem;">{{ item.title }}</div>
+                <div style="font-size: 0.8125rem; color: var(--text-muted); max-height: 80px; overflow-y: auto; background: #0E0E0E; padding: 0.5rem; border-radius: 4px; font-family: monospace;">
+                    {{ item.caption|default:item.script_body|truncatechars:200 }}
+                </div>
+                <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #FACC15;">
+                    Tagged Brand: <strong>{{ item.campaign.client.name }}</strong> &bull; Workspace: <strong>{{ item.campaign.client.workspace.name }}</strong>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                <button type="button" id="cancelPublishModalBtn" class="btn btn-secondary">Cancel</button>
+                <button type="submit" class="btn btn-success" id="confirmPublishBtn" style="background: linear-gradient(135deg, #10B981, #059669); border-color: #10B981; font-weight: 700; padding: 0.65rem 1.5rem; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);">
+                    <span>⚡ Publish Now Directly</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}
 
 {% block extra_js %}
 <script>
+// Direct Social Publishing Modal Handlers
+const publishModal = document.getElementById('directPublishModal');
+const openPublishBtn = document.getElementById('openDirectPublishBtn');
+const closePublishBtn = document.getElementById('closePublishModalBtn');
+const cancelPublishBtn = document.getElementById('cancelPublishModalBtn');
+
+openPublishBtn?.addEventListener('click', () => {
+    if (publishModal) publishModal.style.display = 'flex';
+});
+
+const hidePublishModal = () => {
+    if (publishModal) publishModal.style.display = 'none';
+};
+
+closePublishBtn?.addEventListener('click', hidePublishModal);
+cancelPublishBtn?.addEventListener('click', hidePublishModal);
+
+// Highlight selected radio card
+document.querySelectorAll('.platform-select-card input[type="radio"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+        document.querySelectorAll('.platform-select-card').forEach(card => {
+            card.style.borderColor = 'rgba(255,255,255,0.1)';
+        });
+        radio.closest('.platform-select-card').style.borderColor = '#10B981';
+    });
+});
+
+document.getElementById('socialPublishForm')?.addEventListener('submit', () => {
+    const btn = document.getElementById('confirmPublishBtn');
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span>⏳ Transmitting to Social API Gateway...</span>';
+    }
+});
+
+// AI Script Review Diagnostic
 document.getElementById('runAiReviewBtn')?.addEventListener('click', async () => {
     const modal = document.getElementById('aiReviewModal');
     const loading = document.getElementById('aiReviewLoading');

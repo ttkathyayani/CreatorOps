@@ -7,7 +7,7 @@ from rest_framework.routers import DefaultRouter
 
 from clients.views import ClientViewSet
 from campaigns.views import CampaignViewSet
-from content.views import ContentItemViewSet, api_script_review
+from content.views import ContentItemViewSet, api_script_review, api_direct_publish, api_social_accounts
 from approvals.views import ContentReviewAPIView
 from analytics.views import dashboard_view, CampaignReportAPIView, api_run_agent
 
@@ -111,6 +111,8 @@ urlpatterns = [
     path("api/agents/<str:agent_type>/", api_run_agent, name="api-run-agent"),
     path("api/competitors/benchmark/", api_competitors_benchmark, name="api-competitors-benchmark-root"),
     path("api/competitors/", api_add_competitor, name="api-competitors-root"),
+    path("api/content/<int:pk>/direct-publish/", api_direct_publish, name="api-content-direct-publish"),
+    path("api/social-accounts/", api_social_accounts, name="api-social-accounts-root"),
 ]
 
 from django.views.static import serve

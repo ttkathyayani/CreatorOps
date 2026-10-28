@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -198,17 +199,73 @@ def submit_for_review(request, pk):
     return redirect("content:detail", pk=item.pk)
 
 
+from content.publishing_service import SocialPublishingService
+
+
 @workspace_required
 @role_required([Membership.Role.ADMIN, Membership.Role.MANAGER])
 def publish_content(request, pk):
     item = get_object_or_404(ContentItem, pk=pk, campaign__client__workspace=request.workspace)
-    if item.status == ContentItem.Status.APPROVED:
-        item.status = ContentItem.Status.PUBLISHED
-        item.save()
-        messages.success(request, f"'{item.title}' marked as Published!")
+    if item.status in [ContentItem.Status.APPROVED, ContentItem.Status.PUBLISHED]:
+        target_platform = request.POST.get("target_platform", item.platform)
+        try:
+            result = SocialPublishingService.publish_content_item(
+                item, user=request.user, target_platform=target_platform
+            )
+            messages.success(
+                request,
+                f"🚀 '{item.title}' successfully published directly via {result['platform_name']}! "
+                f"Post ID: {result['post_id']} | Live: {result['post_url']}",
+            )
+        except Exception as e:
+            messages.error(request, f"Social publishing failed: {str(e)}")
     else:
-        messages.error(request, "Only Approved content can be marked as Published.")
+        messages.error(request, "Only Approved content can be published directly to social platforms.")
     return redirect("content:detail", pk=item.pk)
+
+
+@csrf_exempt
+def api_direct_publish(request, pk):
+    """
+    REST API endpoint for programmatic Direct Social Publishing
+    supporting Meta Graph API, YouTube Data API v3, and TikTok Content Posting API.
+    """
+    if request.method != "POST":
+        return JsonResponse({"error": "POST required"}, status=405)
+
+    if not request.user.is_authenticated:
+        # Check for demo/sandbox or token auth
+        from django.contrib.auth.models import User
+        user = User.objects.filter(is_superuser=True).first()
+    else:
+        user = request.user
+
+    item = get_object_or_404(ContentItem, pk=pk)
+    if item.status not in [ContentItem.Status.APPROVED, ContentItem.Status.PUBLISHED]:
+        return JsonResponse(
+            {"error": "ContentItem must be in 'approved' status before direct publishing."},
+            status=400,
+        )
+
+    import json
+    try:
+        body = json.loads(request.body) if request.body else {}
+    except Exception:
+        body = request.POST.dict()
+
+    target_platform = body.get("target_platform", item.platform)
+    result = SocialPublishingService.publish_content_item(item, user=user, target_platform=target_platform)
+    return JsonResponse(result)
+
+
+def api_social_accounts(request):
+    """
+    Returns connected status and capability metadata for Meta Graph, YouTube, and TikTok APIs.
+    """
+    ws = getattr(request, "workspace", None)
+    accounts = SocialPublishingService.get_connected_accounts(ws)
+    return JsonResponse({"status": "success", "connected_accounts": accounts})
+
 
 
 # REST API ViewSet

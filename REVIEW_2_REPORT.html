@@ -283,11 +283,15 @@
       <table class="metadata-table">
         <tr>
           <td class="label">Project Title:</td>
-          <td class="value">Project 12 — CreatorOps (Marketing SaaS Application)</td>
+          <td class="value">Project 12 — CreatorOps: Cloud-Native Marketing SaaS Application</td>
         </tr>
         <tr>
-          <td class="label">Candidate Name:</td>
-          <td class="value">Kathyayani T T</td>
+          <td class="label">Student Name &amp; ID:</td>
+          <td class="value">Kathyayani T T (ID: 24BCE1201)</td>
+        </tr>
+        <tr>
+          <td class="label">Project Guide:</td>
+          <td class="value">Professor Dr. Dinakaran M</td>
         </tr>
         <tr>
           <td class="label">GitHub Repository:</td>
@@ -298,8 +302,8 @@
           <td class="value"><a href="https://creatorops-rho.vercel.app" target="_blank">https://creatorops-rho.vercel.app</a></td>
         </tr>
         <tr>
-          <td class="label">Evaluation Stage:</td>
-          <td class="value">Project Review 2</td>
+          <td class="label">Deliverables:</td>
+          <td class="value">Review 2 Deliverables (Digital Assignment 2 — Architecture, Schema &amp; APIs)</td>
         </tr>
       </table>
     </header>
@@ -316,17 +320,17 @@
         <div class="figure-caption">Figure 1: High-Level Three-Tier Architecture of CreatorOps</div>
       </div>
 
-      <h3 class="sub-heading">1.1 Client Tier (Presentation)</h3>
+      <h3 class="sub-heading">1.1 Presentation Tier</h3>
       <p>
         The client interface is rendered through responsive server-side HTML5 templates utilizing CSS variables for styling. It provides operational screens for workspace configuration, client brand records, marketing campaigns, content drafting, and approval queues. External clients and automated tools interact via JSON-based REST endpoints over HTTPS.
       </p>
 
-      <h3 class="sub-heading">1.2 Application Tier (Business Logic)</h3>
+      <h3 class="sub-heading">1.2 Application Tier</h3>
       <p>
-        The application tier is powered by Python 3.12 and Django 6.1. It manages routing, tenant isolation, session validation, and content state transitions. A Django REST Framework (DRF) layer exposes ModelViewSets for programmatic operations. In addition, an internal rule-based agent module (<code>agents/</code>) provides automated checks on creator scripts—measuring word count, estimated speaking duration, hook keyword presence, and brand safety compliance. WhiteNoise serves static assets directly from the WSGI application layer.
+        The application tier is powered by Python 3.12 and Django 6.1. It manages routing, tenant isolation, session validation, and content state transitions. A Django REST Framework (DRF) layer exposes ModelViewSets for programmatic operations. In addition, an internal rule-based agent module (<code>agents/</code>) provides automated checks on creator scripts—measuring word count, estimated speaking duration, hook keyword presence, and brand safety compliance. Direct Social Publishing engine interfaces with Meta Graph, YouTube, and TikTok APIs. WhiteNoise serves static assets directly from the WSGI application layer.
       </p>
 
-      <h3 class="sub-heading">1.3 Data Tier (Persistence)</h3>
+      <h3 class="sub-heading">1.3 Persistence Tier</h3>
       <p>
         Persistent relational data is stored in PostgreSQL for production deployment, with SQLite supported for local development. Binary assets (images, documents, and videos) are managed with support for Amazon S3 object storage via <code>boto3</code> and <code>django-storages</code>.
       </p>
@@ -334,7 +338,7 @@
 
     <!-- 2. Cloud Architecture -->
     <section>
-      <h2 class="section-heading">2. Cloud Deployment Architecture</h2>
+      <h2 class="section-heading">2. Cloud Architecture</h2>
       <p>
         The production application is hosted on Vercel's cloud infrastructure, taking advantage of its edge routing network and serverless execution capabilities.
       </p>
@@ -355,9 +359,9 @@
 
     <!-- 3. Database Design -->
     <section>
-      <h2 class="section-heading">3. Database Schema Design</h2>
+      <h2 class="section-heading">3. Database Design</h2>
       <p>
-        The relational schema is normalized to Third Normal Form (3NF) and contains nine core entities structured around multi-tenant workspace isolation.
+        The relational schema is normalized to Third Normal Form (3NF) and contains ten core entities structured around multi-tenant workspace isolation.
       </p>
 
       <table class="data-table">
@@ -403,7 +407,7 @@
             <td><strong>ContentItem</strong></td>
             <td><code>id</code></td>
             <td><code>campaign_id</code>, <code>creator_id</code></td>
-            <td><code>title</code>, <code>platform</code>, <code>script_body</code>, <code>status</code></td>
+            <td><code>title</code>, <code>platform</code>, <code>script_body</code>, <code>status</code>, <code>published_url</code></td>
             <td>Status state machine enum</td>
           </tr>
           <tr>
@@ -434,13 +438,20 @@
             <td><code>metric_name</code>, <code>metric_value</code>, <code>recorded_date</code></td>
             <td>Indexed on recorded date</td>
           </tr>
+          <tr>
+            <td><strong>SocialPublishLog</strong></td>
+            <td><code>id</code></td>
+            <td><code>content_item_id</code>, <code>published_by</code></td>
+            <td><code>platform</code>, <code>post_id</code>, <code>post_url</code>, <code>status</code></td>
+            <td>Direct social API audit log</td>
+          </tr>
         </tbody>
       </table>
     </section>
 
     <!-- 4. ER Diagram -->
     <section>
-      <h2 class="section-heading">4. Entity-Relationship (ER) Diagram</h2>
+      <h2 class="section-heading">4. ER Diagram</h2>
       <p>
         The entity-relationship diagram below maps the tables and cardinalities across the system:
       </p>
@@ -458,12 +469,13 @@
         <li><strong>Campaign to ContentItem:</strong> One-to-Many ($1 : N$). A campaign contains multiple content deliverables.</li>
         <li><strong>ContentItem to ContentVersion:</strong> One-to-Many ($1 : N$). Each edit generates a sequential revision record.</li>
         <li><strong>ContentItem to Approval:</strong> One-to-Many ($1 : N$). An item records internal manager and client review decisions.</li>
+        <li><strong>ContentItem to SocialPublishLog:</strong> One-to-Many ($1 : N$). An item tracks direct social publications across Meta Graph, YouTube, and TikTok.</li>
       </ul>
     </section>
 
     <!-- 5. Module Design -->
     <section>
-      <h2 class="section-heading">5. Modular Architecture</h2>
+      <h2 class="section-heading">5. Module Design</h2>
       <p>
         The software follows a domain-driven structure, separated into distinct Django apps:
       </p>
@@ -483,7 +495,7 @@
 
     <!-- 6. API Design -->
     <section>
-      <h2 class="section-heading">6. REST API Design</h2>
+      <h2 class="section-heading">6. API Design</h2>
       <p>
         The REST API is implemented using Django REST Framework and requires authentication for all protected endpoints:
       </p>
@@ -536,14 +548,32 @@
           </tr>
           <tr>
             <td><code>POST</code></td>
+            <td><code>/api/content/{id}/submit/</code></td>
+            <td>Submit deliverable to Manager Review queue</td>
+            <td>Creator, Admin</td>
+          </tr>
+          <tr>
+            <td><code>POST</code></td>
             <td><code>/api/content/{id}/review/</code></td>
             <td>Submit manager or client approval decision</td>
-            <td>Manager, Client</td>
+            <td>Manager, Client Reviewer</td>
+          </tr>
+          <tr>
+            <td><code>POST</code></td>
+            <td><code>/api/content/{id}/direct-publish/</code></td>
+            <td>Publish approved deliverable directly to Meta Graph, YouTube, or TikTok APIs</td>
+            <td>Admin, Manager</td>
           </tr>
           <tr>
             <td><code>GET</code></td>
-            <td><code>/api/reports/campaigns/{id}/</code></td>
-            <td>Retrieve campaign metrics summary</td>
+            <td><code>/api/social-accounts/</code></td>
+            <td>Discover connected Meta Graph, YouTube, and TikTok social channels</td>
+            <td>Authenticated Member</td>
+          </tr>
+          <tr>
+            <td><code>GET</code></td>
+            <td><code>/api/competitors/benchmark/</code></td>
+            <td>Retrieve harvested competitor social telemetry &amp; Benchmarking Matrix</td>
             <td>Authenticated Member</td>
           </tr>
           <tr>
@@ -552,38 +582,46 @@
             <td>Run automated script quality and brand compliance audit</td>
             <td>Creator, Manager</td>
           </tr>
+          <tr>
+            <td><code>GET</code></td>
+            <td><code>/api/reports/campaigns/{id}/</code></td>
+            <td>Retrieve campaign metrics summary</td>
+            <td>Authenticated Member</td>
+          </tr>
         </tbody>
       </table>
     </section>
 
-    <!-- 7. Authentication & RBAC -->
+    <!-- 7. Authentication -->
     <section>
-      <h2 class="section-heading">7. Authentication and Role-Based Access Control</h2>
+      <h2 class="section-heading">7. Authentication</h2>
       <p>
         The system implements a four-tier Role-Based Access Control (RBAC) model integrated with multi-tenant data boundaries:
       </p>
       <ul>
-        <li><strong>Password Protection:</strong> Passwords are stored as salted PBKDF2-SHA256 hashes.</li>
+        <li><strong>Password Protection:</strong> Passwords are stored as salted PBKDF2-SHA256 hashes (390,000 iterations).</li>
         <li><strong>Session Isolation:</strong> Sessions are validated with CSRF protection on all state-modifying requests.</li>
         <li><strong>Tenant Boundaries:</strong> The active workspace is resolved per request. Database operations automatically filter by workspace ID to ensure tenant data isolation.</li>
         <li><strong>Role Definitions:</strong>
           <ol>
             <li><strong>Admin:</strong> Global control over workspace settings, members, and roles.</li>
-            <li><strong>Manager:</strong> Client brand setup, campaign creation, and primary draft approvals.</li>
-            <li><strong>Creator:</strong> Content drafting, script versioning, and asset uploads.</li>
+            <li><strong>Manager:</strong> Client brand setup, campaign creation, primary draft approvals, and direct social publishing.</li>
+            <li><strong>Creator:</strong> Content drafting, script versioning, automated script checking, and asset uploads.</li>
             <li><strong>Client Reviewer:</strong> Read-only access to campaign deliverables with final approval sign-off.</li>
           </ol>
         </li>
       </ul>
     </section>
 
-    <!-- 8. Core Modules Summary -->
+    <!-- 8. Core Modules -->
     <section>
-      <h2 class="section-heading">8. Core Modules Implementation Summary</h2>
+      <h2 class="section-heading">8. Core Modules</h2>
       <ul>
-        <li><strong>Content Lifecycle State Machine:</strong> Programmatically manages content transitions across 7 stages: <code>draft</code> &rarr; <code>pending_manager</code> &rarr; <code>pending_client</code> &rarr; <code>approved</code> &rarr; <code>changes_requested</code> &rarr; <code>scheduled</code> &rarr; <code>published</code>.</li>
+        <li><strong>Content Lifecycle State Machine:</strong> Programmatically manages content transitions across 8 stages: <code>draft</code> &rarr; <code>pending_manager</code> &rarr; <code>changes_requested</code> &rarr; <code>pending_client</code> &rarr; <code>approved</code> &rarr; <code>scheduled</code> &rarr; <code>published</code>.</li>
         <li><strong>Revision Snapshots:</strong> Every script or caption change generates an immutable <code>ContentVersion</code> record, maintaining a complete audit trail.</li>
-        <li><strong>Automated Script Analysis:</strong> The script review module checks text against word count limits, spoken duration pacing, hook keyword placement in the opening sentence, and forbidden brand terms.</li>
+        <li><strong>Automated Script Analysis:</strong> The script review module checks text against word count limits, spoken duration pacing (~130 wpm), hook keyword placement in the opening sentence, and forbidden brand terms.</li>
+        <li><strong>Direct Social Publishing:</strong> Native integration with Meta Graph API v19.0 (Instagram Reels / Feed), YouTube Data API v3 (Shorts), and TikTok Content Posting API v2 with automatic post ID and permalink generation.</li>
+        <li><strong>Competitor Intelligence &amp; Benchmarking:</strong> Gathers public video telemetry from rival channels and computes a Head-to-Head Performance Matrix.</li>
       </ul>
     </section>
 
@@ -605,9 +643,9 @@
       </table>
     </section>
 
-    <!-- 10. Initial Deployment Verification -->
+    <!-- 10. Initial Cloud Deployment -->
     <section>
-      <h2 class="section-heading">10. Cloud Deployment Verification</h2>
+      <h2 class="section-heading">10. Initial Cloud Deployment</h2>
       <p>
         The application is actively deployed and serving production traffic on Vercel:
       </p>

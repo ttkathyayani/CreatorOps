@@ -4,7 +4,7 @@
 **School:** School of Computer Science and Engineering (SCOPE)  
 **Course Code & Title:** BCSE408L — Cloud Computing and Full Stack Application Development  
 **Project Title:** CreatorOps: Cloud-Native Marketing SaaS Application  
-**Student Name:** Kathyayani T T  
+**Student Name:** Thota Tejomayee Kathyayani  
 **Student ID:** 24BCE1201  
 **Project Guide:** Professor Dr. Dinakaran M  
 **GitHub Repository:** [https://github.com/ttkathyayani/CreatorOps](https://github.com/ttkathyayani/CreatorOps)  

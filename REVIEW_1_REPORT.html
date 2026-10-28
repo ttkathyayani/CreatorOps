@@ -12,11 +12,11 @@
     }
 
     body {
-      font-family: "Times New Roman", Times, Georgia, serif;
+      font-family: "Times New Roman", Times, serif;
       background-color: #f1f5f9;
-      color: #111827;
-      line-height: 1.6;
-      font-size: 15px;
+      color: #000000;
+      line-height: 1.25;
+      font-size: 17.3px; /* 13pt */
       padding: 24px 16px;
     }
 
@@ -34,7 +34,7 @@
       border: 1px solid #cbd5e1;
       border-radius: 6px;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      font-family: Arial, sans-serif;
     }
 
     .toolbar-group {
@@ -77,102 +77,151 @@
       margin: 0 auto 40px auto;
       background: #ffffff;
       border: 1px solid #d1d5db;
-      padding: 64px 72px;
+      padding: 56px 64px;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
     }
 
-    /* Academic Header Block */
+    /* Academic Header Block matching format reference.pdf */
     .report-title-block {
-      text-align: center;
-      border-bottom: 2px solid #111827;
-      padding-bottom: 20px;
-      margin-bottom: 28px;
+      border-bottom: 2px solid #000000;
+      padding-bottom: 24px;
+      margin-bottom: 32px;
+    }
+
+    .inst-block {
+      text-align: right;
+      margin-bottom: 40px;
     }
 
     .institution-header {
-      font-size: 15px;
+      font-family: "Times New Roman", Times, serif;
+      font-size: 12.6px; /* 9.5pt */
       font-weight: bold;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      color: #1e293b;
-      margin-bottom: 4px;
+      color: #000000;
+      margin-bottom: 2px;
     }
 
     .department-sub {
-      font-size: 13.5px;
-      color: #475569;
+      font-family: "Times New Roman", Times, serif;
+      font-size: 11.3px; /* 8.5pt */
+      color: #333333;
+      margin-bottom: 2px;
+    }
+
+    .course-sub {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 10.6px; /* 8.0pt */
+      color: #555555;
+    }
+
+    .title-center {
+      text-align: center;
+      margin: 36px 0 30px 0;
+    }
+
+    .main-app-title {
+      font-family: Arial, sans-serif;
+      font-size: 48px; /* 36pt */
+      font-weight: bold;
+      color: #000000;
+      margin-bottom: 6px;
+    }
+
+    .main-app-subtitle {
+      font-family: Arial, sans-serif;
+      font-size: 21.3px; /* 16pt */
+      color: #222222;
+      margin-bottom: 24px;
+    }
+
+    .author-eval-block {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .author-by {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 13.3px; /* 10pt */
+      color: #555555;
+      margin-bottom: 4px;
+    }
+
+    .author-name {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 17.3px; /* 13pt */
+      font-style: italic;
+      font-weight: bold;
+      color: #000000;
+      margin-bottom: 2px;
+    }
+
+    .author-id {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 14.6px; /* 11pt */
+      font-weight: bold;
+      color: #000000;
       margin-bottom: 16px;
     }
 
-    .report-title-block h1 {
-      font-size: 24px;
+    .guide-label {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 13.3px; /* 10pt */
+      color: #555555;
+      margin-bottom: 4px;
+    }
+
+    .guide-name {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 17.3px; /* 13pt */
       font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 8px;
       color: #000000;
     }
 
-    .report-title-block h2 {
-      font-size: 15px;
-      font-weight: normal;
-      color: #374151;
-      margin-bottom: 16px;
+    .bottom-meta-right {
+      text-align: right;
+      font-family: "Times New Roman", Times, serif;
+      font-size: 10px; /* 7.5pt */
+      color: #333333;
+      line-height: 1.4;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 12px;
     }
 
-    .metadata-table {
-      width: 100%;
-      margin: 16px 0;
-      border-collapse: collapse;
-      font-size: 14px;
+    .bottom-meta-right strong {
+      color: #000000;
     }
 
-    .metadata-table td {
-      padding: 4px 8px;
-      border: none;
-      vertical-align: top;
-    }
-
-    .metadata-table td.label {
-      font-weight: bold;
-      width: 25%;
-      color: #111827;
-    }
-
-    .metadata-table td.value {
-      width: 75%;
-      color: #374151;
-    }
-
-    .metadata-table td.value a {
-      color: #1d4ed8;
-      text-decoration: underline;
-    }
-
-    /* Headings */
+    /* Headings matching format reference.pdf */
     h2.section-heading {
-      font-size: 17px;
+      font-family: Arial, sans-serif;
+      font-size: 24px; /* 18pt */
       font-weight: bold;
       text-transform: uppercase;
-      border-bottom: 1px solid #111827;
+      border-bottom: 1px solid #000000;
       padding-bottom: 4px;
-      margin-top: 32px;
-      margin-bottom: 12px;
+      margin-top: 36px;
+      margin-bottom: 14px;
       color: #000000;
     }
 
     h3.sub-heading {
-      font-size: 15px;
+      font-family: "Times New Roman", Times, serif;
+      font-size: 17.3px; /* 13pt */
       font-weight: bold;
-      margin-top: 18px;
+      margin-top: 20px;
       margin-bottom: 6px;
-      color: #111827;
+      color: #000000;
     }
 
     p {
       text-align: justify;
       margin-bottom: 12px;
-      color: #1f2937;
+      color: #000000;
+      font-size: 17.3px; /* 13pt */
+      line-height: 1.25;
+    }
     }
 
     ul, ol {
@@ -291,39 +340,32 @@
   <!-- Document Paper Sheet -->
   <article class="paper">
 
-    <!-- Report Header -->
+    <!-- Report Header matching format reference.pdf -->
     <header class="report-title-block">
-      <div class="institution-header">Vellore Institute of Technology</div>
-      <div class="department-sub">School of Computer Science and Engineering (SCOPE)</div>
-      <h1>Project Review 1 Report</h1>
-      <h2>Course: BCSE408L — Cloud Computing and Full Stack Application Development</h2>
+      <div class="inst-block">
+        <div class="institution-header">VELLORE INSTITUTE OF TECHNOLOGY</div>
+        <div class="department-sub">School of Computer Science and Engineering (SCOPE)</div>
+        <div class="course-sub">Course: BCSE408L — Cloud Computing and Full Stack Application Development</div>
+      </div>
 
-      <table class="metadata-table">
-        <tr>
-          <td class="label">Project Title:</td>
-          <td class="value">Project 12 — CreatorOps: Cloud-Native Marketing SaaS Application</td>
-        </tr>
-        <tr>
-          <td class="label">Student Name &amp; ID:</td>
-          <td class="value">Kathyayani T T (ID: 24BCE1201)</td>
-        </tr>
-        <tr>
-          <td class="label">Project Guide:</td>
-          <td class="value">Professor Dr. Dinakaran M</td>
-        </tr>
-        <tr>
-          <td class="label">GitHub Repository:</td>
-          <td class="value"><a href="https://github.com/ttkathyayani/CreatorOps" target="_blank">https://github.com/ttkathyayani/CreatorOps</a></td>
-        </tr>
-        <tr>
-          <td class="label">Live Public URL:</td>
-          <td class="value"><a href="https://creatorops-rho.vercel.app" target="_blank">https://creatorops-rho.vercel.app</a></td>
-        </tr>
-        <tr>
-          <td class="label">Deliverables:</td>
-          <td class="value">Review 1 Deliverables (Digital Assignment 1 — Deliverables &amp; Initial SRS)</td>
-        </tr>
-      </table>
+      <div class="title-center">
+        <div class="main-app-title">CreatorOps</div>
+        <div class="main-app-subtitle">A Cloud-Native Marketing SaaS Application<br>PROJECT REPORT (REVIEW 1 DELIVERABLES)</div>
+      </div>
+
+      <div class="author-eval-block">
+        <div class="author-by">By</div>
+        <div class="author-name">Thota Tejomayee Kathyayani</div>
+        <div class="author-id">ID: 24BCE1201</div>
+        <div class="guide-label">with the Guidance of</div>
+        <div class="guide-name">Professor Dr. Dinakaran M</div>
+      </div>
+
+      <div class="bottom-meta-right">
+        <div><strong>Live Public URL:</strong> <a href="https://creatorops-rho.vercel.app" target="_blank">https://creatorops-rho.vercel.app</a></div>
+        <div><strong>GitHub Repository:</strong> <a href="https://github.com/ttkathyayani/CreatorOps" target="_blank">https://github.com/ttkathyayani/CreatorOps</a></div>
+        <div><strong>Tech Stack:</strong> Python 3.12, Django 6.1 LTS, DRF 3.18, PostgreSQL, Vercel Serverless Edge</div>
+      </div>
     </header>
 
     <!-- 1. Problem Statement -->

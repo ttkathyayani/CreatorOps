@@ -1,10 +1,15 @@
-# PROJECT FINAL REPORT (REVIEW 3)
+# BCSE408L — FINAL PROJECT REPORT (REVIEW 3)
 
-**Course Code:** BCSE408L — Cloud Computing and Full Stack Application Development  
-**Project Title:** Project 12 — CreatorOps: Cloud-Native Marketing SaaS Application  
-**Student Name:** Kathyayani T T  
-**GitHub Repository:** https://github.com/ttkathyayani/CreatorOps  
-**Live URL:** https://creatorops-rho.vercel.app  
+**Institution:** Vellore Institute of Technology, Chennai  
+**School:** School of Computer Science and Engineering (SCOPE)  
+**Course Code & Title:** BCSE408L — Cloud Computing and Full Stack Application Development  
+**Project Title:** CreatorOps: Cloud-Native Marketing SaaS Application  
+**Student Name:** Thota Tejomayee Kathyayani  
+**Student ID:** 24BCE1201  
+**Project Guide:** Professor Dr. Dinakaran M  
+**GitHub Repository:** [https://github.com/ttkathyayani/CreatorOps](https://github.com/ttkathyayani/CreatorOps)  
+**Live Application URL:** [https://creatorops-rho.vercel.app](https://creatorops-rho.vercel.app)  
+**Tech Stack:** Python 3.12, Django 6.1 LTS, DRF 3.18, PostgreSQL, Vercel Serverless Edge  
 
 ---
 
@@ -27,11 +32,11 @@
 ========================================================================================
 
 Submitted by:
-  Kathyayani T T
+  Thota Tejomayee Kathyayani (ID: 24BCE1201)
 
 Submitted to:
-  Course Faculty / Project Evaluation Committee
-  Department of Software and Systems Engineering
+  Professor Dr. Dinakaran M
+  School of Computer Science and Engineering (SCOPE)
 
 ========================================================================================
 Source Code: https://github.com/ttkathyayani/CreatorOps

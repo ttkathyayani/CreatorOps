@@ -13,8 +13,10 @@ Thumbs.db
 # Temporary and auto-generated docx
 ~$*.docx
 Attachment_*.docx
-*.tmp
-docs/*.pdf
+# Legacy review pdfs
+docs/Review 1_final.pdf
+docs/Review 2_final.pdf
+docs/review 3_final.pdf
 
 
 docs/figures/
